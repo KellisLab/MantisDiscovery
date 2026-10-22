@@ -43,7 +43,7 @@ export default function Home() {
         <Film src={film.src} poster={film.poster} posterPhone={film.posterPhone} captions={film.captions} title={film.title} duration={film.duration} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           '@context': 'https://schema.org', '@type': 'VideoObject', name: film.name, description: film.description,
-          thumbnailUrl: `${site.url}${film.poster}`, contentUrl: `${site.url}${film.src}`, uploadDate: film.date, duration: film.iso,
+          thumbnailUrl: new URL(film.poster, site.url).href, contentUrl: new URL(film.src, site.url).href, uploadDate: film.date, duration: film.iso,
         }).replace(/</g, '\\u003c') }} />
       </section>
 

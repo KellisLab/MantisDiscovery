@@ -235,5 +235,5 @@ p, li, figcaption { text-wrap: pretty; }
 /* The Mantis mark, drawn in the current ink from the brand PNG's alpha. */
 .mantis-mark {
   display: inline-block; flex: none; width: 2.5rem; aspect-ratio: 1; background: var(--c-fg);
-  -webkit-mask: url('/brand/mantis-mark.png') center / contain no-repeat; mask: url('/brand/mantis-mark.png') center / contain no-repeat;
+  -webkit-mask: url('../brand/mantis-mark.png') center / contain no-repeat; mask: url('../brand/mantis-mark.png') center / contain no-repeat;
 }

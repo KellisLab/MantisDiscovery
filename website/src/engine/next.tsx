@@ -6,7 +6,7 @@
 // Opt a link out with data-no-transition. Back/forward re-inits the page without the curtain.
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { boot, cleanup, enter, leave, onPage, prefersReducedMotion, type PageFn } from './index';
+import { boot, cleanup, enter, leave, onPage, prefersReducedMotion, routePath, type PageFn } from './index';
 
 const watchReducedMotion = (onChange: () => void) => {
   const query = matchMedia('(prefers-reduced-motion: reduce)');
@@ -37,7 +37,8 @@ export function Engine({ setup }: { setup?: () => void }) {
       e.preventDefault(); // next/link sees defaultPrevented and stands down
       if (mode.current !== 'idle') return;
       mode.current = 'push';
-      const href = url.pathname + url.search + url.hash;
+      // The router adds the base path itself, so it gets the route without it.
+      const href = routePath(url.pathname) + url.search + url.hash;
       router.prefetch(href);
       await leave();
       cleanup();

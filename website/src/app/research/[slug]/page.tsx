@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps<'/research/[slug]'>
   return {
     title: p.short ?? p.title, // the layout adds " | Mantis Discovery"; short forms keep the whole within 70
     description: plain(p.summary),
-    openGraph: { type: 'article', title: p.title, description: plain(p.summary), images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Mantis Discovery' }] },
+    openGraph: { type: 'article', title: p.title, description: plain(p.summary), images: [{ url: `${site.url}/og.png`, width: 1200, height: 630, alt: 'Mantis Discovery' }] },
     // Highwire Press tags, which Google Scholar reads to index a paper and its PDF.
     other: {
       citation_title: p.title,

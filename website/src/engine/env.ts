@@ -1,4 +1,10 @@
 export const prefersReducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/** The path the site is served from: '' locally, '/MantisDiscovery' on GitHub Pages. */
+export const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+/** A pathname without the base path, as the router and the route table see it. */
+export const routePath = (pathname: string) =>
+  BASE_PATH && pathname.startsWith(BASE_PATH) ? pathname.slice(BASE_PATH.length) || '/' : pathname;
 export const isTouch = () => matchMedia('(hover: none), (pointer: coarse)').matches;
 export const isMobile = () => matchMedia('(max-width: 767px)').matches;
 

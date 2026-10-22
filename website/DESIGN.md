@@ -111,7 +111,6 @@ request.
 
 ## Open items
 
-- `site.url` is a placeholder; canonical URLs, Open Graph, the sitemap and robots read it.
 - Zenodo record 23484622 serves another record's PDF, so its page shows only the title and DOI until the
   record is fixed.
 - Abhijay Gangarapu, Devom Brahmbhatt, Krish and Taksh Kothari have no bio yet, and two co-lead bios are a
@@ -120,6 +119,10 @@ request.
 
 ## Notes for maintainers
 
+- The site is a static export (`output: 'export'`) that GitHub Pages serves from `/MantisDiscovery/`. Point
+  at files in `public/` through `asset()` (`src/data/site.ts`) and at pages through `next/link`, which add
+  that sub-path; engine code compares routes with `routePath()`. CSS that needs an image imports it from
+  `src/` (the Mantis mark is `src/brand/mantis-mark.png`) so the bundler resolves it.
 - Cache Components stays off (`next.config.ts`): it keeps old routes mounted inside `<Activity>`, and the
   motion engine initializes whatever is in the document.
 - next/font sizes its Arial fallback for Inter's natural width and ignores the brand's `size-adjust`, so
