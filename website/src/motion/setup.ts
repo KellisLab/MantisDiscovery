@@ -2,12 +2,12 @@
 //  - The page transition is the carriage pass: a pencil line sweeps left to right trailing the
 //    ground (leave), then an ink line leads the ground off the new page (enter).
 import { gsap } from 'gsap';
-import { ease, onScroll, setTransition } from '@/engine';
+import { ease, onScroll, routePath, setTransition } from '@/engine';
 
 // The name of the place the visitor is going (the clicked link's text), shown on the carriage.
 let destination = '';
 const nameOf = (a: HTMLAnchorElement) => {
-  const path = new URL(a.href, location.href).pathname;
+  const path = routePath(new URL(a.href, location.href).pathname);
   if (path === '/') return 'Mantis Discovery';
   if (path.startsWith('/research/') && path !== '/research/') return a.querySelector('.row__title, .next__title')?.textContent || a.textContent || '';
   return ({ '/research/': 'Research', '/method/': 'Method', '/lab/': 'Lab' } as Record<string, string>)[path] ?? a.textContent ?? '';

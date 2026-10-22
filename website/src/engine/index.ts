@@ -13,12 +13,12 @@ import { initReveals } from './reveal';
 import { initMagnetic } from './interactions';
 import { runLoader } from './loader';
 import { playEnter, playLeave } from './transition';
-import { prefersReducedMotion } from './env';
+import { prefersReducedMotion, routePath } from './env';
 
 export { onScroll, scrollState, scrollToTarget, stopScroll, startScroll } from './scroll';
 export { setTransition } from './transition';
 export { setLoaderFormat, setLoaderExit } from './loader';
-export { ease, isTouch, isMobile, prefersReducedMotion } from './env';
+export { BASE_PATH, ease, isTouch, isMobile, prefersReducedMotion, routePath } from './env';
 
 export type PageFn = (page: { intro: gsap.core.Timeline; path: string }) => void | (() => void);
 const pageFns = new Set<PageFn>();
@@ -37,7 +37,7 @@ export function onPage(fn: PageFn) {
 
 function runPageFn(fn: PageFn) {
   ctx?.add(() => {
-    const c = fn({ intro: intro!, path: location.pathname });
+    const c = fn({ intro: intro!, path: routePath(location.pathname) });
     if (typeof c === 'function') cleanups.push(c);
   });
 }

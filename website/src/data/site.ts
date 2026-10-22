@@ -5,7 +5,6 @@
 // description; the group also includes PhD students, so the copy never calls it a student group (22 Oct).
 //
 // Assumptions and placeholders (each marked `placeholder` below):
-// - site.url: no domain was given yet.
 // - The team (team, below) is the owner's list plus everyone who answered the lab's sign-up form; bios
 //   come only from each person's research answer.
 // - The owner says the lab produced 20+ papers; only the 15 linked records are listed here.
@@ -17,6 +16,9 @@
 //   MIT CSAIL affiliation; "part of Mantis" in the footer is the remaining wording to confirm.
 //
 // Markup in strings: ^{…} is a superscript, _{…} a subscript (rendered by <Tex>).
+
+/** A file from public/, under the path the site is served from (/MantisDiscovery on GitHub Pages). */
+export const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}${path}`;
 
 export type Field = 'mathematics' | 'machine-learning' | 'physics' | 'computer-science';
 
@@ -56,13 +58,14 @@ export type Paper = {
 export const site = {
   name: 'Mantis Discovery',
   role: 'Open problems, taken on with AI',
-  url: 'https://mantisdiscovery.org', // placeholder: production URL (canonical, OG, sitemap)
+  // Where the site is published (canonical URLs, Open Graph, sitemap): the deploy workflow passes the
+  // GitHub Pages address, or a custom domain once one is set up.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kellislab.github.io/MantisDiscovery',
   description:
     'Mantis Discovery is a research group at MIT CSAIL using AI and the Mantis platform on open problems in mathematics, machine learning, physics and biology.',
   email: 'pranavak@mit.edu',
   zenodo: 'https://zenodo.org/search?q=metadata.creators.person_or_org.name%3A%22Mantis%20Discovery%22',
   license: 'CC BY 4.0',
-  placeholder: { url: true },
 };
 
 export const mantis = {
@@ -102,10 +105,10 @@ export const film = {
   // Structured data only: the page shows the title alone.
   name: 'A walkthrough of Mantis Discovery',
   description: 'A 75-second walkthrough of two Mantis Discovery papers in the Mantis workspace.',
-  src: '/media/mantis-discovery-demo.mp4',
-  poster: '/media/mantis-discovery-demo-poster.jpg',
-  posterPhone: '/media/mantis-discovery-demo-poster-phone.jpg',
-  captions: '/media/mantis-discovery-demo.vtt',
+  src: asset('/media/mantis-discovery-demo.mp4'),
+  poster: asset('/media/mantis-discovery-demo-poster.jpg'),
+  posterPhone: asset('/media/mantis-discovery-demo-poster-phone.jpg'),
+  captions: asset('/media/mantis-discovery-demo.vtt'),
   duration: '1:15',
   iso: 'PT1M15S',
   date: '2026-10-06',
@@ -113,8 +116,8 @@ export const film = {
 
 // The Mantis demo beside "Built on Mantis", from mantis.csail.mit.edu (agent-inspector).
 export const mantisDemo = {
-  src: '/media/mantis-agent-inspector.mp4',
-  poster: '/media/mantis-agent-inspector.jpg',
+  src: asset('/media/mantis-agent-inspector.mp4'),
+  poster: asset('/media/mantis-agent-inspector.jpg'),
   label: 'A Mantis workspace: an agent at work on a map of course topics, with its narrator, tree and inspector panels.',
 };
 
@@ -204,11 +207,11 @@ export const lab = {
 // Official marks, turned white for the dark ground (public/brand/olympiads): the USAMO is run by the
 // MAA, so its mark is the MAA's; the USAPhO selects the U.S. Physics Team, whose logo it uses.
 export const olympiads = [
-  { name: 'USAMO', full: 'USA Mathematical Olympiad', logo: '/brand/olympiads/maa.svg', alt: 'Mathematical Association of America, which runs the USAMO', w: 300, h: 92 },
-  { name: 'USAPhO', full: 'US Physics Olympiad', logo: '/brand/olympiads/uspt.png', alt: 'U.S. Physics Team', w: 201, h: 125 },
-  { name: 'USNCO', full: 'US National Chemistry Olympiad', logo: '/brand/olympiads/usnco.png', alt: 'ACS U.S. National Chemistry Olympiad', w: 555, h: 120 },
-  { name: 'USABO', full: 'USA Biolympiad', logo: '/brand/olympiads/usabo.png', alt: 'USA Biolympiad', w: 350, h: 120 },
-  { name: 'USACO', full: 'USA Computing Olympiad', logo: '/brand/olympiads/usaco.png', alt: 'USA Computing Olympiad', w: 974, h: 120 },
+  { name: 'USAMO', full: 'USA Mathematical Olympiad', logo: asset('/brand/olympiads/maa.svg'), alt: 'Mathematical Association of America, which runs the USAMO', w: 300, h: 92 },
+  { name: 'USAPhO', full: 'US Physics Olympiad', logo: asset('/brand/olympiads/uspt.png'), alt: 'U.S. Physics Team', w: 201, h: 125 },
+  { name: 'USNCO', full: 'US National Chemistry Olympiad', logo: asset('/brand/olympiads/usnco.png'), alt: 'ACS U.S. National Chemistry Olympiad', w: 555, h: 120 },
+  { name: 'USABO', full: 'USA Biolympiad', logo: asset('/brand/olympiads/usabo.png'), alt: 'USA Biolympiad', w: 350, h: 120 },
+  { name: 'USACO', full: 'USA Computing Olympiad', logo: asset('/brand/olympiads/usaco.png'), alt: 'USA Computing Olympiad', w: 974, h: 120 },
 ];
 
 // The team, listed on the Lab page. Leads first; everyone else alphabetically by first name. Bios are

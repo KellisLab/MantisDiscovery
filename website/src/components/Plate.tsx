@@ -4,6 +4,7 @@
 //   mode 'fixed'  one plate (paper pages, 404)
 //   mode 'cycle'  the Lab page: walks the archive
 //   mode 'stage'  the index: rows call showOnStage(stage, id) on pointer, focus or scroll
+import Link from 'next/link';
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import type { PlateId } from '@/data/site';
 import { plateColors } from '@/plates/colors';
@@ -107,7 +108,7 @@ export function Plate({ items, mode = 'fixed', every = 9, stage, caption = true,
       {caption && (
         <figcaption className="plate__caption">
           {current.href ? (
-            <a className="plate__title" href={current.href}>{current.title}</a>
+            <Link className="plate__title" href={current.href}>{current.title}</Link>
           ) : (
             <span className="plate__title">{current.title}</span>
           )}
