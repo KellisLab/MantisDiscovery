@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Certified compression of endgame tables}
+\postfield{Computer science, games and verification}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+Endgame tables store the exact value of every position, and they are large. Can we keep only part of a table,
+still answer every exact query from it, and certify that the answers are right?
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Store signed distance intervals on part of the game graph.
+\item Recover the rest from two extremal boundary problems, without widening any interval.
+\item Certify every stored interval at both of its endpoints.
+\item Place checkpoints in a periodic pattern, which bounds how deep a lookup has to search.
+\end{itemize}
+\mdgap
+\mdsec{King and rook against king}
+\includegraphics[width=\linewidth]{certified-krvk.pdf}
+\figcap{Figure 1.}{We solved this small pawnless class by retrograde analysis for the poster. The left panel counts the positions with White to move that are mated in each number of moves, and the longest mate takes 16. The right panel averages over the square of Black's king: mates take longest from the center.}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Storage}
+\includegraphics[width=\linewidth]{certified-storage.pdf}
+\figcap{Figure 2.}{Our implementation stores 26 complete pawnless chess classes in 7.59 MB, compared with about 19.8 MB for the published Syzygy WDL/DTZ files of the same classes. We derived the Syzygy figure from the 61.64\% reduction.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+We have a sound and complete certificate for any stored subset of a finite alternating game with irreversible budget resets. It works even when the omitted part contains cycles.
+\end{progress}
+\begin{progress}
+Certification takes $O\bigl((w + \log(N+2))(N+E)\bigr)$ graph operations for intervals of width at most $w$, and $O(w(N+E))$ when the omitted part is acyclic.
+\end{progress}
+\begin{progress}
+The 26 classes fit in 7,585,632 bytes with all five outcome categories and exact values kept, and every file passes certification.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{certified-compression.jpg}{9,047}{The single-sided parity obstruction.}{%
+When only one side's labels are stored, a forced 99-ply path makes the grid search all 99 plies.\alsoonrecord An explicit certificate verifies a win at clock 98 but not at 99.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item Near the threshold, lookups still take 133 ms at the 99th percentile, despite the seven-ply depth bound. How can that come down?
+\item The savings come from the chess implementation; the general checker and grid optimizer were tested separately. What does the general method save on other games?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

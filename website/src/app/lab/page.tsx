@@ -1,16 +1,18 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Plate } from '@/components/Plate';
-import { archiveItems, Draft } from '@/components/plates';
+import { archiveItems } from '@/components/figures';
 import { lab, mantis, site, team, type Member as Person } from '@/data/site';
 
 // A name, and on hover or focus a short bio above it (the bio is also its accessible description).
 function Member({ m }: { m: Person }) {
-  if (!m.bio) return <li className="member"><span className="member__name">{m.name}</span></li>;
+  const role = m.role && <span className="member__role">{m.role}</span>;
+  if (!m.bio) return <li className="member"><span className="member__name">{m.name}</span>{role}</li>;
   const id = `bio-${m.name.toLowerCase().replace(/[^a-z]+/g, '-')}`;
   return (
     <li className="member">
       <button type="button" className="member__name member__name--bio" aria-describedby={id}>{m.name}</button>
+      {role}
       <span id={id} role="tooltip" className="member__bio">{m.bio}</span>
     </li>
   );
@@ -18,7 +20,7 @@ function Member({ m }: { m: Person }) {
 
 export const metadata: Metadata = {
   title: 'Lab',
-  description: 'Mantis Discovery is a group of 25+ researchers, including PhD students and olympiad medalists, who do research with AI and check every result.',
+  description: 'Mantis Discovery has more than 25 researchers, including PhD students and olympiad medalists. We use AI in our research and check each result before publishing.',
 };
 
 export default function Lab() {
@@ -35,7 +37,7 @@ export default function Lab() {
           </div>
         </div>
         <div className="lab-hero__plate">
-          <Plate items={archiveItems('sidon')} mode="cycle" draft={<Draft id="sidon" />} label="Live figures from the lab's papers, one after another" />
+          <Plate items={archiveItems('gyro')} mode="cycle" label="Figures from the lab's papers, one after another" />
         </div>
       </section>
 
@@ -48,24 +50,11 @@ export default function Lab() {
           </ul>
         </div>
         <div className="team__group">
-          <h3 className="team__label">Mantis discoverers</h3>
+          <h3 className="team__label">Researchers</h3>
           <ul className="team__names">
             {team.members.map((m) => <Member key={m.name} m={m} />)}
           </ul>
         </div>
-      </section>
-
-      <section className="work wrap" aria-labelledby="work-title">
-        <h2 id="work-title" className="h-xl" data-split="lines">How we work with AI</h2>
-        <ol className="work__list">
-          {lab.work.map((w, i) => (
-            <li key={w.name} className="work__item" data-reveal="ink">
-              <p className="meta">{String(i + 1).padStart(2, '0')}</p>
-              <h3 className="h-l">{w.name}</h3>
-              <p>{w.text}</p>
-            </li>
-          ))}
-        </ol>
       </section>
 
       <section className="join wrap" aria-labelledby="join-title">

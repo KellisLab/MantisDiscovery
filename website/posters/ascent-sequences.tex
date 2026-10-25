@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Growth of pattern-avoiding ascent sequences}
+\postfield{Mathematics, enumerative combinatorics}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+An ascent sequence starts at 0, and each new entry is at most one more than the number of ascents so far.
+How many ascent sequences of length $n$ avoid a family of patterns such as 0120, 0121 and 0122, and how fast
+does that number $A(n)$ grow?
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Join consecutive occurrences of the same value. These arcs form a repetition graph.
+\item Bound its chromatic number, so that a sequence can be rebuilt from one occurrence of each value and a little extra data.
+\item Compare with permutations for the upper bound, and append distinct larger entries to suitable prefixes for the lower bound.
+\end{itemize}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+For any family of patterns $012\cdots(d{+}u)d$ that each use at least three values,
+$\log A(n) = n\log n - 2n\log\log n + O(n)$.
+\end{progress}
+\begin{progress}
+The generating functions are not D-finite, and the exponential one is entire of infinite order. With a pattern of fewer than three values, the generating function is rational.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Exhaustive counts}
+\includegraphics[width=\linewidth]{ascent-counts.pdf}
+\figcap{Figure 1.}{We counted by exhaustive search, up to $n = 13$, the sequences of each length that avoid 0120, 0121 and 0122 (blue) and all ascent sequences (grey). At $n = 13$, 44,616 of the 89,903,100 ascent sequences avoid the patterns.}
+\mdgap
+\mdsec{A repetition graph}
+\includegraphics[width=\linewidth]{ascent-example.pdf}
+\figcap{Figure 2.}{This avoiding sequence has length 30, and each arc joins consecutive occurrences of the same value.}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{ascent-sequences.jpg}{3,230}{The product-order theorem uses the unique repeated value in $R_{(d,u)}$.}{%
+The same record corrects an earlier example: $\{(0,2), (2,2)\}$ had been claimed as an antichain, and the replacement is $\{(0,3), (2,1)\}$.\alsoonrecord Review caught an invalid weakening of an inequality.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item The linear term of $\log A(n)$ is known for 0120, 0121 and 0122 avoided together. What is it for other families?
+\item Which other families of sequences grow like $n\log n - 2n\log\log n$?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

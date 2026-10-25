@@ -4,8 +4,8 @@ import { HeroTorus } from '@/components/HeroTorus';
 import { MantisDemo } from '@/components/MantisDemo';
 import { Plate } from '@/components/Plate';
 import { PaperIndex } from '@/components/PaperIndex';
-import { archiveItems, Draft, indexRows } from '@/components/plates';
-import { fieldCount, fields, film, home, lab, mantis, mantisDemo, olympiads, site } from '@/data/site';
+import { archiveItems, indexRows } from '@/components/figures';
+import { approach, approachLink, asset, film, home, lab, mantisDemo, olympiads, site, workInProgress } from '@/data/site';
 
 export default function Home() {
   const rows = indexRows();
@@ -13,7 +13,11 @@ export default function Home() {
     <>
       <section className="hero wrap" aria-labelledby="hero-title">
         <div className="hero__text">
-          <p className="eyebrow" data-reveal="fade" data-intro>{home.eyebrow} · {mantis.relation}</p>
+          <p className="eyebrow hero__aff" data-reveal="fade" data-intro>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="csail-logo" src={asset('/brand/csail.svg')} width={70} height={40} alt="MIT CSAIL" />
+            <span>{home.eyebrow}</span>
+          </p>
           <h1 id="hero-title" className="display hero__title">{home.title}</h1>
           <p className="lede hero__lede" data-reveal="ink" data-intro data-delay="0.15">{home.lede}</p>
           <div className="actions" data-reveal="fade" data-intro data-delay="0.3">
@@ -47,24 +51,42 @@ export default function Home() {
         }).replace(/</g, '\\u003c') }} />
       </section>
 
+      <section className="approach wrap" aria-labelledby="approach-title">
+        <header className="approach__head">
+          <h2 id="approach-title" className="h-xl" data-split="lines">{approach.title}</h2>
+          <p className="approach__lede">{approach.lede}</p>
+        </header>
+        <ol className="approach__list">
+          {approach.techs.map((t, i) => (
+            <li key={t.id} id={`tech-${t.id}`} className="tech">
+              <div className="tech__copy">
+                <p className="tech__n meta">{String(i + 1).padStart(2, '0')}</p>
+                <h3 className="h-l tech__name">{t.name}</h3>
+                <p className="tech__text">{t.text}</p>
+                <p className="tech__benefit">{t.benefit}</p>
+              </div>
+              <figure className="tech__still still">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={t.still.src} width={t.still.w} height={t.still.h} alt={t.still.alt} loading="lazy" decoding="async" />
+                <figcaption className="meta">{t.still.caption}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ol>
+        <p className="section-more"><Link className="go" href={approachLink.href}>{approachLink.label} <span className="go__arrow" aria-hidden="true">→</span></Link></p>
+      </section>
+
       <section className="archive wrap" aria-labelledby="archive-title">
         <header className="archive__head">
           <h2 id="archive-title" className="h-xl" data-split="lines">{home.archiveTitle}</h2>
           <p className="archive__lede">{home.archiveLede}</p>
-          <dl className="counts">
-            {fields.map((f) => (
-              <div key={f.id} className="counts__item">
-                <dt className="meta">{f.label}</dt>
-                <dd className="num">{String(fieldCount(f.id)).padStart(2, '0')}</dd>
-              </div>
-            ))}
-          </dl>
         </header>
         <PaperIndex
           rows={rows}
           stage="home-index"
-          plate={<Plate items={archiveItems(rows[0].plate)} mode="stage" stage="home-index" draft={<Draft id={rows[0].plate} />} label="Figure for the selected paper" />}
+          plate={<Plate items={archiveItems(rows[0].figure)} mode="stage" stage="home-index" label="Figure for the selected paper" />}
         />
+        <p className="section-more archive__more"><Link className="go" href={workInProgress.link.href}>{workInProgress.link.label} <span className="go__arrow" aria-hidden="true">→</span></Link></p>
       </section>
 
       <section className="teaser wrap" aria-labelledby="teaser-title">

@@ -1,0 +1,126 @@
+% Mantis Discovery project posters: 48 x 36 in, landscape. A night header band, three columns on a warm
+% paper ground between hairlines, and a footer. Inter for text, IBM Plex Mono for labels and numbers,
+% STIX Two Math for mathematics. Typeset with LuaLaTeX (latexmk -lualatex).
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mdposter}[2026/10/25 Mantis Discovery project posters]
+
+\RequirePackage[paperwidth=48in,paperheight=36in,margin=0in]{geometry}
+\RequirePackage{amsmath}
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\setmainfont{Inter}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-SemiBold, ItalicFont=*-Italic,
+  BoldItalicFont=*-SemiBoldItalic, FontFace={sb}{n}{*-SemiBold}, FontFace={m}{n}{*-Regular},
+  FontFace={mb}{n}{*-Medium}, FontFace={mb}{it}{*-MediumItalic}]
+\setsansfont{Inter}[Extension=.otf, UprightFont=*-Regular, BoldFont=*-SemiBold, ItalicFont=*-Italic]
+\setmathfont{STIXTwoMath-Regular.otf}
+\newfontfamily\mdmono{IBMPlexMono}[Extension=.otf, UprightFont=*-Medium, BoldFont=*-SemiBold]
+\newfontfamily\mdtitlefont{Inter}[Extension=.otf, UprightFont=*-Medium, LetterSpace=-2.4]
+\newfontfamily\mdheadfont{Inter}[Extension=.otf, UprightFont=*-SemiBold, LetterSpace=-1.2]
+\newfontfamily\mdquotefont{Inter}[Extension=.otf, UprightFont=*-MediumItalic]
+\RequirePackage{anyfontsize}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage[most]{tcolorbox}
+\tcbuselibrary{poster}
+\RequirePackage{enumitem}
+\RequirePackage[protrusion=true,expansion=false]{microtype}
+\pagestyle{empty}
+\graphicspath{{figures/out/}{stills/}{assets/}}
+
+\definecolor{paper}{HTML}{FAF9F6}
+\definecolor{night}{HTML}{0B0F16}
+\definecolor{ink}{HTML}{141821}
+\definecolor{text}{HTML}{2A303C}
+\definecolor{muted}{HTML}{6B7383}
+\definecolor{faint}{HTML}{9AA2B1}
+\definecolor{hair}{HTML}{E1E4EA}
+\definecolor{accent}{HTML}{2D4BA0}
+\definecolor{accentlight}{HTML}{93A7E2}
+\definecolor{pale}{HTML}{E9EDF6}
+\definecolor{headtext}{HTML}{F2F3EE}
+\definecolor{headmuted}{HTML}{8E97A8}
+
+\newcommand\mdbody{\fontsize{33}{47}\selectfont}
+\newcommand\mdsmall{\fontsize{27}{38}\selectfont}
+% Poster text: ragged right, never hyphenated.
+\newcommand\mdtext{\mdbody\color{text}\raggedright\lefthyphenmin=99\relax}
+% A small label in the mono face, set in capitals and tracked out.
+\newcommand\mdlabel[1]{{\mdmono\fontsize{21}{27}\selectfont\addfontfeatures{LetterSpace=9}\MakeUppercase{#1}}}
+
+% What goes in the header band.
+\makeatletter
+\newcommand\posttitle[1]{\gdef\md@title{#1}}
+\newcommand\postfield[1]{\gdef\md@field{#1}}
+\newcommand\postdate[1]{\gdef\md@date{#1}}
+\postdate{October 2026}
+
+\newcommand\mdframe{%
+  \fill[paper] (frame.south west) rectangle (frame.north east);
+  \fill[night] (frame.north west) rectangle ([yshift=-6.4in]frame.north east);
+  \node[anchor=west, inner sep=0pt] at ([xshift=1.3in, yshift=-3.2in]frame.north west)
+    {\includegraphics[width=2.45in]{mark-white.png}};
+  \node[anchor=west, inner sep=0pt] at ([xshift=4.75in, yshift=-3.2in]frame.north west)
+    {\begin{minipage}{31in}\raggedright
+      {\color{accentlight}\mdlabel{Work in progress\hspace{0.8em}\textperiodcentered\hspace{0.8em}\md@field}}\par\vspace{0.42in}
+      {\color{headtext}\mdtitlefont\fontsize{100}{110}\selectfont\lefthyphenmin=99\relax\md@title\par}
+    \end{minipage}};
+  \node[anchor=east, inner sep=0pt, text=headmuted, align=right]
+    at ([xshift=-1.3in, yshift=-3.2in]frame.north east)
+    {\mdlabel{Mantis Discovery}\\[0.16in]\mdlabel{Mantis\hspace{0.6em}\textperiodcentered\hspace{0.6em}MIT CSAIL}\\[0.16in]\mdlabel{\md@date}};
+  % hairlines between the columns
+  \draw[hair, line width=2pt] ([xshift=16.183in, yshift=-7.55in]frame.north west) -- ([xshift=16.183in, yshift=2.35in]frame.south west);
+  \draw[hair, line width=2pt] ([xshift=31.817in, yshift=-7.55in]frame.north west) -- ([xshift=31.817in, yshift=2.35in]frame.south west);
+  % footer
+  \draw[hair, line width=2pt] ([xshift=1.3in, yshift=1.6in]frame.south west) -- ([xshift=-1.3in, yshift=1.6in]frame.south east);
+  \node[anchor=base west, inner sep=0pt, text=muted]
+    at ([xshift=1.3in, yshift=0.85in]frame.south west)
+    {\mdlabel{Mantis Discovery\hspace{0.6em}\textperiodcentered\hspace{0.6em}a research group within Mantis at MIT CSAIL}};
+  \node[anchor=base east, inner sep=0pt, text=muted]
+    at ([xshift=-1.3in, yshift=0.85in]frame.south east)
+    {\mdlabel{mantis.csail.mit.edu}};
+}
+\makeatother
+
+% A numbered section: a hairline, its number, its heading.
+\newcounter{mdsec}
+\newcommand\mdsec[1]{%
+  \stepcounter{mdsec}%
+  {\color{hair}\rule{\linewidth}{2.5pt}}\par\vspace{0.38in}%
+  {\color{accent}\mdlabel{\ifnum\value{mdsec}<10 0\fi\arabic{mdsec}}}\par\vspace{0.08in}%
+  {\color{ink}\mdheadfont\fontsize{52}{60}\selectfont #1\par}\vspace{0.34in}}
+
+% A column runs from the header to the footer: its content sits in a box of the column's full height, and
+% the gaps between sections take at least 0.6 in and share out whatever space is left.
+\newsavebox\mdcolbox
+\newenvironment{mdcol}{\setbox\mdcolbox=\vbox\bgroup\hsize=\linewidth\mdtext}{\par\egroup
+  \typeout{MDCOL slack \the\dimexpr\tcbtextheight-\ht\mdcolbox-\dp\mdcolbox\relax}%
+  \vbox to \tcbtextheight{\unvbox\mdcolbox}}
+\newcommand\mdgap{\par\vspace{0.6in plus 1fill}}
+
+% A result so far, set apart.
+\newtcolorbox{progress}{enhanced, frame hidden, sharp corners, colback=pale, boxsep=0pt,
+  left=0.52in, right=0.5in, top=0.42in, bottom=0.46in, borderline west={5pt}{0pt}{accent},
+  fontupper=\mdtext, colupper=ink, before skip=0.34in, after skip=0.34in}
+
+% A figure caption under a graphic.
+\newcommand\figcap[2]{\par\vspace{0.3in}{\mdsmall\color{muted}{\color{accent}\mdlabel{#1}}\hspace{0.6em}#2\par}}
+
+% The project's space in Mantis: a still of it, how many records it holds, and the record that is open.
+\newcommand\mantis[4]{%
+  {\setlength\fboxsep{0pt}\setlength\fboxrule{2pt}\color{hair}\fbox{\includegraphics[width=\dimexpr\linewidth-4pt\relax]{#1}}}\par
+  \vspace{0.34in}{\color{accent}\mdlabel{#2 records\hspace{0.6em}\textperiodcentered\hspace{0.6em}the open record}}\par\vspace{0.14in}%
+  {\mdquotefont\fontsize{33}{46}\selectfont\color{ink}#3\par}%
+  \vspace{0.32in}#4}
+\newcommand\alsoonrecord{\par\vspace{0.32in}{\color{accent}\mdlabel{Also on record}}\par\vspace{0.1in}}
+
+\setlist[itemize]{leftmargin=1.05em, labelsep=0.55em, itemsep=0.42em, topsep=0.3em, parsep=0pt,
+  label={\color{accent}\rule[0.22em]{0.3em}{0.3em}}}
+
+% The page: three columns between the header and footer.
+\newenvironment{mdposter}{%
+  \mdtext%
+  \begin{tcbposter}[
+    coverage={spread, interior style={fill=paper}, underlay={\mdframe}, left=1.3in, right=1.3in, top=7.55in, bottom=2.35in},
+    poster={showframe=false, columns=3, rows=40, colspacing=1.5in, rowspacing=0.75in},
+    boxes={blankest, fontupper=\mdtext, colupper=ink, valign=top}]
+}{\end{tcbposter}}

@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Stability of the Gaussian log-Sobolev inequality}
+\postfield{Mathematics, analysis and probability}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+The Gaussian logarithmic Sobolev inequality bounds entropy by Fisher information, and Gaussians make it sharp.
+If a density nearly attains it, how close must the density be to a Gaussian, and can the constants be
+independent of the dimension?
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Study the transport first variation of the deficit: how the gap changes when the density is moved a little.
+\item Find its smallest possible size at fixed Fisher information and second moment, and every case where the minimum is reached.
+\item Integrate it along the Ornstein-Uhlenbeck flow, which carries any density to the Gaussian.
+\end{itemize}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+We determine the smallest squared norm of the first variation at prescribed Fisher information and a second-moment cap, together with every case of equality.
+\end{progress}
+\begin{progress}
+Integrated along the flow, it controls Wasserstein distance, Fisher information and the deficit with sharp constants, with no covariance or Poincar\'e assumption. Centered isotropic Gaussians give equality.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Densities along the flow}
+\includegraphics[width=\linewidth]{logsobolev-flow.pdf}
+\figcap{Figure 1.}{The Ornstein-Uhlenbeck flow carries a density with a small far bump toward the standard Gaussian. A mixture of two Gaussians stays a mixture under the flow, so these curves are exact.}
+\mdgap
+\mdsec{The deficit along the flow}
+\includegraphics[width=\linewidth]{logsobolev-deficit.pdf}
+\figcap{Figure 2.}{For the same density we computed half its relative Fisher information, its relative entropy and half its squared Wasserstein distance to the Gaussian. The log-Sobolev inequality keeps the entropy below half the Fisher information, and the shaded gap between them is the deficit. Talagrand's inequality keeps the distance below the entropy.}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{log-sobolev-stability.jpg}{1,036}{Uniformly tiny finite history coexists with positive $W_2$.}{%
+The record is a counterexample proved in the manuscript: over any fixed time window the observed quantity can stay uniformly small while the Wasserstein distance to the Gaussian stays positive. So no fixed observation interval is enough.\alsoonrecord Gaussian mixtures show that dimension-free stability cannot come from the instantaneous quantity alone.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item The escaping parts of minimizing sequences need not be Gaussian. What can they look like?
+\item The flow estimates extend to closed weighted manifolds with positive weighted Ricci curvature. How much further do they go?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

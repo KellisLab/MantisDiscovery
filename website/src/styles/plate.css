@@ -1,10 +1,7 @@
-/* The live plate: an instrument face. Hairline frame, corner ticks, the check below it. */
+/* A paper's figure: an instrument face. Hairline frame, corner ticks, the beat's caption below it. */
 .plate { display: grid; gap: clamp(0.75rem, 0.6rem + 0.5vw, 1.1rem); align-content: start; }
-.plate__frame { position: relative; aspect-ratio: var(--plate-ratio, 1 / 1); border: 1px solid var(--c-line); }
-.plate__draft, .plate__canvas { position: absolute; inset: clamp(8px, 3%, 20px); width: calc(100% - 2 * clamp(8px, 3%, 20px)); height: calc(100% - 2 * clamp(8px, 3%, 20px)); }
-.plate__draft svg { width: 100%; height: 100%; }
-.plate__draft { transition: opacity 0.4s linear; }
-.plate[data-live] .plate__draft { opacity: 0; }
+.plate__frame { position: relative; aspect-ratio: 1 / 1; border: 1px solid var(--c-line); background: var(--c-bg); }
+.plate__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .plate__tick { position: absolute; width: 9px; height: 9px; border: 0 solid var(--plate-ink, var(--c-fg)); opacity: 0.75; pointer-events: none; transition: border-color 0.45s var(--ease-out); }
 .plate__tick--tl { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
 .plate__tick--tr { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
@@ -21,17 +18,15 @@
 @media (hover: hover) { .plate__pause:hover { color: var(--c-fg); } .plate__pause:hover .plate__pause-icon { scale: 1.35; } }
 .plate__pause:focus-visible { color: var(--c-fg); outline-offset: -2px; }
 
-.plate__check { display: grid; gap: 0.55rem; }
-.plate__check-name { display: flex; align-items: baseline; gap: 0.6em; font-size: var(--t-xs); color: var(--c-muted); letter-spacing: 0.01em; }
-.plate__check-name > span:nth-child(2) { flex: 1; color: var(--c-fg); }
-.plate__check-state { color: var(--c-draft-text); transition: color 0.45s var(--ease-out); }
-.plate[data-passed] .plate__check-state { color: var(--plate-ink, var(--c-fg)); }
-.plate[data-passed] .plate__check-name .mark { background: var(--plate-ink, var(--c-fg)); border-color: var(--plate-ink, var(--c-fg)); }
-.plate__readings { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); border-top: 1px solid var(--c-line); padding-top: 0.6rem; }
-.plate__reading { display: grid; gap: 0.15rem; }
-.plate__reading dt { font-size: var(--t-xs); color: var(--c-muted); }
-.plate__reading dd { font-size: clamp(1.15rem, 1rem + 0.6vw, 1.6rem); font-weight: 500; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--plate-draft, var(--c-draft-text)); transition: color 0.45s var(--ease-out); }
-.plate__reading dd[data-done] { color: var(--plate-ink, var(--c-fg)); }
+.plate__beat { display: grid; gap: 0.6rem; min-height: 5.6rem; align-content: start; border-top: 1px solid var(--c-line); padding-top: 0.7rem; }
+.plate__steps { display: flex; align-items: center; gap: 0.35rem; }
+.plate__step { width: 1.25rem; height: 2px; background: var(--c-line-strong); transition: background-color 0.45s var(--ease-out); }
+.plate__step[data-done] { background: var(--c-draft); }
+.plate__step[data-on] { background: var(--plate-ink, var(--c-fg)); }
+.plate__step-n { margin-left: 0.4rem; color: var(--c-muted); font-variant-numeric: tabular-nums; }
+.plate__beat-text { font-size: var(--t-s); line-height: 1.5; color: var(--c-fg); max-width: 38em; animation: plate-beat 0.6s var(--ease-out) both; }
+@keyframes plate-beat { from { opacity: 0; translate: 0 0.35em; } }
+@media (prefers-reduced-motion: reduce) { .plate__beat-text { animation: none; } }
 
 .plate__caption { display: grid; gap: 0.3rem; padding-top: 0.2rem; min-height: 4.4rem; align-content: start; }
 .plate__title { font-size: var(--t-s); line-height: 1.35; font-weight: 500; max-width: 34em; width: fit-content; }

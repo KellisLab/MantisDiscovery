@@ -42,3 +42,8 @@ next-env.d.ts
 
 # QA screenshots and reports
 .shots/
+
+# The figures project installs its own dependencies.
+/graphics/node_modules/
+/graphics/out/
+/graphics/src/public/

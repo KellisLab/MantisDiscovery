@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Slow particles and weak collisions in gyrokinetics}
+\postfield{Physics, plasma physics}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+Gyrokinetic models describe small-scale turbulence in magnetized plasmas. In a linear electrostatic
+gyrokinetic model, can collisionless transport, or weak collisions at a rate $\nu$, make the states a
+computation does not resolve decay at one uniform rate?
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Look for states the electric field hardly sees. Slow particles give whole infinite-dimensional subspaces whose field response vanishes uniformly.
+\item Build approximate eigenvectors on the imaginary axis from differentiated wave packets. Under a nondegeneracy condition they concentrate near the passing boundary.
+\item Bound their residuals for two collision models: Maxwellian velocity diffusion and a one-species linearized Coulomb operator.
+\end{itemize}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+Quasineutral coupling does not remove the obstruction created by slow particles when the quadratic energy is coercive.
+\end{progress}
+\begin{progress}
+If one species also has the right low-energy drift parity and an even gyroaverage, field feedback and finitely many bounded observations cannot give a decay rate uniform in $\nu$.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Spectrum of the undriven model}
+\includegraphics[width=\linewidth]{boundary-spectra.pdf}
+\figcap{Figure 1.}{With zero inflow at the boundary the undriven spectrum is the closed left half-plane; with periodic boundaries it is the imaginary axis.}
+\mdgap
+\mdsec{Residual bound}
+\includegraphics[width=\linewidth]{boundary-residual.pdf}
+\figcap{Figure 2.}{The curves show the residual bound stated below as the collision rate falls, with $C = 1$, at three frequencies.}
+\begin{progress}
+At bounded frequencies the wave-packet residuals are at most $C\bigl(\nu^{1/3} + \nu^{1/5}|\omega|^{2/5}\bigr)$, so they vanish as $\nu \to 0$.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{gyrokinetic-boundary-spectra.jpg}{1,575}{Smooth drift alone does not guarantee exact zero attainment.}{%
+The record is a rejected inference: a smooth-drift example comes arbitrarily close to zero frequency without reaching it.\alsoonrecord A revision rejected fixed-excess surjectivity, because nonzero frequencies stay bounded below by $2\pi/T^{*}(c^{*})$.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item These results are for the linear models shown and the full distribution norm. Which of them survive in weaker norms?
+\item Concentration near the passing boundary needs a nondegeneracy condition. Can it be dropped?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

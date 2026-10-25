@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Inertia of matching cofactor matrices}
+\postfield{Mathematics, algebraic combinatorics}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+Take a graph $G$ with an even number of vertices and count the perfect matchings that survive deleting two vertices:
+\[ W_{uv} = \operatorname{pm}(G - u - v), \qquad W_{uu} = 0. \]
+How many positive, negative and zero eigenvalues does $W$ have? One positive eigenvalue is the least possible, and it is
+exactly the Lorentzian property of the polynomial $\tfrac12 z^{\mathsf T} W z$ in the sense of Br\"and\'en and Huh.
+\mdgap
+\mdsec{The five graphs}
+\includegraphics[width=\linewidth]{cofactors-graphs.pdf}
+\figcap{Figure 1.}{$T(5)$ and the bridged graph are line graphs, drawn over their base graphs (faint): $K_5$, and two triangles joined by a path of two bridges. $L_2(4)$ is the rook's graph on a $4 \times 4$ board.}
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Compute $W$ exactly for many small graphs and look for patterns.
+\item For line graphs of subcubic graphs, combine a cofactor congruence for one-vertex attachments with the parity of matchings and a signed factorization by two-edge-cut classes.
+\item For strongly regular graphs, use Gaussian identities and switching for the lattice and triangular families, and exact integer certificates for the rest.
+\end{itemize}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Computed spectra}
+\includegraphics[width=\linewidth]{cofactors-spectra.pdf}
+\figcap{Figure 2.}{We computed the eigenvalues of $W$ exactly for the graphs of Figure 1; the inertia (positive, negative, zero) is on the right. The strongly regular graphs have one positive eigenvalue. $C_4$ is the exception, with two zeros, and a base graph with two non-pendant bridges gives two positive eigenvalues.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+For line graphs of connected subcubic graphs with an even number of edges, the positive index is a count of components after a rule on bridges. $W$ has one positive eigenvalue exactly when every bridge of the base graph is pendant.
+\end{progress}
+\begin{progress}
+Every connected strongly regular graph of even order with least eigenvalue $-2$ has inertia $(1, n-1, 0)$, except $C_4$, which has $(1, 1, 2)$.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{matching-cofactors.jpg}{3,583}{The two-monomer Lorentzian property does not extend automatically to all homogeneous polynomials.}{%
+The record gives an example: for an eight-vertex cubic base graph, the four-monomer polynomial is not Lorentzian.\alsoonrecord An invalid proof step assumed that homogeneous components of real-stable polynomials are real-stable. They need not be: $z^2-1$ is real-stable, but $z^2-t^2$ vanishes at $z=t=i$.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item Which deletion-count matrices are Lorentzian, and what makes the others fail?
+\item Line graphs with least eigenvalue $-2$ can have an arbitrarily large positive index. What controls it in general?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

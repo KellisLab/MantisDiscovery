@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{What calibration tells mixed-precision quantization}
+\postfield{Machine learning, model compression}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+Mixed-precision quantization gives each part of a network its own number of bits, and a few calibration runs
+decide which parts get more. Which measurements from those runs actually lead to better allocations?
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Compare scalar loss profiles, reconstructed output vectors and direct comparisons, under the same budget of forward passes.
+\item Evaluate every allocation exhaustively on 25 small trained networks, to separate approximation bias, sampling variance and options left off a shortlist.
+\end{itemize}
+\mdgap
+\mdsec{A toy allocation problem}
+\includegraphics[width=\linewidth]{calibration-toy.pdf}
+\figcap{Figure 1.}{This is a toy version, not from the study. The grey points are all 4,096 ways to give six tensors 2, 3, 4 or 8 bits. The blue line marks the best trade-offs, and the orange point is the best choice under the storage budget.}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Allocation regret}
+\includegraphics[width=\linewidth]{calibration-regret.pdf}
+\figcap{Figure 2.}{Scoring outputs instead of adding up scalar losses reduces normalized allocation regret across the 25 networks. The bars show the reduction with round-to-nearest quantization and after a GPTQ update.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+With round-to-nearest quantization, scoring outputs cuts normalized allocation regret by 61.0\% compared with adding up scalar losses.
+\end{progress}
+\begin{progress}
+After a GPTQ update the cut is 6.7\%, and its interval includes zero.
+\end{progress}
+\begin{progress}
+Cross-tensor Fisher terms can help under rounding but add sampling error after reconstruction.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{calibration-limits.jpg}{500}{Identical singleton losses conceal cancellation and force regret 4/225.}{%
+The record is a counterexample: in a three-branch example every single-tensor loss looks the same, and the best rule that sees only scalar profiles still has a worst-case regret of 4/225.\alsoonrecord A two-candidate example shows that the screening threshold $2\eta$ cannot be reduced.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item The study covers small networks and quantizers. Do the findings carry over to larger models?
+\item Lower discrepancy from the full-precision teacher did not always mean better accuracy or speed. What should calibration aim for instead?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

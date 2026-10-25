@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Self-host two font subsets cut to exactly the characters this site uses (every character in the
-// content file, the plates and the components, plus ASCII and common punctuation), via Google's
+// content file, the pages and the components, plus ASCII and common punctuation), via Google's
 // `text=` API, which returns a woff2 holding just those glyphs:
 //   STIX Two Text (OFL), roman and italic: the papers' voice, math symbols included.
 //   Inter (OFL): the glyphs the Mantis brand subset of Inter (MantisSans) leaves out, such as Greek,
@@ -10,8 +10,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const list = (dir, ext) => fs.readdirSync(path.join(root, dir)).filter((f) => ext.some((e) => f.endsWith(e))).map((f) => path.join(root, dir, f));
-const files = [path.join(root, 'src/data/site.ts'), ...list('src/plates', ['.ts']), ...list('src/components', ['.tsx'])];
+const list = (dir, ext) => fs.readdirSync(path.join(root, dir), { recursive: true }).filter((f) => ext.some((e) => f.endsWith(e))).map((f) => path.join(root, dir, f));
+const files = [path.join(root, 'src/data/site.ts'), ...list('src/components', ['.tsx']), ...list('src/app', ['.tsx'])];
 const chars = new Set();
 for (let c = 0x20; c < 0x7f; c++) chars.add(String.fromCharCode(c));
 for (const c of '’‘“”…×·−≤≥√∞∑∈∉⊂ℓℤℝℕΛλΘθνωεχαβγδμπσΠΣΔΩφψ‖⌊⌋⌈⌉₀₁₂₃₄₅₆₇₈₉₊⁰¹²³⁴⁵⁶⁷⁸⁹ᵈᵐⁿ⋯∗→←↗□■') chars.add(c);

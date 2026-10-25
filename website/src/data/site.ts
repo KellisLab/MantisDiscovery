@@ -1,41 +1,56 @@
 // All visible content lives here.
 //
-// Sources: the 15 Zenodo records the owner listed (metadata via the Zenodo API, abstracts transcribed
-// from the PDFs on 21 Oct 2026). "25+ researchers, including olympiad medalists" is the owner's own
-// description; the group also includes PhD students, so the copy never calls it a student group (22 Oct).
+// Sources: the four papers the site shows, the strongest of the 15 the lab has on Zenodo: two in
+// mathematics, one in physics and one in machine learning (owner's call, 25 Oct), picked so the site
+// stands on a few results that hold up rather than a long list. Metadata via the Zenodo API, abstracts
+// transcribed from the PDFs on 21 Oct 2026. "25+ researchers, including olympiad medalists" is the
+// owner's own description; the group also includes PhD students, so the copy never calls it a student
+// group (22 Oct).
 //
-// Assumptions and placeholders (each marked `placeholder` below):
+// Notes:
 // - The team (team, below) is the owner's list plus everyone who answered the lab's sign-up form; bios
 //   come only from each person's research answer.
-// - The owner says the lab produced 20+ papers; only the 15 linked records are listed here.
-// - Record 23484622 currently serves the PDF of record 23484607 (identical file), so its page shows
-//   title and DOI only. Fill `abstract`, `shows` and `limits` once the record is corrected.
-// - None of the 15 papers is in biology. The mission names biology because the lab works there;
-//   the archive only shows fields that have papers.
 // - Discovery uses the Mantis mark, faces and palette (mantis.csail.mit.edu). The owner confirmed the
 //   MIT CSAIL affiliation; "part of Mantis" in the footer is the remaining wording to confirm.
 //
 // Markup in strings: ^{…} is a superscript, _{…} a subscript (rendered by <Tex>).
 
+import timing from './figure-timing.json';
+
 /** A file from public/, under the path the site is served from (/MantisDiscovery on GitHub Pages). */
 export const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}${path}`;
 
-export type Field = 'mathematics' | 'machine-learning' | 'physics' | 'computer-science';
+export type Field = 'mathematics' | 'physics' | 'machine-learning';
 
-export const fields: { id: Field; label: string }[] = [
+const fields: { id: Field; label: string }[] = [
   { id: 'mathematics', label: 'Mathematics' },
-  { id: 'machine-learning', label: 'Machine learning' },
   { id: 'physics', label: 'Physics' },
-  { id: 'computer-science', label: 'Computer science' },
+  { id: 'machine-learning', label: 'Machine learning' },
 ];
 
-export type PlateId =
-  | 'sidon' | 'gk-stationary' | 'gk-boundary' | 'opaque' | 'matching' | 'repetition' | 'log-sobolev'
-  | 'permanents' | 'certified' | 'clique' | 'ascent' | 'coresets' | 'elliptic' | 'gibbs' | 'calibration'
-  | 'void';
+/**
+ * One animated figure per paper, plus 'void': the 404's unit square with no barrier. Each is a short 3D
+ * film made with Kinetograph (graphics/, rendered to public/media/figures). It plays in beats, and the
+ * site sets one caption per beat under it, timed by figure-timing.json, which the render writes.
+ */
+export type FigureId = 'opaque' | 'clique' | 'gyro' | 'elliptic' | 'void';
+export type Figure = {
+  id: FigureId;
+  /** What the whole film shows, for screen readers. */
+  alt: string;
+  /** One plain sentence per beat, in order. ^{…} and _{…} markup as elsewhere. */
+  beats: string[];
+};
+export type FigureMedia = Figure & { src: string; poster: string; duration: number; starts: number[]; posterAt: number };
+export const figureMedia = (f: Figure): FigureMedia => {
+  const t = timing[f.id];
+  if (t.beats.length !== f.beats.length) throw new Error(`figure ${f.id}: ${f.beats.length} captions for ${t.beats.length} beats`);
+  return { ...f, src: asset(`/media/figures/${f.id}.mp4`), poster: asset(`/media/figures/${f.id}.webp`), duration: t.duration, starts: t.beats, posterAt: t.poster };
+};
 
 export type Paper = {
   slug: string;
+  tag: string; // two or three words, for tight spots such as the footer
   record: number;
   doi: string;
   title: string;
@@ -50,21 +65,22 @@ export type Paper = {
   shows: string[]; // what the paper establishes (theorem voice, inked)
   limits: string[]; // what it does not claim (draft voice)
   abstract: string[] | null;
-  plate: PlateId;
-  figure: string; // what the computed figure draws and checks (alt text)
-  placeholder?: boolean;
+  figure: Figure;
+  /** The paper's own space in Mantis: how many records it holds, what the work used, and a real still. */
+  mantis: { records: number; uses: Tech[]; still: Still };
+  /** Set on the paper whose result the Method page follows from first question to publication. */
+  story?: { href: string; label: string };
 };
 
 export const site = {
   name: 'Mantis Discovery',
-  role: 'Open problems, taken on with AI',
+  role: 'Research initiative at MIT CSAIL',
   // Where the site is published (canonical URLs, Open Graph, sitemap): the deploy workflow passes the
   // GitHub Pages address, or a custom domain once one is set up.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kellislab.github.io/MantisDiscovery',
   description:
-    'Mantis Discovery is a research group at MIT CSAIL using AI and the Mantis platform on open problems in mathematics, machine learning, physics and biology.',
+    'Mantis Discovery is a research group at MIT CSAIL. We use AI and the Mantis platform to work on open problems in mathematics, machine learning, physics and biology.',
   email: 'pranavak@mit.edu',
-  zenodo: 'https://zenodo.org/search?q=metadata.creators.person_or_org.name%3A%22Mantis%20Discovery%22',
   license: 'CC BY 4.0',
 };
 
@@ -82,26 +98,25 @@ export const nav = [
 
 export const home = {
   eyebrow: 'Research initiative',
-  title: 'Open problems, taken on with AI.',
-  lede:
-    'We work in mathematics, machine learning, physics and biology. AI is involved throughout the research, from reading the literature to running experiments, with the brightest young minds guiding every step of the way.',
+  title: 'Mantis Discovery',
+  lede: 'We work in mathematics, machine learning, physics and biology. We do our research in Mantis, a knowledge platform built at MIT CSAIL.',
   actions: [
     { href: '/research/', label: 'Read the papers' },
-    { href: '/method/', label: 'How we work with AI' },
+    { href: '/method/', label: 'How we work' },
   ],
-  statementTitle: 'Built on Mantis',
+  statementTitle: 'Mantis',
   statement:
-    'Mantis, the knowledge platform from MIT CSAIL, maps papers, data and code into one space that people and AI agents work in together. We use it on open problems in mathematics, physics, machine learning and biology. Agents read the literature, suggest next steps and run computations, and every claim stays linked to the sources and results behind it, so anyone can trace a finding back to where it came from.',
+    'Mantis puts the papers, code and data behind a project into one shared space, where AI agents work with our researchers. The agents search the literature and run computations. The researchers check what the agents produce and choose which ideas to pursue.',
   archiveTitle: 'Research',
-  archiveLede: 'Fifteen papers so far, all free to read on Zenodo.',
-  labTitle: 'Worked on by the brightest young minds',
-  labText: 'Our researchers range from olympiad medalists to PhD students.',
+  archiveLede: 'We have published four papers so far, and all of them are free to read on Zenodo.',
+  labTitle: 'The lab',
+  labText: 'Our researchers include olympiad medalists and PhD students.',
   medalists: 'Researchers, including medalists from',
   labAction: { href: '/lab/', label: 'Meet the lab' },
 };
 
 export const film = {
-  title: 'A walkthrough',
+  title: 'Walkthrough',
   // Structured data only: the page shows the title alone.
   name: 'A walkthrough of Mantis Discovery',
   description: 'A 75-second walkthrough of two Mantis Discovery papers in the Mantis workspace.',
@@ -114,74 +129,123 @@ export const film = {
   date: '2026-10-06',
 };
 
-// The Mantis demo beside "Built on Mantis", from mantis.csail.mit.edu (agent-inspector).
+// The Mantis demo in the home page's Mantis section, from mantis.csail.mit.edu (agent-inspector).
 export const mantisDemo = {
   src: asset('/media/mantis-agent-inspector.mp4'),
   poster: asset('/media/mantis-agent-inspector.jpg'),
   label: 'A Mantis workspace: an agent at work on a map of course topics, with its narrator, tree and inspector panels.',
 };
 
-export const method = {
-  title: 'How a result gets made',
-  lede:
-    'Researchers run every project. AI helps at each stage below, but the decisions stay with people, including what to work on and whether a result holds up.',
-  stages: [
+// How the lab works: the parts of Mantis every project relies on. Each still is a real capture of the
+// lab's own spaces in Mantis (the recordings behind the film, Oct 2026), cropped below the app's menu bar.
+export type Tech = 'map' | 'trace' | 'audit' | 'certificate';
+export type Still = { src: string; w: number; h: number; alt: string; caption: string };
+const still = (name: string, alt: string, caption: string): Still => ({ src: asset(`/media/mantis/${name}.webp`), w: 1600, h: 852, alt, caption });
+
+export const approach: { title: string; lede: string; techs: { id: Tech; name: string; text: string; benefit: string; still: Still }[] } = {
+  title: 'Our approach',
+  lede: 'Each project has its own space in Mantis. Everything we write or compute for a project is saved there as a record, which we can search and cite later.',
+  techs: [
     {
-      id: 'review',
-      name: 'Review',
-      ai: 'Reads what has been published on the problem and summarizes what is proved, what is conjectured and where the best bounds stand.',
-      people: 'Pick the area and the kind of problem, and correct anything the AI got wrong about the literature.',
+      id: 'map',
+      name: 'Geometric reasoning',
+      text: 'Mantis represents each record as a point in a space with thousands of dimensions and draws the points as a map, so records that say similar things sit close together. We search the map and outline regions of it to compare the records inside.',
+      benefit: 'We can see a project’s whole history at once. Related attempts end up near each other, so it is easy to notice when an idea has been tried before.',
+      still: still('map-opaque', 'The opaque sets space in Mantis: hundreds of points grouped into labeled clusters, among them Certificate verification checks and Failed SMT dust claim withdrawals.', 'The opaque sets space holds 1,433 records, grouped into named clusters.'),
     },
     {
-      id: 'question',
-      name: 'Question',
-      ai: 'Suggests open questions that look tractable, and says why an answer would matter.',
-      people: 'Choose the question, and write down what may be assumed and what would count as an answer.',
+      id: 'trace',
+      name: 'Traceability',
+      text: 'Failed attempts stay in the project along with the fixes that followed them. Each record points to the file and lines it came from and stores a hash of that source, and it carries a status such as withdrawn or independently verified.',
+      benefit: 'Anyone can follow how we reached a result, including the approaches that did not work.',
+      still: still('trace-hadwiger-draft', 'A record in Mantis: the theorem from an earlier draft of the Hadwiger paper, with its source file, lines 66 to 71, and its status as a historical manuscript assertion.', 'This record holds a theorem from an early draft of the Hadwiger paper, kept as history, and points to lines 66 to 71 of its source.'),
     },
     {
-      id: 'attempt',
-      name: 'Attempt',
-      ai: 'Works on proofs and constructions, or designs an experiment, writes the code and runs it.',
-      people: 'Step in when an approach stalls, and decide when to change direction.',
+      id: 'audit',
+      name: 'Audits',
+      text: 'Before a claim goes into a paper, we check it against the records behind it. For our Hadwiger paper, an audit found that an early draft used an inequality in the wrong direction. Later rewrites brought the claimed gap down from eight to two, and the flawed draft is still in the project.',
+      benefit: 'Mistakes can be caught before a paper is published, and each correction is filed next to the mistake it fixed.',
+      still: still('audit-hadwiger', 'A record from the research audit in Mantis: a table of original claims, the decision on each and the reason for it.', 'This record comes from the audit of the same paper. It lists each original claim with the decision made about it and the reason.'),
     },
     {
-      id: 'analyze',
-      name: 'Analyze',
-      ai: 'Goes back over the results looking for the weakest step, and tests the claim at its edges.',
-      people: 'Read the argument line by line, the way a referee would.',
-    },
-    {
-      id: 'check',
-      name: 'Check',
-      ai: 'Turns finite case checks into exact computations, and reruns experiments with the reported settings.',
-      people: 'Sign off only on what someone outside the lab could verify, and write the limits into the abstract.',
+      id: 'certificate',
+      name: 'Certificates',
+      text: 'Some proofs come down to a long but finite list of cases. For those, a program checks every case and saves the result as a certificate, and we test the checker on a deliberately broken input to make sure it fails.',
+      benefit: 'Readers can run the check themselves.',
+      still: still('certificate-hadwiger', 'A certificate record for the Hadwiger paper in Mantis: branches 20 and 44 touch through an edge, the check passed, and the record is marked independently verified.', 'The certificate atlas for the Hadwiger paper checks 1,540 pairs and keeps a record for each one.'),
     },
   ],
-  standardsTitle: 'What counts as a result',
-  standards: [
+};
+export const techName = (t: Tech) => approach.techs.find((x) => x.id === t)!.name;
+export const approachLink = { href: '/method/', label: 'More on how we work' };
+
+// The Method page, written as a lab's methods page: plain sections, and one worked example with figures.
+// The example is the Higman-Sims bound in the clique minors paper; every record it cites is in that paper's
+// Mantis archive (map "Complete paper and research archive", 17,680 records) and appears in the walkthrough
+// film (rec/s_chain2 in the film's project, Oct 2026). The certificate facts come from the certificate files
+// (hs_certificate_extracted.json, controlled_failure_diagnostic.json).
+// Markup in paragraphs: [text](href) is a link, ^{…} and _{…} as elsewhere.
+export type MethodFigure =
+  | { kind: 'records'; id: string; panels: { still: Still; label: string }[]; caption: string }
+  | { kind: 'film'; id: string; slug: string; caption: string };
+export type MethodSection = { id: string; title: string; body: (string | MethodFigure)[] };
+
+const record = (name: string, alt: string): Still => ({ src: asset(`/media/mantis/${name}.webp`), w: 1600, h: 852, alt, caption: '' });
+
+export const method: { title: string; lede: string; sections: MethodSection[] } = {
+  title: 'How we work',
+  lede: 'Our researchers work with AI agents in Mantis, a knowledge platform built at MIT CSAIL. Before we publish a result, we check it against the record of how it was reached.',
+  sections: [
     {
-      name: 'Proofs that hold up',
-      text: 'A math claim needs a complete proof. When a proof comes down to finitely many cases, we check every case exactly, by computer.',
-      quote: 'Exact arithmetic verifies the algebraic inequalities for all 105 six-leaf topologies and all 45 five/four-leaf pairs.',
-      slug: 'opaque-sets-reach-bounds',
+      id: 'projects',
+      title: 'Running a project',
+      body: [
+        'Each project is a problem that one of our researchers has chosen to work on. AI agents propose far more questions than we take up, and we start on one only when someone thinks it is worth several weeks of work. Before the work begins, we write down what would count as an answer and which assumptions and methods are allowed.',
+        'The work happens in the project’s own space in [Mantis](https://mantis.csail.mit.edu/). Agents there search the literature and the project’s earlier attempts. They also write and run code and draft arguments, which the researchers read and revise. Everything is saved as a record that points to the file and lines it came from, so any claim can be traced back to its source.',
+      ],
     },
     {
-      name: 'Experiments that replicate',
-      text: 'An experimental result has to survive the tests people in that field would run, and the paper has to say how it was tested.',
-      quote: 'Exhaustive evaluation of 25 small trained networks separates approximation bias, sampling variance, and omissions from a shortlist.',
-      slug: 'mixed-precision-calibration-limits',
+      id: 'checking',
+      title: 'Checking results',
+      body: [
+        'Before a claim goes into a paper, someone who did not write the argument reads it in full, and an audit compares the claim with the records behind it. When the audit finds a mistake, the draft is corrected and the record of the mistake stays in the space.',
+        'When a proof comes down to a finite set of cases, a program checks every case and saves its output as a certificate. Each certificate has a negative control, an altered input that the checker has to reject. Our [opaque sets paper](/research/opaque-sets-reach-bounds/), for example, checks its inequalities in exact arithmetic for all 105 six-leaf topologies and all 45 five/four-leaf pairs.',
+        'Every abstract says what the result does not cover. The [gyrokinetics paper](/research/zonal-gyrokinetic-stationary-response/) reports that ordinary orbit averaging changes the stationary field by 23.2%, and states that the figure is stable under its grid refinements but is not a certified continuum value.',
+      ],
     },
     {
-      name: 'Limits written down',
-      text: 'Every abstract says what the result doesn’t cover.',
-      quote: 'These conclusions concern the displayed linear realizations and the full distribution norm.',
-      slug: 'gyrokinetic-boundary-spectra',
+      id: 'example',
+      title: 'An example',
+      body: [
+        'Our [clique minors paper](/research/clique-minors-independence-two/) proves bounds for H, the complement of the Higman-Sims graph. The project notes list six open questions about H. The first asks whether had(G) ≥ χ(G) for every inflation G of H, and the paper grew out of it (Figure 1a).',
+        'An early draft claimed had(H[S]) ≥ χ(H[S]) − 8 for every induced subgraph H[S] (Figure 1b). The audit of that draft found that the proof used χ(G) ≥ ⌈n/2⌉, which holds for graphs with α(G) ≤ 2, as if it were an upper bound on χ(G) (Figure 1c).',
+        'The argument was rebuilt. The first rewrite gave an explicit K_{56} model in H and proved had(H[S]) ≥ χ(H[S]) − 6. A later revision replaced its separation argument with a construction that works for every graph with independence number at most two, which improves the bound to χ(H[S]) − 2. That is the version in the published paper (Figure 1d).',
+        {
+          kind: 'records',
+          id: 'figure-1',
+          panels: [
+            { label: 'a', still: record('method-question', 'A record in the paper’s Mantis space: six open questions from the project notes, lines 15 to 20.') },
+            { label: 'b', still: record('method-draft', 'A record in the paper’s Mantis space: the early draft’s theorem, lines 66 to 71, marked as a historical manuscript assertion.') },
+            { label: 'c', still: record('method-audit', 'A record in the paper’s Mantis space: the audit’s finding, lines 68 and 69 of the research decisions.') },
+            { label: 'd', still: record('method-revision', 'A record in the paper’s Mantis space: the revision that replaces the χ − 6 bound with χ − 2.') },
+          ],
+          caption: 'Records from the paper’s space in Mantis. (a) The open questions in the project notes, UNRESOLVED_QUESTIONS.md, lines 15-20. (b) The early draft’s theorem, paperG_hadwiger_minus8.tex, lines 66-71. (c) The audit’s finding, RESEARCH_DECISIONS.md, lines 68-69. (d) The revision that gives χ − 2, LITERATURE_AND_REVISION_REVIEW.md, line 107.',
+        },
+        'The K_{56} model is part of the paper, and a program checks it. It tests all 1,540 pairs of branch sets for an edge of H between them, using two checkers that do the arithmetic in different ways. As a negative control, swapping vertices 1 and 4 between two branch sets makes the check fail at the pair (0, 23) (Figure 2). The early draft and the audit are still in the project’s space, next to the records that replaced them.',
+        {
+          kind: 'film',
+          id: 'figure-2',
+          slug: 'clique-minors-independence-two',
+          caption: 'The check of the K_{56} model, drawn from the certificate files: the 100 vertices of H grouped into 56 branch sets, the 1,540 pairs tested in the checker’s order, and the negative control. The placement of the vertices is schematic.',
+        },
+      ],
     },
     {
-      name: 'Everything public',
-      text: 'Every paper is on Zenodo with a DOI, under CC BY 4.0. Anyone can read it, cite it or build on it.',
-      quote: 'A chess implementation using the existing paired grids stores 26 complete pawnless classes in 7,585,632 bytes. All files pass endpoint certification.',
-      slug: 'certified-compression-game-tables',
+      id: 'publishing',
+      title: 'Publishing',
+      body: [
+        'We publish on Zenodo, where every paper has a DOI and is released under CC BY 4.0. Each paper’s page on this site links to the PDF and the Zenodo record and lists what the paper shows and what it does not claim. The page also shows the paper’s space in Mantis.',
+      ],
     },
   ],
 };
@@ -189,15 +253,10 @@ export const method = {
 export const lab = {
   title: 'About the lab',
   lede:
-    'Mantis Discovery is a research group within Mantis, at MIT CSAIL. We use AI throughout our research, and we hold what comes out of it to the same standard as any other paper in the field.',
+    'Mantis Discovery is a research group within Mantis, at MIT CSAIL. We use AI throughout our research and publish our results as papers on Zenodo.',
   researchers: '25+',
-  researchersText: 'Researchers in mathematics, machine learning, physics and biology, including PhD students and olympiad medalists.',
-  work: [
-    { name: 'Picking problems', text: 'Most of what the AI suggests, we don’t pursue. A researcher has to think a question is worth weeks of work before it starts.' },
-    { name: 'Setting ground rules', text: 'Before a project starts we write down what can be assumed, which methods are off the table, and what would count as an answer.' },
-    { name: 'Checking the work', text: 'Every claim is read by someone who didn’t write it, and the paper has to say plainly where the result stops.' },
-  ],
-  joinTitle: 'Get in touch',
+  researchersText: 'Researchers in mathematics, machine learning, physics and biology work with us. They include PhD students and olympiad medalists.',
+  joinTitle: 'Joining the lab',
   joinText:
     'If you’re a student who wants to do serious research with AI, or a researcher who’d like to try this in your own field, write to us and tell us what you work on.',
   joinAction: 'Write to us',
@@ -217,12 +276,13 @@ export const olympiads = [
 // The team, listed on the Lab page. Leads first; everyone else alphabetically by first name. Bios are
 // short paraphrases of what each person wrote about their own research on the lab's application form
 // (22 Oct); people without one have not sent theirs yet.
-export type Member = { name: string; bio?: string };
+/** `role` is a lead's title, shown under the name; `bio` opens on hover or focus. */
+export type Member = { name: string; role?: string; bio?: string };
 export const team: { leads: Member[]; members: Member[] } = {
   leads: [
-    { name: 'Pranava Kumar', bio: 'Co-leads Mantis Discovery.' },
-    { name: 'Shrikrishna Ramesh', bio: 'Co-leads Mantis Discovery.' },
-    { name: 'Sushaan Kandukoori', bio: 'Co-leads Mantis Discovery, building AI that helps run research in mathematics, machine learning, physics and biology.' },
+    { name: 'Pranava Kumar', role: 'Founder and lead' },
+    { name: 'Shrikrishna Ramesh', role: 'Director of biology and physics' },
+    { name: 'Sushaan Kandukoori', role: 'Director of mathematics and machine learning', bio: 'Builds the AI that helps run the lab’s research in mathematics and machine learning.' },
   ],
   members: [
     { name: 'Abhay Varun Chittim Madhusudan', bio: 'Quantum robotics research assistant at Portland State University, using quantum fuzzy logic for balance and decisions in legged robots. Also programs autonomous robots for FIRST Tech Challenge.' },
@@ -254,10 +314,10 @@ export const team: { leads: Member[]; members: Member[] } = {
 };
 
 export const notFound = {
-  title: 'Open problem',
-  text: 'There’s no page at this address. This square has no barrier, so every line goes straight through it.',
+  title: 'Page not found',
+  text: 'There’s no page at this address.',
   actions: [
-    { href: '/', label: 'Back to the start' },
+    { href: '/', label: 'Home' },
     { href: '/research/', label: 'Read the papers' },
   ],
 };
@@ -269,94 +329,8 @@ export const doiUrl = (p: Paper) => `https://doi.org/${p.doi}`;
 
 export const papers: Paper[] = [
   {
-    slug: 'sidon-subsets-rounding-morphism',
-    short: 'Sidon subsets and codes with separated pair-sums',
-    record: 23484825,
-    doi: '10.5281/zenodo.23484825',
-    title: 'A rounding morphism for additive structure: Sidon subsets and codes with separated pair-sums',
-    field: 'mathematics',
-    area: 'Additive combinatorics',
-    published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'Sidon_Mantis_Discovery.pdf', bytes: 271509, pages: 21 }],
-    summary:
-      'Every N-point set in a torsion-free abelian group has a Sidon subset of size at least (2/(3√3) − o(1))√N, twice the previous best constant.',
-    shows: [
-      'Every N-point subset A of a torsion-free abelian group has a Sidon subset of size at least (2/(3√3) − o(1))√N, uniformly in the group and in ℝ^{d}.',
-      'Rounding A into ℤ_{m} at random is additive on every additive quadruple up to a defect of at most one bucket, in every dimension and every draw.',
-      'A code tolerating perturbations of magnitude t satisfies (t + 1)(k(k − 1) + 1) ≤ m, with equality exactly at translated (t + 1)-fold dilates of planar difference sets.',
-    ],
-    limits: [
-      'Using only |A| and the collision law, no argument of this kind passes 2/(3√3), even with a measurable Sidon system in place of the code.',
-    ],
-    abstract: [
-      'For finite A in a torsion-free abelian group let ‖A‖ be the largest size of a Sidon subset of A, and ℓ(N) = min{‖A‖ : |A| = N}. We prove ℓ(N) ≥ (2/(3√3) − o(1))√N, twice Bailleul and Riblet’s constant. Rounding A into ℤ_{m} at random is additive on every additive quadruple up to a defect of at most one bucket, in every dimension and every draw; in one dimension, with random scale, the pairwise collision probability is exactly 1/m. A code from a planar difference set absorbs the defect, avoiding the restriction to half of A that earlier arguments pay.',
-      'A code tolerating perturbations of magnitude t satisfies (t + 1)(k(k − 1) + 1) ≤ m, with equality exactly at translated (t + 1)-fold dilates of planar difference sets. This also bounds the method: using only |A| and the collision law, no such argument passes 2/(3√3), even with a measurable Sidon system in place of the code. Plain reduction modulo m has no defect; we weaken its diameter hypothesis to a condition on the image of A modulo m, and bound what a second point per fiber gains.',
-    ],
-    plate: 'sidon',
-    figure:
-      'A planar difference set: six points on a circle of 31 residues, joined by fifteen chords. Every nonzero difference modulo 31 occurs exactly once, which the figure checks as it draws.',
-  },
-  {
-    slug: 'zonal-gyrokinetic-stationary-response',
-    short: 'Stationary response in a zonal gyrokinetic model',
-    record: 23484800,
-    doi: '10.5281/zenodo.23484800',
-    title: 'Stationary response and singular limits in a linear zonal gyrokinetic model',
-    field: 'physics',
-    area: 'Plasma physics',
-    published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'Stationary_Response_Gyrokinetics.pdf', bytes: 439350, pages: 21 }],
-    summary:
-      'The stationary response of a linear periodic gyrokinetic model, derived without assuming uniform kinetic relaxation, and two limits that do not commute.',
-    shows: [
-      'When the quadratic energy is coercive, the energy-orthogonal stationary projection is determined by the field operator D_{0} = C − R∗ΠR.',
-      'Cesàro and Abel means converge strongly, but their operator-norm errors remain one when nonzero frequencies accumulate at zero.',
-      'The long-time and zero-detuning limits do not commute.',
-      'An O(√ε) error bound, in the energy coordinate, for one coercive regularization of constrained initial data.',
-    ],
-    limits: [
-      'The 23.2% change from ordinary orbit averaging is stable under the reported grid refinements and is not a certified continuum value.',
-      'Unrestricted initial data retain fast charge oscillations.',
-    ],
-    abstract: [
-      'We derive the stationary response of a linear periodic gyrokinetic model without assuming uniform kinetic relaxation. When the quadratic energy is coercive, the energy-orthogonal stationary projection is determined by the field operator D_{0} = C − R∗ΠR. Cesàro and Abel means converge strongly, but their operator-norm errors remain one when nonzero frequencies accumulate at zero. Adding the same constant drift detuning to every species removes the stationary space and generates a slow unitary evolution on its former kernel, so the long-time and zero-detuning limits do not commute.',
-      'At vanishing polarization, a homogeneous kinetic-species model instead imposes charge and current constraints. We construct a self-adjoint evolution on the continuous-velocity constraint space and prove an O(√ε) error bound, in the energy coordinate, for one coercive regularization of constrained initial data; unrestricted data retain fast charge oscillations. In a specified 25-dimensional orbit discretization with trapped and passing particles, replacing the energy projection by ordinary orbit averaging changes the stationary field by 23.2%. The projection and singular-limit results are analytical; the percentage is stable under the reported grid refinements and is not a certified continuum value.',
-    ],
-    plate: 'gk-stationary',
-    figure:
-      'A poloidal cross-section of a torus: nested flux surfaces, passing orbits that circle all the way round, and trapped banana orbits that bounce on the outboard side. Guiding centers move along each orbit while the trapped fraction at the outboard midplane is sampled live against the exact √(2ε/(1 + ε)) = 67.9% for ε = 0.3.',
-  },
-  {
-    slug: 'gyrokinetic-boundary-spectra',
-    short: 'Boundary spectra in electrostatic gyrokinetics',
-    record: 23484782,
-    doi: '10.5281/zenodo.23484782',
-    title: 'Boundary spectra and weak collisional relaxation in an electrostatic gyrokinetic model',
-    field: 'physics',
-    area: 'Plasma physics',
-    published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'Boundary_Spectra_Gyrokinetics.pdf', bytes: 485037, pages: 24 }],
-    summary:
-      'Slow particles keep unresolved states from decaying uniformly in a linear electrostatic gyrokinetic model, and quasineutral coupling does not remove that.',
-    shows: [
-      'Quasineutral coupling does not remove the obstruction created by slow particles when the quadratic energy operator is coercive.',
-      'The undriven spectrum is the closed left half-plane for zero inflow and the imaginary axis for periodic boundaries.',
-      'For a Maxwellian velocity diffusion and a one-species linearized Coulomb model, differentiated wave packets give residuals bounded by C(ν^{1/3} + ν^{1/5}|ω|^{2/5}) at bounded frequencies.',
-    ],
-    limits: [
-      'The conclusions concern the displayed linear realizations and the full distribution norm.',
-      'Concentration near the passing boundary is shown under a stated nondegeneracy condition.',
-    ],
-    abstract: [
-      'Can collisionless transport or weak collisions make unresolved states decay uniformly in a linear electrostatic gyrokinetic model? We show that quasineutral coupling does not remove the obstruction created by slow particles when the quadratic energy operator is coercive. Infinite-dimensional subspaces have uniformly vanishing field response, and the undriven spectrum is the closed left half-plane for zero inflow and the imaginary axis for periodic boundaries.',
-      'Under a stated nondegeneracy condition on coupling to the remaining velocity region, asymptotically passing approximate eigenvectors on the imaginary axis have vanishing field and concentrate near the passing boundary. For a Maxwellian velocity diffusion and a one-species linearized Coulomb model, differentiated wave packets give residuals bounded by C(ν^{1/3} + ν^{1/5}|ω|^{2/5}) at bounded frequencies. If one species also has the required low-energy drift parity and an even gyroaverage, field feedback and any fixed number of bounded scalar observations cannot yield a positive decay rate uniform in ν with a fixed semigroup bound. These conclusions concern the displayed linear realizations and the full distribution norm.',
-    ],
-    plate: 'gk-boundary',
-    figure:
-      'The complex plane: the closed left half-plane hatched as the undriven spectrum for zero inflow, the imaginary axis (the spectrum for periodic boundaries) in ink, and approximate eigenvalues on it with residual discs of radius ν^{1/3} + ν^{1/5}|ω|^{2/5} (constant taken as 1), computed live as the collision rate ν falls.',
-  },
-  {
     slug: 'opaque-sets-reach-bounds',
+    tag: 'Opaque sets',
     short: 'Sharp reach bounds for opaque sets',
     record: 23484629,
     doi: '10.5281/zenodo.23484629',
@@ -366,155 +340,37 @@ export const papers: Paper[] = [
     published: '2026-10-19',
     files: [{ label: 'Paper', name: 'Opaque_Sets.pdf', bytes: 438502, pages: 15 }],
     summary:
-      'Two sharp inequalities for barriers that block every line through the unit square, and the structure any barrier shorter than √2 + √6/2 must have.',
+      'We prove two sharp inequalities for barriers that block every line through the unit square, and show what any barrier shorter than √2 + √6/2 must look like.',
     shows: [
       'A set containing two adjacent corners of the unit square has length, plus its convex-hull distances to the other corners, at least Λ = √2 + √6/2.',
       'The bounds extend to finite chains of component hulls and apply to every closed opaque set of finite length, whatever its number of components or location.',
       'Any barrier shorter than Λ has either four distinct corner components, or one component through an adjacent pair and two more, one through each remaining corner.',
       'Exact arithmetic verifies the algebraic inequalities for all 105 six-leaf topologies and all 45 five/four-leaf pairs.',
     ],
-    limits: ['Still open: the remaining configurations, and the unrestricted lower bound for the square itself.'],
+    limits: ['The remaining configurations are still open, and so is the unrestricted lower bound for the square itself.'],
     abstract: [
       'Let Q be the unit square and put Λ = √2 + √6/2. We prove two sharp inequalities for finite-length continua in the plane. A set containing two adjacent corners has length, plus its convex-hull distances to the other corners, at least Λ. A corresponding inequality holds for two sets whose hulls meet and which together contain three corners. These bounds extend to finite chains of component hulls, with coefficient one on the total distance between consecutive hulls.',
       'The argument also allows missing projection intervals and applies to every closed opaque set of finite length, regardless of its number of components or its location. After the corners are adjoined, any such barrier shorter than Λ has either four distinct corner components or one component containing an adjacent pair and two further components, one through each remaining corner. In the latter case, we obtain positive lower bounds on the path distances between the three hulls. A tree replacement argument rules out some configurations in the former case. Exact arithmetic verifies the algebraic inequalities for all 105 six-leaf topologies and all 45 five/four-leaf pairs. The other configurations, and the unrestricted lower bound for the square, remain open.',
     ],
-    plate: 'opaque',
-    figure:
-      'The unit square with the shortest known opaque barrier: a Steiner tree joining three corners plus a segment from the fourth corner to the center, total length √2 + √6/2 = 2.6389. Random lines through the square are tested against the barrier as they are drawn.',
-  },
-  {
-    slug: 'matching-cofactor-inertia',
-    record: 23484622,
-    doi: '10.5281/zenodo.23484622',
-    title: 'The inertia of matching cofactor matrices',
-    field: 'mathematics',
-    area: 'Algebraic combinatorics',
-    published: '2026-10-19',
-    files: [],
-    summary: 'A Mantis Discovery paper on matching cofactor matrices, open on Zenodo under CC BY 4.0.',
-    shows: [],
-    limits: [],
-    abstract: null,
-    plate: 'matching',
-    figure:
-      'The three-dimensional cube graph with its perfect matchings drawn one at a time. The figure enumerates them live and finds nine.',
-    placeholder: true,
-  },
-  {
-    slug: 'repetition-under-a-deadline',
-    short: 'Repetition under a deadline',
-    record: 23484607,
-    doi: '10.5281/zenodo.23484607',
-    title: 'Repetition under a deadline: memory bounds and capacity profiles',
-    field: 'computer-science',
-    area: 'Games and algorithms',
-    published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'repitition_deadline.pdf', bytes: 303951, pages: 17 }],
-    summary:
-      'How much history exact value monitoring needs when repetition claims and expiring budgets interact on a game graph, with matching memory bounds.',
-    shows: [
-      'Exact online value monitoring needs no history memory when H ≤ 2k − 2. Otherwise it requires Θ(min{N log k, log (N + S choose S)}) bits, with S = (H − 2k + 2)_{+}, except when k = 2 and H ∈ {3, 4}, which need exactly one bit.',
-      'Randomization with fixed error below 1/2 does not improve the dense Θ(N log k) bound.',
-      'All capacity profiles together have at most N breakpoint capacities and N(N + 1)/2 finite constant runs, and the quadratic order is sharp.',
-    ],
-    limits: ['The memory bounds are stated for arenas with N ≥ 8 vertices.'],
-    abstract: [
-      'We study alternating graph games with optional repetition claims, expiring budgets, and no reset on a directed cycle. A supplied history reduces to a fixed draw boundary in the current strongly connected component and a bit for a current claim. The clock game has positional policies on the arena that are optimal at every entering reserve.',
-      'For N ≥ 8 vertices, capacity H, and repetition threshold k, put S = (H − 2k + 2)_{+}. Exact online value monitoring needs no history memory when H ≤ 2k − 2. Otherwise it requires Θ(min{N log k, log (N + S choose S)}) bits, except when k = 2 and H ∈ {3, 4}, which require exactly one bit. The upper bound discards counts that cannot reach the threshold before expiration; common continuations distinguish equal-length live histories for the lower bound. Randomization with fixed error below 1/2 does not improve the dense Θ(N log k) bound.',
-      'For clock games with positive integer costs and arbitrary reset cycles, all capacity profiles together have at most N breakpoint capacities and N(N + 1)/2 finite constant runs. The quadratic order is sharp. At most N + 1 distance computations per player construct all profiles; without reset cycles, a second algorithm processes rank changes directly. The history results extend to infinite arenas with a well-founded potential for resets and arbitrary branching.',
-    ],
-    plate: 'repetition',
-    figure:
-      'A game arena of eight positions on a directed cycle, owners alternating, where a square may also step back. A token walks it against an expiring reserve and each visit is tallied; every live history is searched for a threefold repetition, and the paper’s memory bound is evaluated for the current capacity.',
-  },
-  {
-    slug: 'logarithmic-sobolev-stability',
-    short: 'Critical logarithmic Sobolev stability',
-    record: 23484591,
-    doi: '10.5281/zenodo.23484591',
-    title: 'Critical logarithmic Sobolev stability: moment bounds and heat flow',
-    field: 'mathematics',
-    area: 'Analysis and probability',
-    published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'Critical_Stability_Refined.pdf', bytes: 464293, pages: 19 }],
-    summary:
-      'Sharp bounds on the first variation of the Gaussian logarithmic Sobolev deficit, and how integrating it along heat flow restores dimension-free stability.',
-    shows: [
-      'At prescribed Fisher information and a second-moment cap, the infimum of the squared norm of the first variation of the deficit, and every case where it is attained.',
-      'Its integral along the Ornstein-Uhlenbeck flow controls Wasserstein distance, Fisher information and the deficit with sharp constants, with no covariance or Poincaré assumption.',
-      'Every centered isotropic Gaussian gives equality, and the flow estimates extend to closed weighted manifolds with positive weighted Ricci curvature.',
-    ],
-    limits: [
-      'The instantaneous norm gives no dimension-free transport estimate.',
-      'No fixed observation interval suffices, and the normalized escaping components need not be Gaussian.',
-    ],
-    abstract: [
-      'We study the transport first variation of the Gaussian logarithmic Sobolev deficit. At prescribed Fisher information and a second-moment cap, we determine the infimum of its squared norm and all attainment cases. Remainder identities identify the Gaussian limit of every minimizing sequence and its lost second moment. We also characterize the directional moment defects of sequences with vanishing first variation; their normalized escaping components need not be Gaussian.',
-      'Although the instantaneous norm gives no dimension-free transport estimate, its integral along the Ornstein-Uhlenbeck flow controls Wasserstein distance, Fisher information, and the deficit with sharp constants. These estimates require no covariance or Poincaré assumption, and every centered isotropic Gaussian gives equality. No fixed observation interval suffices. Finally, we identify the Wasserstein metric slope at regular densities and extend the flow estimates to closed weighted manifolds with positive weighted Ricci curvature.',
-    ],
-    plate: 'log-sobolev',
-    figure:
-      'A density with a small escaping bump carried by the Ornstein-Uhlenbeck flow toward the standard Gaussian. Earlier times are drawn in pencil, the Gaussian in ink, and the relative Fisher information is computed live along the flow and traced below on a log scale.',
-  },
-  {
-    slug: 'constrained-permanents-galois-groups',
-    short: 'Galois groups of constrained permanents',
-    record: 23484570,
-    doi: '10.5281/zenodo.23484570',
-    title: 'Galois groups and real critical points of constrained permanents',
-    field: 'mathematics',
-    area: 'Real algebraic geometry',
-    published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'Critical_Permanents.pdf', bytes: 385674, pages: 13 }],
-    summary:
-      'The 16 critical points of the 3 × 3 permanent under fixed row and column sums: Galois group S₁₆, and at least four real ones in every nondegenerate fiber.',
-    shows: [
-      'The critical algebra is free of rank sixteen over the marginal parameters, and both its arithmetic and geometric Galois groups are S_{16}.',
-      'Over the reals the gradient has topological degree four, and an explicit family with positive marginals develops an interior local minimum and a saddle at a fold.',
-      'For m constrained three-by-three matrices with quadratic interactions: critical length 16^{m}, and between 4^{m} and 16^{m} real points in every nondegenerate fiber, both bounds attained.',
-    ],
-    limits: [
-      'The critical points studied are affine stationary points: they need not be nonnegative, and they do not include every boundary optimum of the transportation polytope.',
-    ],
-    abstract: [
-      'We study the critical points of the three-by-three permanent under prescribed row and column sums. Their critical algebra is free of rank sixteen over the polynomial ring in the marginal parameters, and both its arithmetic and geometric Galois groups are S_{16}. The proof combines a Fourier normal form, a rational specialization, and a simple branch point at a positive matrix.',
-      'Over the reals, the gradient has topological degree four. An explicit family with positive marginals develops an interior local minimum and a saddle at a fold; below the transition, every minimum on the transportation polytope lies on its boundary. Rational-univariate representations isolate all real and positive critical matrices, including at nonreduced fibers. For m constrained three-by-three matrices with quadratic interactions, the same argument gives critical length 16^{m} and between 4^{m} and 16^{m} real points in every nondegenerate fiber, with both bounds attained.',
-    ],
-    plate: 'permanents',
-    figure:
-      'Newton paths from random starting matrices inside the space of 3 × 3 matrices with fixed row and column sums, seen in one projection over the transportation polytope, converging to real critical points of the permanent. Each point is kept only once its gradient vanishes to twelve digits, and is marked by its Morse index.',
-  },
-  {
-    slug: 'certified-compression-game-tables',
-    record: 23484548,
-    doi: '10.5281/zenodo.23484548',
-    title: 'Certified compression of game-value tables',
-    field: 'computer-science',
-    area: 'Games and verification',
-    published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'Certified_Compression.pdf', bytes: 290240, pages: 17 }],
-    summary:
-      'Certified answers to exact game-value queries from partial tables; on 26 pawnless chess classes, storage 61.64% below the published Syzygy inventory.',
-    shows: [
-      'A sound and complete endpoint certificate for any retained subset of a finite alternating game with irreversible budget resets, even when the omitted region contains cycles.',
-      'For widths at most w, certification takes O((w + log(N + 2))(N + E)) graph operations, or O(w(N + E)) when the omitted region is acyclic.',
-      'A chess implementation stores 26 complete pawnless classes in 7,585,632 bytes, 61.64% below their published Syzygy WDL/DTZ inventory, and every file passes endpoint certification.',
-    ],
-    limits: [
-      'The seven-ply quiet-depth bound does not prevent near-threshold p99 latency of 133 milliseconds.',
-      'The storage savings are not credited to the general checker or the grid optimizer, which were tested separately.',
-    ],
-    abstract: [
-      'Exact game-value queries can be recovered from signed distance intervals stored on only part of an arena. We prove a sound and complete endpoint certificate for any retained subset of a finite alternating game with irreversible budget resets. The omitted region may contain cycles. Two extremal boundary problems recover its sharp componentwise bounds without increasing interval width. For widths at most w, certification takes O((w + log(N + 2))(N + E)) graph operations, or O(w(N + E)) when the omitted region is acyclic.',
-      'Under periodic retention, we characterize the exact worst-case refinement depth and prove a matching checkpoint-density bound. Adjacent checkpoint pairs are asymptotically optimal for one-sided storage. A dynamic program also minimizes additive interval-coding cost subject to a prescribed depth bound.',
-      'A chess implementation using the existing paired grids stores 26 complete pawnless classes in 7,585,632 bytes, 61.64% below their published Syzygy WDL/DTZ inventory. All files pass endpoint certification. The representation preserves all five outcome categories and exact fresh-clock values; its seven-ply quiet-depth bound does not prevent near-threshold p99 latency of 133 milliseconds. The general checker and grid optimizer are tested separately and are not credited with these storage savings.',
-    ],
-    plate: 'certified',
-    figure:
-      'A small game arena laid out as an 8 × 8 board: a token steps left, down or diagonally down-left. Distances are solved by retrograde analysis; checkpoints on a periodic pattern of diagonals keep only a coarse interval, every other square derives one from them, and the verifier certifies each interval at both endpoints as it scans.',
+    figure: {
+      id: 'opaque',
+      alt: 'The unit square as a slab with the classic opaque fence standing on it. Lines cross the square and every one stops at the fence. A set through two corners follows, with its hull and its distances to the other corners adding up to at least √2 + √6/2. Then 150 tiles turn over as the cases are checked, and a number line shows the open gap between 2.00006 and 2.6390.',
+      beats: [
+        'Every line that crosses the square hits this fence. Its length is √2 + √6/2, the shortest known.',
+        'For any set through two adjacent corners, its length plus its hull’s distances to the other two corners is at least √2 + √6/2. The classic fence hits that bound exactly.',
+        'The proof comes down to 150 cases, and a program checks each one in exact arithmetic.',
+        'The shortest possible fence is not known. Its length is between 2.00006 and 2.6390.',
+      ],
+    },
+    mantis: {
+      records: 1433,
+      uses: ['map', 'trace', 'certificate'],
+      still: still('space-opaque', 'The opaque sets space in Mantis, with one record open: a falsified inequality about shortest networks, marked do not retry.', 'The opaque sets space holds 1,433 records. The open one is a falsified inequality, kept with the counterexample that broke it: the equilateral triangle gives 0.7321 < 0.8660.'),
+    },
   },
   {
     slug: 'clique-minors-independence-two',
+    tag: 'Clique minors',
     short: 'Clique minors and fractional clique covers',
     record: 23484533,
     doi: '10.5281/zenodo.23484533',
@@ -524,7 +380,7 @@ export const papers: Paper[] = [
     published: '2026-10-19',
     files: [{ label: 'Paper', name: 'Clique_Minors.pdf', bytes: 313647, pages: 11 }],
     summary:
-      'For graphs with independence number two: clique-minor bounds turned into chromatic bounds without accumulated error, and what that gives for Hadwiger.',
+      'For graphs with independence number two, we turn clique-minor bounds into chromatic bounds without accumulating error, and apply them to Hadwiger’s conjecture.',
     shows: [
       'Every graph G with α(G) ≤ 2 has an odd-order induced subgraph F and an integer b ≥ 0 with χ(G) = b + (|F| + 1)/2 and h(G) ≥ b + h(F).',
       'Fractional clique covering number at most four implies h(G) ≥ χ(G) − 1, and θ_{f}(G) < 31/8 implies Hadwiger’s inequality.',
@@ -535,66 +391,67 @@ export const papers: Paper[] = [
       'For graphs with independence number at most two, we convert bounds on clique minors in terms of order into chromatic bounds without accumulating an error across the join factors of a critical graph. Every such graph G has an odd-order induced subgraph F and an integer b ≥ 0 such that χ(G) = b + (|F| + 1)/2 and h(G) ≥ b + h(F). Consequently, the largest hereditary deficit χ − h equals the largest hereditary deficit ⌈|V|/2⌉ − h. Combining this reduction with the Chudnovsky-Seymour half-order bound gives h(G) ≥ ⌊((2 + 4 min{1/4, 1/T})/3)(χ(G) − 1/2)⌋ when θ_{f}(G) ≤ T.',
       'Thus fractional clique covering number at most four implies h(G) ≥ χ(G) − 1, while θ_{f}(G) < 31/8 implies Hadwiger’s inequality. For each T < 4, any counterexample with θ_{f}(G) ≤ T contains an induced counterexample whose order is bounded in terms of T. Applied to the complement H of the Higman-Sims graph, the method yields h(H[w]) ≥ ⌊(24χ(H[w]) − 12)/25⌋ for every clique inflation and h(H[S]) ≥ χ(H[S]) − 2 for every induced subgraph.',
     ],
-    plate: 'clique',
-    figure:
-      'The complement of the Petersen graph, a graph with independence number two. All 120 vertex triples are checked for independence, then five connected branch sets are inked, pairwise adjacent, forming a K₅ minor.',
+    figure: {
+      id: 'clique',
+      alt: 'One hundred points on a sphere gather into 56 groups. Lines then join every pair of groups, 1,540 in all, until the sphere is full. Last, two vertices trade places and the check stops at the pair (0, 23).',
+      beats: [
+        'The paper’s certificate splits the 100 vertices of H, the complement of the Higman-Sims graph, into 56 connected groups: 12 single vertices and 44 pairs joined by an edge.',
+        'A program checks all 1,540 pairs of groups for an edge between them. Every pair has one, so H has a K_{56} minor.',
+        'As a control we swap vertices 1 and 4 between two groups. The checker then stops at the first pair with no edge, (0, 23).',
+      ],
+    },
+    mantis: {
+      records: 4459,
+      uses: ['map', 'trace', 'audit', 'certificate'],
+      still: still('space-clique', 'The clique minors space in Mantis, searched for the word counterexample: 269 records light up across the map.', 'Searching the clique minors space for “counterexample” lights up 269 records.'),
+    },
+    story: { href: '/method/#example', label: 'How this bound was developed' },
   },
   {
-    slug: 'pattern-avoiding-ascent-sequences',
-    short: 'Growth of pattern-avoiding ascent sequences',
-    record: 23484513,
-    doi: '10.5281/zenodo.23484513',
-    title: 'Repetition graphs and the growth of pattern-avoiding sequences',
-    field: 'mathematics',
-    area: 'Enumerative combinatorics',
+    slug: 'zonal-gyrokinetic-stationary-response',
+    tag: 'Gyrokinetics',
+    short: 'Stationary response in a zonal gyrokinetic model',
+    record: 23484800,
+    doi: '10.5281/zenodo.23484800',
+    title: 'Stationary response and singular limits in a linear zonal gyrokinetic model',
+    field: 'physics',
+    area: 'Plasma physics',
     published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'ascent_seq.pdf', bytes: 423902, pages: 22 }],
+    files: [{ label: 'Paper', name: 'Stationary_Response_Gyrokinetics.pdf', bytes: 439350, pages: 21 }],
     summary:
-      'Ascent sequences avoiding patterns of the form 012⋯(d + u)d grow like n log n − 2n log log n + O(n), and their generating functions are not D-finite.',
+      'We derive the stationary response of a linear periodic gyrokinetic model without assuming uniform kinetic relaxation, and show that two of its limits do not commute.',
     shows: [
-      'For every fixed nonempty family of patterns 012⋯(d + u)d, each using at least three distinct values, log A(n) = n log n − 2n log log n + O(n).',
-      'The ordinary and exponential generating functions are not D-finite, and the exponential one is entire of infinite order.',
-      'Families containing a pattern with fewer than three values have explicit rational ordinary generating functions.',
-    ],
-    limits: ['The linear term of log A(n) is determined here for one family: 0120, 0121 and 0122 avoided together.'],
-    abstract: [
-      'We study ascent sequences avoiding patterns of the form 012⋯(d + u)d. For every fixed nonempty family of these patterns, each using at least three distinct values, the number A(n) of avoiding sequences satisfies log A(n) = n log n − 2n log log n + O(n). The proof associates a graph with consecutive occurrences of equal values. A bound on its chromatic number allows us to reconstruct a sequence from one occurrence of each value and a controlled amount of additional data. Permutation bounds give the upper estimate; appending distinct larger entries to suitable prefixes gives the lower estimate.',
-      'The ordinary and exponential generating functions are not D-finite, and the latter is entire of infinite order. Families containing a pattern with fewer than three values instead have explicit rational ordinary generating functions. We also determine the coefficient of the linear term in log A(n) for simultaneous avoidance of 0120, 0121, and 0122. For weak ascent sequences and inversion sequences, we obtain the corresponding linear terms and concentration estimates for the number of repetitions.',
-    ],
-    plate: 'ascent',
-    figure:
-      'A random ascent sequence avoiding 0120, 0121 and 0122, plotted value against position, with arcs joining consecutive occurrences of equal values (the arcs of the paper’s repetition graph) and the ascent bound as a staircase. Every four-term subsequence is checked for the patterns.',
-  },
-  {
-    slug: 'regression-coresets',
-    short: 'Regression coresets: attainable fits and reuse',
-    record: 23484487,
-    doi: '10.5281/zenodo.23484487',
-    title: 'Regression coresets: attainable fits, conditioning, and reuse',
-    field: 'machine-learning',
-    area: 'Learning theory',
-    published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'Regression_Coresets.pdf', bytes: 363050, pages: 26 }],
-    summary:
-      'What a fixed weighted subset of data preserves in least squares: the fits it can reach, their conditioning, and when it holds along the ridge path.',
-    shows: [
-      'For a prescribed support, the closure of its weighted least-squares solutions is the union of the bounded faces of a hyperplane arrangement; on d + 1 rows it is the convex hull of the d-row interpolants.',
-      'New upper bounds for the scalar minimax risk, including 8/5 ≤ R_{5}(7) ≤ 5/3.',
-      'A weighted subset preserves the entire ridge path exactly when it matches the response cross moment and the action of the covariance on a Krylov subspace.',
+      'When the quadratic energy is coercive, the energy-orthogonal stationary projection is determined by the field operator D_{0} = C − R∗ΠR.',
+      'Cesàro and Abel means converge strongly, but their operator-norm errors remain one when nonzero frequencies accumulate at zero.',
+      'The long-time and zero-detuning limits do not commute.',
+      'One coercive regularization of constrained initial data has an O(√ε) error bound in the energy coordinate.',
     ],
     limits: [
-      'Reweighting improved every initial condition number in 16 configurations from three tabular sources, by a median factor of 6.46, but usually increased sensitivity to new labels.',
+      'The 23.2% change from ordinary orbit averaging is stable under the reported grid refinements and is not a certified continuum value.',
+      'Unrestricted initial data retain fast charge oscillations.',
     ],
     abstract: [
-      'Weighted regression coresets may reproduce one least-squares solution while remaining poorly conditioned or failing when the regularization parameter or response changes. We characterize what a fixed weighted subset can preserve in each setting. For a prescribed support, the closure of its weighted least-squares solutions is the union of the bounded faces of a hyperplane arrangement. On supports of size d + 1, this set is the convex hull of the d-row interpolants, which permits rational certificates for the optimal fit. A recursive construction also gives new upper bounds for the scalar minimax risk, including 8/5 ≤ R_{5}(7) ≤ 5/3.',
-      'For exact coresets, we formulate convex reweighting problems that improve conditioning on a fixed support or bound covariance inflation during construction. Finally, a weighted subset preserves the entire ridge path exactly when it matches the response cross moment and the action of the covariance on a Krylov subspace. Experiments on 16 configurations from three tabular data sources improved every initial condition number, by a median factor of 6.46, but usually increased sensitivity to new labels.',
+      'We derive the stationary response of a linear periodic gyrokinetic model without assuming uniform kinetic relaxation. When the quadratic energy is coercive, the energy-orthogonal stationary projection is determined by the field operator D_{0} = C − R∗ΠR. Cesàro and Abel means converge strongly, but their operator-norm errors remain one when nonzero frequencies accumulate at zero. Adding the same constant drift detuning to every species removes the stationary space and generates a slow unitary evolution on its former kernel, so the long-time and zero-detuning limits do not commute.',
+      'At vanishing polarization, a homogeneous kinetic-species model instead imposes charge and current constraints. We construct a self-adjoint evolution on the continuous-velocity constraint space and prove an O(√ε) error bound, in the energy coordinate, for one coercive regularization of constrained initial data; unrestricted data retain fast charge oscillations. In a specified 25-dimensional orbit discretization with trapped and passing particles, replacing the energy projection by ordinary orbit averaging changes the stationary field by 23.2%. The projection and singular-limit results are analytical; the percentage is stable under the reported grid refinements and is not a certified continuum value.',
     ],
-    plate: 'coresets',
-    figure:
-      'Coefficient space for a regression with two features and three rows. Each row is a line; the triangle between their pairwise intersections is the hull of the two-row interpolants. Random positive weightings are solved live, and every weighted fit lands inside the triangle.',
+    figure: {
+      id: 'gyro',
+      alt: 'A torus cut open to show three nested surfaces, with passing particles circling it and trapped particles bouncing on its outer side. Then the time average of a slow rotation as a surface: one path along its ridge ends at 1, another dies away to 0. Last, two arrows 23.2% apart.',
+      beats: [
+        'In a torus, passing particles go all the way around, while trapped particles bounce back and forth on the outer side. The paper’s model includes both.',
+        'The time average of a slow rotation goes to 0 as time grows. If the detuning is set to zero first, the average stays at 1, so the two limits do not commute.',
+        'In the paper’s 25-dimensional model, replacing the energy projection with ordinary orbit averaging moves the stationary field by 23.2%.',
+      ],
+    },
+    mantis: {
+      records: 1579,
+      uses: ['map', 'trace'],
+      still: still('space-gyro', 'The gyrokinetics space in Mantis, with one record open: moving 2×2 blocks defeat operator-norm averaging.', 'The gyrokinetics space holds 1,579 records. The open one is a counterexample kept on file: moving 2 × 2 blocks leave an order-one error in operator-norm averaging.'),
+    },
   },
   {
     slug: 'elliptic-solvers-locality',
+    tag: 'Elliptic solvers',
     record: 23484455,
     doi: '10.5281/zenodo.23484455',
     title: 'Locality and global information in elliptic solvers',
@@ -606,10 +463,10 @@ export const papers: Paper[] = [
       { label: 'Supplement', name: 'supplement (1).pdf', bytes: 334600, pages: 13 },
     ],
     summary:
-      'How much global information a local approximation to an elliptic inverse needs: order n^{d}/(w + 1)^{d} shared coordinates, attained by a linear construction.',
+      'A local approximation to an elliptic inverse needs on the order of n^{d}/(w + 1)^{d} shared coordinates of global information, and a linear construction achieves this.',
     shows: [
       'For the Dirichlet Laplacian on an n^{d} grid, uniform relative energy error at any fixed tolerance below one requires order n^{d}/(w + 1)^{d} shared coordinates, where w is the local radius, and a linear construction attains this order.',
-      'For a prescribed linear measurement map, an explicit pair of inputs that the solver cannot distinguish.',
+      'For a prescribed linear measurement map, the proof gives an explicit pair of inputs that the solver cannot distinguish.',
     ],
     limits: [
       'A learned model with 16 sine moments errs by 67.0% on white forcings, against 6.1% on smooth ones.',
@@ -619,74 +476,56 @@ export const papers: Paper[] = [
       'We study how much global information a local approximation to an elliptic inverse needs. At each grid point, the solver receives nearby right-hand-side values and a continuous encoding of the full input; both the encoder and reconstruction may be nonlinear. For the Dirichlet Laplacian on an n^{d} grid, uniform relative energy error at any fixed tolerance below one requires order n^{d}/(w + 1)^{d} shared coordinates, where w is the local radius. A linear construction attains this order. We give finite bounds, leading constants as the tolerance approaches one, and a tradeoff between cumulative local propagation and the total dimension of global messages.',
       'The lower bound combines a Borsuk-Ulam argument with canonical correlations of the Green matrix. For a prescribed linear measurement map, it also gives an explicit pair of inputs that the solver cannot distinguish. Experiments on the two-dimensional Poisson problem compare local convolutional, moment-based, Fourier, and multiscale models. A model using 16 sine moments has mean energy error 6.1% on smooth forcings and 67.0% on white forcings at the training resolution. Broader training reduces some of this gap, whereas none of the tested learned initial guesses reduces median end-to-end solve time at the largest timed grid.',
     ],
-    plate: 'elliptic',
-    figure:
-      'A 24 × 24 grid with a point and its local window of radius three. Contours of the discrete Green’s function show how the solution there depends on the whole input; the share of that dependence outside the window is computed live as the point moves (away from the four corner points, where it dips just below half).',
-  },
-  {
-    slug: 'gibbs-relative-covariance',
-    short: 'Relative covariance in discrete Gibbs models',
-    record: 23484418,
-    doi: '10.5281/zenodo.23484418',
-    title: 'Relative covariance approximation in discrete Gibbs models',
-    field: 'machine-learning',
-    area: 'Probabilistic models',
-    published: '2026-10-19',
-    files: [{ label: 'Paper', name: 'Relative_Covariance_Approximation.pdf', bytes: 397412, pages: 12 }],
-    summary:
-      'When a covariance approximation for a discrete Gibbs model stays accurate in relative terms, including in its directions of smallest variance.',
-    shows: [
-      'For a fixed finite Gibbs model, the asymptotic covariance scales come from the affine spans of energy sublevel sets, and the final span-increasing energy sets the sampling threshold for relative covariance recovery.',
-      'For distributions on matroid bases, single-element exchanges give a Laplacian comparison, and bases within a fixed exchange distance give a finite-temperature bound.',
-      'For hard-core models, a cluster expansion yields an error bound controlled by local activity.',
-    ],
-    limits: [
-      'In the small conditional subset-prediction problem, exact Newton is faster.',
-      'No general training-speed improvement is claimed: the results are about relative covariance control.',
-    ],
-    abstract: [
-      'A covariance approximation can have small absolute error while badly distorting a direction of small variance. For a fixed finite Gibbs model, we identify the asymptotic covariance scales from the affine spans of energy sublevel sets and show that the final span-increasing energy determines the sampling threshold for relative covariance recovery. For distributions on matroid bases, single-element exchanges give a Laplacian comparison, and conditioning on bases within a fixed exchange distance gives a finite-temperature bound. For hard-core models, a cluster expansion yields an error bound controlled by local activity.',
-      'Experiments confirm the sampling threshold, retain accuracy of the second-order hard-core approximation on growing strips at low activity, and compare exchange truncations in a small conditional subset-prediction problem. In the last setting, exact Newton is faster. The results concern relative covariance control and do not imply a general training-speed improvement.',
-    ],
-    plate: 'gibbs',
-    figure:
-      'A hard-core lattice gas on a 5 × 26 strip at activity 0.6: sites in pencil, occupied sites in ink. A Glauber chain runs live and checks every bond after every step for two occupied neighbors: none appear. Below, its density settles onto the exact value from the transfer matrix.',
-  },
-  {
-    slug: 'mixed-precision-calibration-limits',
-    record: 23484231,
-    doi: '10.5281/zenodo.23484231',
-    title: 'Calibration limits in mixed-precision quantization',
-    field: 'machine-learning',
-    area: 'Model compression',
-    published: '2026-10-19',
-    files: [
-      { label: 'Paper', name: 'Calibration limits.pdf', bytes: 303754, pages: 10 },
-      { label: 'Supplement', name: 'supplement.pdf', bytes: 316227, pages: 10 },
-    ],
-    summary:
-      'Which calibration measurements actually improve mixed-precision bit allocation, measured by exhaustive evaluation of 25 small trained networks.',
-    shows: [
-      'Exhaustive evaluation of 25 small trained networks separates approximation bias, sampling variance, and omissions from a shortlist.',
-      'With round-to-nearest quantization, output scoring reduces normalized allocation regret by 61.0% relative to additive scalar scoring.',
-      'Cross-tensor Fisher terms can help under rounding yet increase sampling error after reconstruction.',
-    ],
-    limits: [
-      'After a GPTQ Cholesky update the reduction is 6.7%, and its interval includes zero.',
-      'Lower teacher discrepancy need not translate into a general accuracy or speed advantage.',
-      'The findings are limited to the small networks and quantizers in the study.',
-    ],
-    abstract: [
-      'Mixed-precision allocation is constrained by the information retained from calibration evaluations. We compare scalar loss profiles, reconstructed output vectors, and direct comparisons under matched forward budgets. Exhaustive evaluation of 25 small trained networks separates approximation bias, sampling variance, and omissions from a shortlist. With round-to-nearest quantization, output scoring reduces normalized allocation regret by 61.0% relative to additive scalar scoring. After a GPTQ Cholesky update, the reduction is 6.7%, and its interval includes zero.',
-      'Fisher controls show that cross-tensor terms can help under rounding yet increase sampling error after reconstruction. Native task metrics, a corrupted-input experiment, and a residual-depth series likewise show that lower teacher discrepancy need not translate into a general accuracy or speed advantage. The accompanying constructions characterize limits of the restricted observation models. These results concern the small networks and quantizers studied here.',
-    ],
-    plate: 'calibration',
-    figure:
-      'Bit-width allocations for a six-tensor toy network: all 4,096 assignments of 2, 3, 4 or 8 bits plotted by storage and error against a storage budget, feasible ones in pencil, the frontier and the lowest-error allocation within the budget in ink, as the budget sweeps.',
+    figure: {
+      id: 'elliptic',
+      alt: 'A 32 × 32 grid of bars shows the discrete Green’s function at a point p, tallest at p, with a 7 × 7 window around it; 79.9% of the response lies outside the window. The grid then splits into 64 blocks with one marker each, and last shows a smooth forcing and a white-noise forcing beside an error gauge at 6.1% and 67.0%.',
+      beats: [
+        'The solution at p depends on the forcing at every point of the grid. With uniform forcing, 79.9% of it comes from outside the 7 × 7 window around p.',
+        'A solver that only looks nearby also needs some numbers shared across the whole grid: on the order of one per (w + 1) × (w + 1) block, here 64. A linear construction works with that many.',
+        'A learned model with 16 sine moments is off by 6.1% on smooth forcings and by 67.0% on white noise.',
+      ],
+    },
+    mantis: {
+      records: 3122,
+      uses: ['map', 'trace'],
+      still: still('space-elliptic', 'The elliptic solvers space in Mantis, with one record open: every observed pair error exceeds its predicted lower value.', 'The elliptic solvers space holds 3,122 records. The open one checks saved experiments against the bound: at n = 63 and m = 16, the observed pair error of 1.321 is above the predicted 0.460.'),
+    },
   },
 ];
 
-export const fieldCount = (f: Field) => papers.filter((p) => p.field === f).length;
+/** The 404's figure. */
+export const voidFigure: Figure = {
+  id: 'void',
+  alt: 'An empty square. Lines cross it from every direction and none of them is stopped.',
+  beats: ['No barrier, so every line goes straight through.'],
+};
+
+// Work in progress: the lab's other projects, one poster each (posters/, built by `sh posters/build.sh` into
+// public/media/posters/). Their Zenodo records stay off the site and nothing here links to them; a poster
+// gives the question, the approach, results so far and open questions. Titles and fields match the posters.
+export const workInProgress = {
+  title: 'Work in progress',
+  lede: 'We are still working on these projects. Each poster describes the problem and the results we have so far.',
+  link: { href: '/research/#work-in-progress', label: 'Work in progress' },
+};
+export type Poster = { slug: string; title: string; field: string; area: string };
+export const posters: Poster[] = [
+  { slug: 'sidon-subsets', title: 'Sidon subsets through random rounding', field: 'Mathematics', area: 'Additive combinatorics' },
+  { slug: 'matching-cofactors', title: 'Inertia of matching cofactor matrices', field: 'Mathematics', area: 'Algebraic combinatorics' },
+  { slug: 'constrained-permanents', title: 'Critical points of the permanent with fixed row and column sums', field: 'Mathematics', area: 'Real algebraic geometry' },
+  { slug: 'ascent-sequences', title: 'Growth of pattern-avoiding ascent sequences', field: 'Mathematics', area: 'Enumerative combinatorics' },
+  { slug: 'log-sobolev-stability', title: 'Stability of the Gaussian log-Sobolev inequality', field: 'Mathematics', area: 'Analysis and probability' },
+  { slug: 'gyrokinetic-boundary-spectra', title: 'Slow particles and weak collisions in gyrokinetics', field: 'Physics', area: 'Plasma physics' },
+  { slug: 'gibbs-covariance', title: 'Relative covariance in discrete Gibbs models', field: 'Machine learning', area: 'Probabilistic models' },
+  { slug: 'regression-coresets', title: 'What a weighted subset of the data can fit', field: 'Machine learning', area: 'Learning theory' },
+  { slug: 'calibration-limits', title: 'What calibration tells mixed-precision quantization', field: 'Machine learning', area: 'Model compression' },
+  { slug: 'certified-compression', title: 'Certified compression of endgame tables', field: 'Computer science', area: 'Games and verification' },
+  { slug: 'repetition-deadlines', title: 'Repetition under a deadline', field: 'Computer science', area: 'Games and algorithms' },
+];
+/** A poster's PDF, and its preview at 1152 px wide ('lg') or 576 px ('sm'). */
+export const posterPdf = (p: Poster) => asset(`/media/posters/${p.slug}.pdf`);
+export const posterPreview = (p: Poster, size: 'sm' | 'lg') => asset(`/media/posters/${p.slug}${size === 'sm' ? '-sm' : ''}.webp`);
+
 export const paperBySlug = (slug: string) => papers.find((p) => p.slug === slug);
 export const fieldLabel = (f: Field) => fields.find((x) => x.id === f)!.label;
 

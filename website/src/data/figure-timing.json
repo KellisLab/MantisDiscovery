@@ -1,0 +1,46 @@
+{
+  "opaque": {
+    "duration": 18,
+    "beats": [
+      0,
+      5,
+      10.333,
+      14
+    ],
+    "poster": 3.733
+  },
+  "clique": {
+    "duration": 22,
+    "beats": [
+      0,
+      5.667,
+      14
+    ],
+    "poster": 13.333
+  },
+  "gyro": {
+    "duration": 20,
+    "beats": [
+      0,
+      7.667,
+      14.667
+    ],
+    "poster": 5
+  },
+  "elliptic": {
+    "duration": 20,
+    "beats": [
+      0,
+      6.667,
+      11.333
+    ],
+    "poster": 5.333
+  },
+  "void": {
+    "duration": 8,
+    "beats": [
+      0
+    ],
+    "poster": 2
+  }
+}

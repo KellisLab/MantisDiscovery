@@ -81,6 +81,9 @@ body:has(.join) .footer__lead { display: none; }
 .footer__word .mantis-mark { width: 0.86em; translate: 0 0.02em; }
 .footer__base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 2rem; margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--c-line); }
 .footer__base p { max-width: 52em; }
+.footer__aff { display: inline-flex; align-items: center; gap: 1.5rem; }
+.footer__base .footer__csail { text-decoration: none; }
+.footer__csail .csail-logo { display: block; height: 1.6rem; width: auto; }
 .footer__base a { display: inline-flex; align-items: center; min-height: 1.75rem; text-decoration: underline; text-underline-offset: 0.2em; text-decoration-color: var(--c-line-strong); transition: color 0.3s; }
 @media (hover: hover) { .footer__base a:hover { color: var(--c-fg); } }
 @media (max-width: 960px) {

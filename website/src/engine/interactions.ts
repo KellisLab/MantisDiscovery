@@ -1,6 +1,6 @@
 // Pointer craft. Fine pointers only; never hides the native cursor (accessibility, usability).
 //   data-magnetic="0.35"   element leans toward the pointer
-// No cursor follower on this site: the plates already answer the pointer.
+// No cursor follower on this site.
 import { gsap } from 'gsap';
 import { isTouch, prefersReducedMotion } from './env';
 

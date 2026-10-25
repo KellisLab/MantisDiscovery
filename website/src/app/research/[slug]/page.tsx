@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CopyCite } from '@/components/CopyCite';
 import { Plate } from '@/components/Plate';
-import { Draft, itemFor } from '@/components/plates';
+import { itemFor } from '@/components/figures';
 import { Tex } from '@/components/Tex';
-import { doiUrl, fieldLabel, fileUrl, plain, papers, recordUrl, site } from '@/data/site';
+import { doiUrl, fieldLabel, fileUrl, plain, papers, recordUrl, site, techName } from '@/data/site';
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -83,7 +83,7 @@ export default async function Paper({ params }: PageProps<'/research/[slug]'>) {
         <div className="paper-hero__grid">
           <div className="paper-hero__main">
             <div className="paper-hero__plate">
-              <Plate items={[itemFor(p)]} caption={false} draft={<Draft id={p.plate} />} label={`Live figure for ${p.title}`} />
+              <Plate items={[itemFor(p)]} caption={false} label={`Figure for ${p.title}`} />
             </div>
             {p.shows.length > 0 && (
               <section className="claims" aria-labelledby="claims-title">
@@ -131,6 +131,22 @@ export default async function Paper({ params }: PageProps<'/research/[slug]'>) {
         </div>
       </section>
 
+      <section className="space wrap" aria-labelledby="space-title">
+        <div className="space__head">
+          <h2 id="space-title" className="h-l">In Mantis</h2>
+          <p className="space__count"><span className="num">{p.mantis.records.toLocaleString('en-US')}</span> records in this paper’s space</p>
+          <ul className="space__uses" aria-label="What the work used">
+            {p.mantis.uses.map((u) => <li key={u}><Link className="link" href={`/#tech-${u}`}>{techName(u)}</Link></li>)}
+          </ul>
+          {p.story && <Link className="go space__story" href={p.story.href}><Tex>{p.story.label}</Tex> <span className="go__arrow" aria-hidden="true">→</span></Link>}
+        </div>
+        <figure className="space__still still">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={p.mantis.still.src} width={p.mantis.still.w} height={p.mantis.still.h} alt={p.mantis.still.alt} loading="lazy" decoding="async" />
+          <figcaption className="meta">{p.mantis.still.caption}</figcaption>
+        </figure>
+      </section>
+
       <section className="abstract wrap" aria-labelledby="abstract-title">
         <h2 id="abstract-title" className="h-l">{p.abstract ? 'Abstract' : 'Record'}</h2>
         <div className="abstract__body">
@@ -152,7 +168,8 @@ export default async function Paper({ params }: PageProps<'/research/[slug]'>) {
           <span className="next__title h-xl">{next.title}</span>
           <span className="next__meta meta">{fieldLabel(next.field)}, {next.area.toLowerCase()} <span className="next__go" aria-hidden="true">→</span></span>
           <span className="next__figure" aria-hidden="true">
-            <Draft id={next.plate} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={itemFor(next).poster} width={960} height={960} alt="" loading="lazy" decoding="async" />
             <span className="plate__tick plate__tick--tl" />
             <span className="plate__tick plate__tick--tr" />
             <span className="plate__tick plate__tick--bl" />

@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{What a weighted subset of the data can fit}
+\postfield{Machine learning, learning theory}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+A coreset is a small weighted subset of a dataset that should give the same model as the full data. For least
+squares, which fits can a fixed subset reach as its weights change? How well conditioned are they, and when
+does one subset keep working along the whole ridge path?
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Describe the reachable fits with a hyperplane arrangement.
+\item Set up convex reweighting problems that improve conditioning on a fixed support.
+\item Match moments on a Krylov subspace to keep the ridge path.
+\end{itemize}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+On a fixed support, the reachable weighted least-squares fits and their limits are the bounded faces of a hyperplane arrangement. With $d + 1$ rows they fill the convex hull of the $d$-row interpolants.
+\end{progress}
+\begin{progress}
+A subset keeps the entire ridge path exactly when it matches the response cross moment and the action of the covariance on a Krylov subspace.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Weighted fits with three rows}
+\includegraphics[width=\linewidth]{coresets-triangle.pdf}
+\figcap{Figure 1.}{With two features and three rows, each row is a line of exact fits, and the triangle's corners are the fits through two rows. We solved 3,000 random positive weightings, and every weighted fit landed inside the triangle.}
+\mdgap
+\mdsec{Ridge paths}
+\includegraphics[width=\linewidth]{coresets-ridge.pdf}
+\figcap{Figure 2.}{We computed ridge paths for 40 rows and two features. Five rows weighted to match the full data's covariance and cross moment (rings) follow the full path exactly, and five rows with equal weights (dashed) do not. In two dimensions the Krylov condition is this full match.}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{regression-coresets.jpg}{3,966}{Cross-polytope obstruction.}{%
+The vectors $\pm e_1, \dots, \pm e_d$ positively span $\mathbb{R}^d$, yet every full-rank positive balance uses all $2d$ of them.\alsoonrecord Whitening needs a qualification, because it changes the minimum-norm selected-fit ratio from 3 to $25/6$.}
+\begin{progress}
+New upper bounds for the scalar minimax risk give, for example, $\tfrac85 \le R_5(7) \le \tfrac53$.
+\end{progress}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item Reweighting improved every starting condition number in 16 configurations, by a median factor of 6.46, but usually made fits more sensitive to new labels. Can both be controlled at once?
+\item Where between $\tfrac85$ and $\tfrac53$ is $R_5(7)$?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

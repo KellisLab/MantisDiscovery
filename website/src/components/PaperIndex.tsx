@@ -1,9 +1,9 @@
 'use client';
-// The archive index. Each row redraws the sticky plate: on pointer and focus with a fine pointer,
-// and on touch screens whichever row crosses the middle of the viewport. An optional field filter.
+// The paper index. Each row puts its figure on the sticky plate: on pointer and focus with a fine
+// pointer, and on touch screens whichever row crosses the middle of the viewport.
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import type { Field, PlateId } from '@/data/site';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import type { FigureId } from '@/data/site';
 import { showOnStage } from './Plate';
 
 export type IndexRow = {
@@ -11,31 +11,29 @@ export type IndexRow = {
   n: string;
   title: string;
   summary: string;
-  field: Field;
   fieldLabel: string;
   area: string;
   record: number;
-  plate: PlateId;
+  figure: FigureId;
+  records: number; // in the paper's space in Mantis
+  uses: string[]; // the parts of Mantis the work used
 };
 
 type Props = {
   rows: IndexRow[];
   stage: string;
-  filters?: { id: Field | 'all'; label: string; count: number }[];
   plate: ReactNode;
   headingLevel?: 'h2' | 'h3';
 };
 
-export function PaperIndex({ rows, stage, filters, plate, headingLevel = 'h3' }: Props) {
+export function PaperIndex({ rows, stage, plate, headingLevel = 'h3' }: Props) {
   const [active, setActive] = useState(rows[0].slug);
-  const [field, setField] = useState<Field | 'all'>('all');
   const list = useRef<HTMLOListElement>(null);
-  const shown = useMemo(() => (field === 'all' ? rows : rows.filter((r) => r.field === field)), [rows, field]);
   const H = headingLevel;
 
   const activate = (r: IndexRow) => {
     setActive(r.slug);
-    showOnStage(stage, r.plate);
+    showOnStage(stage, r.figure);
   };
 
   // The row crossing the reading line drives the plate while scrolling. A pointer on the rows takes
@@ -57,7 +55,7 @@ export function PaperIndex({ rows, stage, filters, plate, headingLevel = 'h3' }:
     list.current.querySelectorAll('li').forEach((li) => io.observe(li));
     return () => io.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shown]);
+  }, [rows]);
 
   return (
     <div className="index">
@@ -65,19 +63,8 @@ export function PaperIndex({ rows, stage, filters, plate, headingLevel = 'h3' }:
         onPointerOver={(e) => { holding.current = !!(e.target as Element).closest('.plate__caption'); }}
         onPointerLeave={() => { holding.current = false; }}>{plate}</div>
       <div className="index__body">
-        {filters && (
-          <div className="filters" role="group" aria-label="Filter by field">
-            {filters.map((f) => (
-              <button key={f.id} type="button" className="chip" aria-pressed={field === f.id}
-                onClick={() => { setField(f.id); const first = f.id === 'all' ? rows[0] : rows.find((r) => r.field === f.id); if (first) activate(first); }}>
-                <span>{f.label}</span><span className="chip__n num">{f.count}</span>
-              </button>
-            ))}
-          </div>
-        )}
-        {filters && <p className="sr-only" aria-live="polite">{shown.length} papers shown</p>}
         <ol ref={list} className="rows" onPointerEnter={() => { pointing.current = true; }} onPointerLeave={() => { pointing.current = false; }}>
-          {shown.map((r) => (
+          {rows.map((r) => (
             <li key={r.slug} data-slug={r.slug} className="row" data-active={active === r.slug || undefined}>
               <Link href={`/research/${r.slug}/`} className="row__link"
                 onPointerEnter={() => activate(r)} onFocus={() => activate(r)}>
@@ -90,6 +77,7 @@ export function PaperIndex({ rows, stage, filters, plate, headingLevel = 'h3' }:
                     <span>{r.area}</span>
                     <span className="num">Zenodo {r.record}</span>
                   </span>
+                  <span className="row__uses meta"><span className="num">{r.records.toLocaleString('en-US')} records in Mantis</span>{r.uses.map((u) => <span key={u}>{u}</span>)}</span>
                 </span>
                 <span className="row__go" aria-hidden="true">→</span>
               </Link>
