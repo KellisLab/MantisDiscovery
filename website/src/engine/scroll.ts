@@ -15,7 +15,7 @@ const state: ScrollState = { y: 0, velocity: 0, progress: 0 };
 
 export function initScroll() {
   if (lenis || prefersReducedMotion()) {
-    // Still publish native scroll position for the plates and the frame.
+    // Still publish native scroll position for the hero stage and the frame.
     if (!lenis) addEventListener('scroll', nativeTick, { passive: true });
     return;
   }
@@ -51,6 +51,17 @@ export function resetScroll() {
   else scrollTo(0, 0);
   state.y = 0;
   state.velocity = 0;
+}
+/** Jump at once to the section the URL's hash names, so a link such as /method/#example lands on it.
+ *  Returns false when there is no such section. */
+export function jumpToHash() {
+  const id = decodeURIComponent(location.hash.slice(1));
+  const el = id ? document.getElementById(id) : null;
+  if (!el) return false;
+  const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+  if (lenis) lenis.scrollTo(el, { immediate: true, force: true, offset: -margin });
+  else el.scrollIntoView();
+  return true;
 }
 export function scrollToTarget(target: string | HTMLElement | number) {
   if (lenis) lenis.scrollTo(target, { duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4) });

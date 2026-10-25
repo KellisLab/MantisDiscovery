@@ -1,0 +1,15 @@
+{
+  "name": "mantis-discovery-graphics",
+  "private": true,
+  "description": "The animated figure for each paper, written with Kinetograph and rendered to ../public/media/figures.",
+  "type": "module",
+  "scripts": {
+    "models": "node scripts/env.mjs && node scripts/models.mjs",
+    "strip": "kinetograph strip src/index.tsx",
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "kinetograph": "0.1.0",
+    "react": "19.2.0"
+  }
+}

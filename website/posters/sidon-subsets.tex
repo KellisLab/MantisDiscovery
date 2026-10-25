@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Sidon subsets through random rounding}
+\postfield{Mathematics, additive combinatorics}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+A Sidon set is a set of numbers whose pairwise sums $a+b$ are all different. Any set $A$ of $N$ numbers
+contains a Sidon subset. How large a subset can we always find, whatever $A$ is? Write
+\[ \ell(N) = \min_{|A| = N} \ \max\{\, |S| : S \subseteq A \text{ is Sidon} \,\}. \]
+Lower bounds of the form $\ell(N) \ge c\sqrt{N}$ are known. We want to know how large the constant $c$ can be.
+\mdgap
+\mdsec{How we are approaching it}
+We round $A$ at random into the integers modulo $m$ and look for a Sidon set there.
+\begin{itemize}
+\item The rounding respects every additive quadruple $a+b=c+d$ up to an error of one bucket, in any dimension.
+\item A code built from a planar difference set absorbs that error, so a Sidon set modulo $m$ pulls back to one in $A$.
+\item Earlier arguments restrict to half of $A$ at this step, and the code lets us skip that restriction.
+\end{itemize}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+Every set of $N$ numbers, and every $N$ points in a torsion-free abelian group, has a Sidon subset of size about
+$0.385\sqrt{N}$, precisely $\bigl(\tfrac{2}{3\sqrt3} - o(1)\bigr)\sqrt{N}$. That is twice the constant of Bailleul and Riblet.
+\end{progress}
+\begin{progress}
+In one dimension, with a random scale, two points land in the same bucket with probability exactly $1/m$.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{A planar difference set}
+\centering\includegraphics[width=\linewidth]{sidon-difference-set.pdf}\raggedright
+\figcap{Figure 1.}{The residues 1, 5, 11, 24, 25 and 27 modulo 31 form a planar difference set: each of the 30 nonzero residues occurs exactly once as a difference of two of them, as the table shows (checked by computer). The highlighted chord gives the differences 15 and 16. Our codes are built from sets like this one.}
+\mdgap
+\mdsec{Bounds on the constant}
+\includegraphics[width=\linewidth]{sidon-constant.pdf}
+\figcap{Figure 2.}{Our lower bound on $c$ is twice the earlier one. The upper limit of 1 comes from $\{1, \dots, N\}$, whose largest Sidon subsets have about $\sqrt{N}$ elements.}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{sidon-subsets.jpg}{632}{Equality after a floor does not imply the equality structure.}{%
+Each record in the project links to its source, as this one does.\alsoonrecord An earlier claim said that equality in the fractional capacity bound forces unit intervals. It was refuted on $\mathbb{T}_{14}$, where measure-one cells need not be intervals.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item Arguments that use only $|A|$ and the collision law cannot pass $\tfrac{2}{3\sqrt3}$. What else about $A$ could push the constant higher?
+\item Where between 0.385 and 1 does the true constant lie?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

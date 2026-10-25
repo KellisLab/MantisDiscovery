@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Relative covariance in discrete Gibbs models}
+\postfield{Machine learning, probabilistic models}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+Many learning methods need the covariance of a probabilistic model. An approximation can have a small error
+overall and still be badly wrong in a direction of small variance. When can we approximate the covariance of
+a discrete Gibbs model accurately in relative terms, small directions included?
+\mdgap
+\mdsec{Absolute and relative error}
+\includegraphics[width=\linewidth]{gibbs-ellipses.pdf}
+\figcap{Figure 1.}{The dashed estimate is off by only 0.02 in absolute terms, but along the thin direction its variance is three times too large.}
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Read the covariance scales off the affine spans of the model's energy sublevel sets.
+\item For distributions on matroid bases, compare with Laplacians through single-element exchanges.
+\item For hard-core models, use a cluster expansion in the activity.
+\end{itemize}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{A toy model}
+\includegraphics[width=\linewidth]{gibbs-toy.pdf}
+\figcap{Figure 2.}{This toy model is not from the paper: its states are the eight corners of a cube, with the energies shown. As the inverse temperature $\beta$ grows, the covariance eigenvalues fall at rates 1, 1.6 and 3 (dashed), the energies at which the low-energy corners first span a line, a plane and the whole space. The corner at 2.2 adds no new rate.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+For a fixed finite Gibbs model, the asymptotic covariance scales come from the affine spans of energy sublevel sets, and the last energy at which the span grows sets the sampling threshold for relative recovery.
+\end{progress}
+\begin{progress}
+On matroid bases, single-element exchanges give a Laplacian comparison, and conditioning on bases within a fixed exchange distance gives a finite-temperature bound.
+\end{progress}
+\begin{progress}
+For hard-core models, the error is controlled by the local activity.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{gibbs-covariance.jpg}{9,024}{Convexity does not force a section minimum to an endpoint.}{%
+The record is a rejected route: $f(x) = (x-1)^2$ on $[\tfrac12, \tfrac32]$ is convex, yet its minimum lies inside the interval.\alsoonrecord An explicit $3\times3$ matrix refutes a general tensor-norm multiplication rule.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item In a small conditional subset-prediction problem, exact Newton was faster. Where does relative covariance control pay off in practice?
+\item The second-order hard-core approximation stayed accurate on growing strips at low activity. How high can the activity go?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

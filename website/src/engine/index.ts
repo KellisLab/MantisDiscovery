@@ -5,10 +5,10 @@
 //   enter()                after the new page is in the DOM: init → enter animation → intro
 // Project code hooks in with onPage(fn): fn runs on every page load inside a gsap.context, so the
 // tweens and ScrollTriggers it creates are reverted automatically. Return a cleanup for the rest.
-// No WebGL on this site: the plates are Canvas 2D (src/plates).
+// WebGL: only the hero stage (src/hero). The paper figures are prerendered films (graphics/).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { initScroll, resetScroll, startScroll, stopScroll } from './scroll';
+import { initScroll, jumpToHash, resetScroll, startScroll, stopScroll } from './scroll';
 import { initReveals } from './reveal';
 import { initMagnetic } from './interactions';
 import { runLoader } from './loader';
@@ -96,6 +96,7 @@ export async function enter({ transition = true, scrollTop = true } = {}) {
   cleanup(); // no-op if the adapter already cleaned up
   if (scrollTop) resetScroll();
   initPage();
+  if (scrollTop) jumpToHash();
   if (transition) await playEnter();
   startScroll();
   intro?.play();

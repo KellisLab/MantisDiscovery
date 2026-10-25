@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Critical points of the permanent with fixed row and column sums}
+\postfield{Mathematics, real algebraic geometry}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+The permanent is the determinant without signs. Fix the row and column sums of a $3 \times 3$ matrix and look
+for the critical points of the permanent on that space. How many are there, how many are real, and how are
+they related algebraically?
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Combine a Fourier normal form, a rational specialization and a simple branch point at a positive matrix to identify the Galois group.
+\item Over the reals, compute the topological degree of the gradient, and isolate the real and positive critical matrices with rational univariate representations.
+\end{itemize}
+\mdgap
+\mdsec{All critical points of one fiber}
+\includegraphics[width=\linewidth]{permanents-one-fiber.pdf}
+\figcap{Figure 1.}{One fiber with positive marginals has 16 complex critical points, each drawn here by one generic real coordinate. The eight real ones lie on the axis, and the others form four conjugate pairs.}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Real critical points in random fibers}
+\includegraphics[width=\linewidth]{permanents-real-counts.pdf}
+\figcap{Figure 2.}{We counted the real critical points in 400 random fibers with positive marginals. In each fiber we found all 16 complex solutions by homotopy continuation and checked every real one by Newton's method. Every fiber had at least six, and the proved minimum is four.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+There are 16 critical points over the marginal parameters, and their arithmetic and geometric Galois groups are both $S_{16}$.
+\end{progress}
+\begin{progress}
+At least four are real in every nondegenerate fiber: the gradient has topological degree four.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{constrained-permanents.jpg}{544}{Three good primes force arithmetic $S_{16}$.}{%
+Factorization patterns modulo the primes 29, 73 and 97 already force the arithmetic Galois group to be $S_{16}$.\alsoonrecord Pairwise row averaging can increase the permanent of a positive matrix, by $1/472392$ in the recorded example.}
+\begin{progress}
+With $m$ coupled matrices and quadratic interactions there are $16^m$ critical points, and between $4^m$ and $16^m$ of them are real. Both bounds are attained.
+\end{progress}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item These are affine stationary points: they need not be nonnegative, and they miss optima on the boundary of the transportation polytope. What do the constrained optima look like?
+\item What happens for larger matrices?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

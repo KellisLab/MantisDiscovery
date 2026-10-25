@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Plate } from '@/components/Plate';
-import { Draft } from '@/components/plates';
+import { voidItem } from '@/components/figures';
 import { notFound as copy } from '@/data/site';
 
 export const metadata: Metadata = {
   title: 'Page not found',
-  description: 'No page exists at this address. Every line through an empty square gets through.',
+  description: 'No page exists at this address.',
   robots: { index: false },
 };
 
@@ -23,12 +23,7 @@ export default function NotFound() {
         </div>
       </div>
       <div className="lost__plate">
-        <Plate
-          items={[{ id: 'void', title: 'An empty square', meta: 'No barrier, no page', figure: 'The unit square with no barrier. Random lines drawn through it all get through.', check: 'Lines through an empty square' }]}
-          caption={false}
-          draft={<Draft id="void" />}
-          label="Figure: an empty square"
-        />
+        <Plate items={[voidItem()]} caption={false} beats={false} label="Figure: an empty square" />
       </div>
     </section>
   );

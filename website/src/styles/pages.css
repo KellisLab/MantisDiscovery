@@ -30,7 +30,7 @@
 /* The headline is drafted in pencil and inked once the heat flow beside it has drawn itself. */
 .motion .hero__title { color: var(--c-draft-text); transition: color 0.9s var(--ease-out); }
 .motion .hero:has(.torus[data-inked]) .hero__title { color: var(--c-fg); }
-/* Balanced so the headline breaks into even lines ("Open problems, / taken on / with AI.") with no word left alone. */
+/* Balanced so a headline that wraps breaks into even lines, with no word left alone. */
 .hero__title { font-size: clamp(2.6rem, 1.1rem + 5vw, 5.5rem); max-width: 10em; text-wrap: balance; }
 .hero__lede { max-width: 31em; }
 .hero__visual { grid-column: 7 / span 6; }
@@ -68,6 +68,29 @@
 /* The heading beside a film eight columns wide, so the player sits in the page instead of filling the screen. */
 .film-section { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: clamp(2rem, 1.5rem + 2vw, 3.5rem); align-items: start; padding-block: clamp(2rem, 1rem + 3vw, 4rem) clamp(3rem, 2rem + 2vw, 4rem); }
 .film-section__head { grid-column: 1 / span 4; }
+/* The hero's affiliation: the MIT CSAIL mark, a hairline, then the label. */
+.hero__aff { display: flex; align-items: center; gap: 0.9rem; }
+.hero__aff .csail-logo { height: 1.9rem; width: auto; }
+.hero__aff span { padding-left: 0.9rem; border-left: 1px solid var(--c-line-strong); }
+
+/* Our approach: one row per part of Mantis, its text beside a real still, the sides alternating. */
+.approach { padding-block: clamp(4rem, 3rem + 4vw, 8rem) clamp(2rem, 1.5rem + 2vw, 4rem); }
+.approach__head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.25rem; align-items: end; margin-bottom: clamp(2.5rem, 2rem + 2vw, 4.5rem); }
+.approach__head h2 { grid-column: 1 / span 6; }
+.approach__lede { grid-column: 7 / span 5; color: var(--c-muted); font-size: var(--t-m); line-height: 1.45; max-width: 32em; }
+.approach__list { display: grid; gap: clamp(3.5rem, 2.5rem + 4vw, 7rem); }
+.tech { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.5rem; align-items: center; padding-top: 1.5rem; border-top: 1px solid var(--c-line); }
+.tech__copy { grid-column: 1 / span 4; display: grid; gap: 1rem; align-content: start; }
+.tech__still { grid-column: 6 / -1; }
+.tech:nth-child(even) .tech__copy { grid-column: 9 / -1; grid-row: 1; }
+.tech:nth-child(even) .tech__still { grid-column: 1 / span 7; grid-row: 1; }
+.tech__n { color: var(--c-muted); }
+.tech__text { color: var(--c-muted); }
+.tech__benefit { padding-left: 1rem; border-left: 2px solid var(--c-draft); font-size: var(--t-m); line-height: 1.45; }
+/* A real capture from Mantis, framed. */
+.still { margin: 0; display: grid; gap: 0.75rem; }
+.still img { display: block; width: 100%; height: auto; border: 1px solid var(--c-line-strong); background: #11141a; }
+.still figcaption { color: var(--c-muted); line-height: 1.5; max-width: 60em; }
 .film-section__head h2 { max-width: 6em; }
 .film-section .film { grid-column: 5 / span 8; }
 .film { position: relative; aspect-ratio: 16 / 9; background: #000; overflow: clip; border: 1px solid var(--c-line); }
@@ -101,34 +124,18 @@
 }
 
 /* ==========================================================================
-   Archive: header, counts, the index with its sticky plate
+   Papers: header, then the index with its sticky plate
    ========================================================================== */
 .archive { padding-block: clamp(4rem, 3rem + 3vw, 6rem) clamp(3rem, 2rem + 2vw, 4rem); }
 .archive--page { padding-top: clamp(3rem, 2rem + 3vw, 5rem); }
 .archive__head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.5rem; align-items: end; margin-bottom: clamp(3rem, 2rem + 3vw, 5rem); }
 .archive__head h2 { grid-column: 1 / span 5; }
 .archive__lede { grid-column: 7 / span 5; color: var(--c-muted); font-size: var(--t-m); line-height: 1.45; max-width: 30em; }
-.counts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--c-line); margin-top: 1rem; }
-.counts__item { display: grid; gap: 0.35rem; padding: 1rem var(--gutter) 0 0; }
-.counts__item + .counts__item { padding-left: var(--gutter); border-left: 1px solid var(--c-line); }
-.counts__item dd { font-size: var(--t-xl); font-weight: 500; letter-spacing: -0.045em; line-height: 1; }
 
 .index { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; }
 .index__stage { grid-column: 1 / span 5; position: sticky; top: 5.5rem; }
 .index__body { grid-column: 7 / span 6; display: grid; gap: 1.5rem; }
 
-.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.chip {
-  display: inline-flex; align-items: center; gap: 0.45rem; min-height: 2.5rem; padding: 0.4rem 0.7rem;
-  border: 1px solid var(--c-line-strong); font-size: var(--t-s); font-weight: 450; transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-}
-.chip__n { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--c-muted); }
-.chip { position: relative; isolation: isolate; overflow: clip; }
-.chip::before { content: ''; position: absolute; inset: auto 0 0 0; height: 2px; z-index: -1; background: var(--c-draft); transform-origin: left; transform: scaleX(0); transition: transform 0.45s var(--ease-out); }
-.chip[aria-pressed='true'] { background: var(--c-fg); color: var(--c-bg); border-color: var(--c-fg); }
-.chip[aria-pressed='true'] .chip__n { color: inherit; }
-@media (hover: hover) { .chip:hover { border-color: var(--c-fg); } .chip:hover::before { transform: scaleX(1); } }
-.chip:focus-visible::before { transform: scaleX(1); }
 
 .rows { border-bottom: 1px solid var(--c-line); }
 .row { border-top: 1px solid var(--c-line); position: relative; }
@@ -141,6 +148,9 @@
 .row__summary { color: var(--c-muted); font-size: var(--t-s); line-height: 1.5; max-width: 40em; }
 .row__meta { display: flex; flex-wrap: wrap; gap: 0.35rem 1.25rem; }
 .row__meta > span:first-child { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--c-fg); }
+/* What the work used in Mantis: the record count, then each part by name. */
+.row__uses { display: flex; flex-wrap: wrap; gap: 0.35rem 1.25rem; margin-top: 0.15rem; color: var(--c-draft-text); }
+.row__uses > .num { color: var(--c-muted); }
 .row__go { font-size: 1.1rem; padding-top: 0.15rem; justify-self: end; transition: translate 0.45s var(--ease-out), color 0.3s; color: var(--c-muted); }
 .row[data-active] .row__go { color: var(--c-fg); }
 /* The row the figure is showing carries the pencil rule its hover draws. */
@@ -154,6 +164,38 @@
 .row__link:focus-visible .row__main { translate: 0.45rem 0; }
 .row:focus-within::before { transform: scaleX(1); }
 .row__link:focus-visible { outline-offset: -2px; }
+
+/* Research: work in progress. One poster per project still under way, as previews that open the PDF.
+   The posters are printed on paper, so they read as light sheets on the night ground. */
+.wip { padding-block: clamp(3.5rem, 2.5rem + 4vw, 7rem) clamp(5rem, 3rem + 6vw, 9rem); border-top: 1px solid var(--c-line); scroll-margin-top: 4rem; }
+.posters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(2.75rem, 2rem + 2vw, 4.5rem) var(--gutter); }
+.poster__link { display: grid; gap: 0.85rem; align-content: start; }
+.poster__img { display: block; aspect-ratio: 4 / 3; overflow: clip; background: #faf9f6; outline: 1px solid var(--c-line); outline-offset: 0; transition: outline-color 0.5s var(--ease-out); }
+.poster__img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.94; transition: scale 0.8s var(--ease-out), opacity 0.6s var(--ease-out); }
+.poster__meta { display: flex; flex-wrap: wrap; gap: 0.35rem 1.25rem; margin-top: 0.4rem; }
+.poster__meta > span:first-child { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--c-fg); }
+.poster__title { font-size: var(--t-m); font-weight: 500; line-height: 1.22; letter-spacing: -0.02em; max-width: 22em; transition: translate 0.55s var(--ease-out); }
+/* The file line underlines the way the site's go links do: a pencil dash, then ink. */
+.poster__file { position: relative; justify-self: start; display: inline-flex; gap: 0.6rem; padding-bottom: 0.35rem; }
+.poster__file::before, .poster__file::after { content: ''; position: absolute; left: 0; right: 1.4em; bottom: 0; height: 1px; transform-origin: left; transform: scaleX(0); }
+.poster__file::before { background: repeating-linear-gradient(90deg, var(--c-draft) 0 3px, transparent 3px 6px); transition: transform 0.28s linear; }
+.poster__file::after { background: var(--c-fg); transition: transform 0.45s var(--ease-out) 0.16s; }
+.poster__go { transition: translate 0.45s var(--ease-out); }
+@media (hover: hover) {
+  .poster__link:hover .poster__img { outline-color: var(--c-line-strong); }
+  .poster__link:hover .poster__img img { scale: 1.035; opacity: 1; }
+  .poster__link:hover .mark { background: var(--c-fg); border-color: var(--c-fg); }
+  .poster__link:hover .poster__title { translate: 0.35rem 0; }
+  .poster__link:hover .poster__file { color: var(--c-fg); }
+  .poster__link:hover .poster__file::before, .poster__link:hover .poster__file::after { transform: scaleX(1); }
+  .poster__link:hover .poster__go { translate: 0.3rem 0; }
+}
+.poster__link:focus-visible { outline-offset: 6px; }
+.poster__link:focus-visible .poster__img img { opacity: 1; }
+.poster__link:focus-visible .mark { background: var(--c-fg); border-color: var(--c-fg); }
+.poster__link:focus-visible .poster__file::before, .poster__link:focus-visible .poster__file::after { transform: scaleX(1); }
+.poster__link:active .poster__img img { scale: 1.015; }
+.archive__more { margin-top: clamp(2rem, 1.5rem + 1.5vw, 3rem); }
 
 /* ==========================================================================
    Home: lab teaser
@@ -177,7 +219,7 @@
    ========================================================================== */
 .paper-hero { padding-top: 7.5rem; padding-bottom: clamp(3rem, 2rem + 4vw, 6rem); display: grid; gap: 2rem; }
 .crumbs { display: flex; gap: 0.6rem; align-items: center; }
-.crumbs a, .facts a, .standard__quote figcaption a { display: inline-block; padding-block: 0.3rem; }
+.crumbs a, .facts a { display: inline-block; padding-block: 0.3rem; }
 .paper-hero__title { max-width: 18em; font-size: clamp(2rem, 1.1rem + 3.4vw, 4.25rem); }
 .paper-hero__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2.5rem; margin-top: 1rem; }
 /* The figure, then what the paper shows and doesn't, read beside the facts, which stay in view. */
@@ -201,6 +243,13 @@
 
 .abstract { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2rem; padding-block: clamp(3rem, 2rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem); border-top: 1px solid var(--c-line); }
 .abstract > h2 { grid-column: 1 / span 3; }
+/* A paper's own space in Mantis: what it holds and used, beside a still of it. */
+.space { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2rem; padding-block: clamp(3rem, 2rem + 4vw, 6rem) clamp(2rem, 1.5rem + 2vw, 3.5rem); border-top: 1px solid var(--c-line); }
+.space__head { grid-column: 1 / span 3; display: grid; gap: 1rem; align-content: start; }
+.space__count { color: var(--c-muted); }
+.space__count .num { color: var(--c-fg); }
+.space__uses { display: grid; gap: 0.5rem; }
+.space__still { grid-column: 4 / -1; }
 .abstract__body { grid-column: 4 / span 7; display: grid; gap: 1.1rem; }
 .abstract__body .paper { font-size: clamp(1.1rem, 1.05rem + 0.25vw, 1.25rem); line-height: 1.6; max-width: 66ch; hanging-punctuation: first; }
 .abstract__cite { grid-column: 4 / span 7; display: grid; gap: 0.75rem; margin-top: 1.5rem; }
@@ -217,17 +266,14 @@
 .next__link > .eyebrow, .next__title, .next__meta { grid-column: 1 / span 8; }
 .next__title { max-width: 18em; transition: color 0.4s, translate 0.6s var(--ease-out); }
 /* The next paper's figure, in pencil; it inks when the link is pointed at or focused. */
-.next__figure { grid-column: 10 / span 3; grid-row: 1 / span 3; position: relative; aspect-ratio: 1; padding: 9%; border: 1px solid var(--c-line); }
+.next__figure { grid-column: 10 / span 3; grid-row: 1 / span 3; position: relative; aspect-ratio: 1; overflow: hidden; border: 1px solid var(--c-line); }
 .next__figure { transition: border-color 0.5s var(--ease-out); }
-.next__figure svg { display: block; width: 100%; height: 100%; transition: scale 0.8s var(--ease-out); }
-.next__figure :is(path, circle) { transition: stroke 0.6s var(--ease-out); }
+.next__figure img { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: scale 0.8s var(--ease-out), opacity 0.6s var(--ease-out); }
 @media (hover: hover) {
   .next__link:hover .next__figure { border-color: var(--c-line-strong); }
-  .next__link:hover .next__figure svg { scale: 1.06; }
-  .next__link:hover .next__figure :is(path, circle) { stroke: var(--c-fg); }
+  .next__link:hover .next__figure img { scale: 1.06; opacity: 1; }
 }
-.next__link:focus-visible .next__figure svg { scale: 1.06; }
-.next__link:focus-visible .next__figure :is(path, circle) { stroke: var(--c-fg); }
+.next__link:focus-visible .next__figure img { scale: 1.06; opacity: 1; }
 .next__meta { display: flex; gap: 0.8rem; align-items: center; }
 .next__go { font-family: var(--f-sans); font-size: 1.25rem; color: var(--c-fg); transition: translate 0.45s var(--ease-out); }
 @media (hover: hover) {
@@ -239,52 +285,29 @@
 /* ==========================================================================
    Method
    ========================================================================== */
-.method-loop { padding-bottom: clamp(2rem, 1.5rem + 2vw, 4rem); }
-.loop { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; }
-/* The knot: a canvas (MethodLoop.tsx) under real text, the stage labels round it, the counter inside and the legend in the corner. */
-.loop__stage { grid-column: 1 / span 5; position: sticky; top: 6rem; aspect-ratio: 1; border: 1px solid var(--c-line); overflow: hidden; }
-.loop__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.loop__label { position: absolute; translate: -50% -50%; font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: 0.04em; color: var(--c-muted); white-space: nowrap; transition: color 0.5s var(--ease-out); }
-.loop__label[data-side='left'] { translate: -100% -50%; }
-.loop__label[data-side='right'] { translate: 0 -50%; }
-.loop__label[data-state='done'] { color: rgb(236 238 234 / 0.72); }
-.loop__label[data-state='now'] { color: var(--c-fg); }
-.loop__center { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.25rem; text-align: center; pointer-events: none; }
-.loop__count { font-size: clamp(3rem, 2rem + 3vw, 5rem); font-weight: 500; letter-spacing: -0.05em; line-height: 0.9; color: var(--c-fg); font-variant-numeric: tabular-nums; }
-.loop__of { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--c-muted); }
-.loop__now { margin-top: 0.5rem; font-size: var(--t-s); font-weight: 500; color: var(--c-fg); }
-/* Which colour is which: the knot's two passes, as in the chapters' two columns. */
-.loop__legend { position: absolute; left: 1rem; bottom: 0.9rem; display: flex; gap: 1.25rem; font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: 0.04em; color: var(--c-muted); }
-.loop__legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
-.loop__legend i { width: 1rem; height: 2px; background: #3d8bff; }
-.loop__legend i[data-hand='ai'] { background: #b6d034; }
-.loop__chapters { grid-column: 7 / span 6; }
-.chapter { min-height: 46svh; display: grid; gap: 1.25rem; align-content: center; padding-block: 2rem; opacity: 0.72; transition: opacity 0.6s var(--ease-out); }
-.chapter[data-active] { opacity: 1; }
-html:not(.motion) .chapter { opacity: 1; min-height: 0; padding-block: 3rem; border-top: 1px solid var(--c-line); }
-.chapter__roles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); }
-/* Phones: a slim sticky strip (stage number, name and five ticks) replaces the ring. */
-.loop__strip {
-  display: none; position: sticky; top: 3.9rem; z-index: 2; grid-column: 1 / -1; align-items: center; gap: 1rem;
-  margin-inline: calc(var(--margin) * -1); padding: 0.85rem var(--margin); background: var(--c-bg); border-bottom: 1px solid var(--c-line);
-  transition: top 0.6s var(--ease-out);
-}
-html.frame-away .loop__strip { top: 0; }
-.loop__strip-n { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--c-muted); }
-.loop__strip-name { font-weight: 500; flex: 1; color: var(--c-fg); }
-.loop__strip-ticks { display: flex; gap: 4px; }
-.loop__strip-ticks i { width: 14px; height: 3px; background: var(--c-line-strong); transition: background-color 0.4s var(--ease-out); }
-.loop__strip-ticks i[data-on] { background: var(--c-fg); }
-.chapter__roles > div { display: grid; gap: 0.6rem; align-content: start; padding-top: 1rem; border-top: 1px solid var(--c-line); }
+/* A closing link under a section's list (home approach). */
+.section-more { margin-top: clamp(2rem, 1.5rem + 1.5vw, 3rem); }
+.space__story { margin-top: 0.5rem; justify-self: start; max-width: 19em; }
 
-.standards { padding-block: clamp(4rem, 3rem + 3vw, 6rem) clamp(5rem, 3rem + 6vw, 9rem); }
-.standards > h2 { max-width: 12em; margin-bottom: clamp(3rem, 2rem + 3vw, 5rem); }
-.standards__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(3rem, 2rem + 3vw, 5rem) var(--gutter); }
-.standard { display: grid; gap: 1rem; align-content: start; padding-top: 1.25rem; border-top: 1px solid var(--c-line); }
-.standard__text { max-width: 30em; }
-.standard__quote { display: grid; gap: 0.75rem; margin-top: 0.5rem; padding-left: 1.25rem; border-left: 1px solid var(--c-line-strong); }
-.standard__quote .paper { font-size: 1.15rem; line-height: 1.45; font-style: italic; }
-.standard__quote figcaption { display: flex; gap: 0.6rem; align-items: baseline; }
+/* The Method page reads like a lab's methods page: section headings on the left, prose and numbered
+   figures on the right. */
+.doc-toc { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1.5rem; margin-top: 0.5rem; padding-top: 1rem; border-top: 1px solid var(--c-line); }
+.doc-toc__label { color: var(--c-muted); }
+.doc { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.25rem; padding-block: clamp(2.5rem, 2rem + 2.5vw, 4.5rem); border-top: 1px solid var(--c-line); scroll-margin-top: 4rem; }
+.doc__title { grid-column: 1 / span 3; }
+.doc__body { grid-column: 4 / span 8; display: grid; gap: 1.15rem; }
+.doc__body > p { max-width: 66ch; font-size: clamp(1.02rem, 0.98rem + 0.2vw, 1.125rem); line-height: 1.65; }
+.doc-figure { display: grid; gap: 0.8rem; margin-block: 1rem 0.75rem; }
+.doc-figure__panels { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); }
+.doc-figure__panel { position: relative; display: block; }
+.doc-figure__panel img { display: block; width: 100%; height: auto; border: 1px solid var(--c-line); transition: border-color 0.4s var(--ease-out); }
+@media (hover: hover) { .doc-figure__panel:hover img { border-color: var(--c-line-strong); } }
+.doc-figure__panel:focus-visible img { border-color: var(--c-fg); }
+.doc-figure__label { position: absolute; left: 0.5rem; top: 0.45rem; padding: 0.1rem 0.4rem; background: var(--c-bg); color: var(--c-fg); }
+.doc-figure figcaption { max-width: 66ch; font-size: var(--t-s); line-height: 1.55; color: var(--c-muted); }
+.doc-figure__n { color: var(--c-fg); font-weight: 500; }
+.doc-figure--film .plate { max-width: 34rem; }
+.doc-end { padding-block: clamp(1rem, 0.5rem + 2vw, 2rem) clamp(5rem, 3rem + 6vw, 9rem); }
 
 /* ==========================================================================
    Lab
@@ -301,6 +324,8 @@ html.frame-away .loop__strip { top: 0; }
 /* A name with a bio carries a dotted rule; pointing at it or focusing it lifts the bio above the name. */
 .member { position: relative; }
 .member__name { font: inherit; letter-spacing: inherit; color: inherit; text-align: left; }
+/* A lead's title, in the small text voice under the name. */
+.member__role { display: block; margin-top: 0.45rem; font-size: var(--t-s); font-weight: 400; letter-spacing: 0; line-height: 1.45; color: var(--c-muted); }
 .member__name--bio { cursor: help; text-decoration: underline dotted var(--c-line-strong); text-decoration-thickness: 1px; text-underline-offset: 0.3em; transition: color 0.3s, text-decoration-color 0.3s; }
 .member__bio {
   position: absolute; left: 0; bottom: calc(100% - 0.35rem); z-index: 6; width: min(24rem, 86vw); padding: 0.85rem 1rem;
@@ -320,12 +345,6 @@ html.frame-away .loop__strip { top: 0; }
 @media (min-width: 601px) { .team__names:not(.team__names--leads) .member:nth-child(2n) .member__bio { left: auto; right: 0; } }
 /* The name being read stays above its bio's shadow. */
 .member:hover .member__name--bio, .member__name--bio:focus { position: relative; z-index: 7; }
-.work { padding-block: clamp(5rem, 3rem + 6vw, 9rem) clamp(3.5rem, 2.5rem + 3vw, 5.5rem); }
-.work > h2 { max-width: 12em; margin-bottom: clamp(3rem, 2rem + 3vw, 5rem); }
-.work__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
-.work__item { display: grid; gap: 1rem; align-content: start; padding-top: 1.25rem; border-top: 1px solid var(--c-line); }
-.work__item:nth-child(2) { margin-top: clamp(1rem, 0.5rem + 1.5vw, 2.5rem); }
-.work__item:nth-child(3) { margin-top: clamp(2rem, 1rem + 3vw, 5rem); }
 .join { display: grid; gap: 1.5rem; padding-block: clamp(3.5rem, 2.5rem + 3vw, 5.5rem) clamp(5rem, 3rem + 7vw, 10rem); border-top: 1px solid var(--c-line); }
 .join .lede { max-width: 34em; }
 .join h2 { font-size: clamp(2.6rem, 1.1rem + 5.2vw, 6rem); line-height: 0.98; }
@@ -354,7 +373,7 @@ html.frame-away .loop__strip { top: 0; }
   .lab-hero__text, .lab-hero__plate { grid-column: 1 / -1; }
   .lab-hero__plate { max-width: 26rem; }
   .next__link > .eyebrow, .next__title, .next__meta { grid-column: 1 / -1; }
-  .next__figure { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 16 / 9; padding: 5%; }
+  .next__figure { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 16 / 9; }
   .statement__copy, .statement__demo { grid-column: 1 / -1; }
   .team__label, .team__names { grid-column: 1 / -1; }
   .team__label { padding-top: 0; }
@@ -366,11 +385,9 @@ html.frame-away .loop__strip { top: 0; }
   .paper-hero__side { position: static; order: -1; }
   .paper-hero__plate { max-width: 34rem; }
   .abstract > h2, .abstract__body, .abstract__cite { grid-column: 1 / -1; }
-  .loop { grid-template-columns: 1fr; }
-  .loop__stage { display: none; }
-  .loop__strip { display: flex; }
-  .loop__chapters { grid-column: 1 / -1; }
-  .chapter { min-height: 48svh; }
+  .approach__head h2, .approach__lede, .space__head, .space__still { grid-column: 1 / -1; }
+  .tech__copy, .tech__still, .tech:nth-child(even) .tech__copy, .tech:nth-child(even) .tech__still { grid-column: 1 / -1; grid-row: auto; }
+  .doc__title, .doc__body { grid-column: 1 / -1; }
   .teaser__n, .teaser__text { grid-column: 1 / -1; }
   /* Stacked, the heading comes first so the count sits right over its line: 25+ researchers, including medalists from. */
   .teaser__text { order: -1; }
@@ -378,37 +395,26 @@ html.frame-away .loop__strip { top: 0; }
   .teaser__olympiads { margin-top: 0; }
   .olympiads { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); border-top: 0; }
   .olympiad, .olympiad:first-child { padding: 1rem 0 1.25rem; border-left: 0; border-top: 1px solid var(--c-line); }
-  .work__list { grid-template-columns: 1fr; }
-  .work__item:nth-child(n) { margin-top: 0; }
 }
 @media (max-width: 960px) and (hover: none), (max-width: 760px) {
   /* Phones: the plate stays at the top of the index while rows scroll under it. */
   .index__stage { position: sticky; top: 3.9rem; z-index: 2; background: var(--c-bg); padding-block: 0.75rem; margin-inline: calc(var(--margin) * -1); padding-inline: var(--margin); border-bottom: 1px solid var(--c-line); transition: top 0.6s var(--ease-out); }
   html.frame-away .index__stage { top: 0; }
-  /* The check runs across the top at full width, with room for two lines and a fixed slot for its
-     state, so the strip keeps one height whichever figure it shows and whether it is checking or holds. */
-  .index__stage .plate { grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr); align-items: center; column-gap: 1rem; row-gap: 0.6rem; }
-  .index__stage .plate__check { display: contents; }
-  .index__stage .plate__check-name { grid-column: 1 / -1; grid-row: 1; line-height: 1.45; min-height: calc(2 * 1.45em); }
-  .index__stage .plate__check-state { flex: none; min-width: 4.6em; text-align: right; }
-  .index__stage .plate__frame { grid-column: 1; grid-row: 2; }
-  .index__stage .plate__caption { display: none; }
-  .index__stage .plate__readings { grid-column: 2; grid-row: 2; grid-template-columns: 1fr; gap: 0.35rem; }
-  .index__stage .plate__reading dd { font-size: 1.05rem; }
-  .index__stage .plate__pause { display: none; }
-  /* The field filters run as one row you can swipe, so the list starts sooner. */
-  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--margin) * -1); padding: 0.25rem var(--margin); margin-block: -0.25rem; }
-  .filters::-webkit-scrollbar { display: none; }
-  .chip { flex: none; }
+  /* The figure shrinks to a thumbnail beside its caption, so the strip stays short. */
+  .index__stage .plate { grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr); align-items: center; column-gap: 1rem; }
+  .index__stage .plate__frame { grid-column: 1; grid-row: 1; }
+  .index__stage .plate__beat { grid-column: 2; grid-row: 1; min-height: 0; border-top: 0; padding-top: 0; gap: 0.45rem; }
+  .index__stage .plate__beat-text { font-size: var(--t-xs); line-height: 1.45; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; overflow: hidden; }
+  .index__stage .plate__caption, .index__stage .plate__pause { display: none; }
   .archive--page { padding-top: 1.25rem; }
 }
+@media (max-width: 960px) {
+  .posters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 600px) {
-  .counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .counts__item:nth-child(3) { padding-left: 0; border-left: 0; }
-  .counts__item:nth-child(n + 3) { border-top: 1px solid var(--c-line); margin-top: 1rem; }
+  .posters { grid-template-columns: 1fr; }
   .row__link { grid-template-columns: 2rem minmax(0, 1fr) 1rem; gap: 0.6rem; }
-  .chapter__roles { grid-template-columns: 1fr; }
-  .standards__list { grid-template-columns: 1fr; }
+  .doc-figure__panels { grid-template-columns: 1fr; }
   .facts > div { grid-template-columns: 5.5rem minmax(0, 1fr); }
   .claim:not(.claim--open) { grid-template-columns: 2rem minmax(0, 1fr); }
   .cite__code { font-size: 0.75rem; padding: 0.9rem 1rem; }

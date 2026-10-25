@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Repetition under a deadline}
+\postfield{Computer science, games and algorithms}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+Two players move a token around a graph. A player may claim a repetition, budgets expire as play goes on,
+and nothing resets on a directed cycle. A monitor watching the game must report its exact value at every
+moment. How much of the history does the monitor have to remember?
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item Reduce a history to a draw boundary in the current strongly connected component, plus one bit for a current claim.
+\item Upper bound: forget counts that cannot reach the repetition threshold $k$ before the budget runs out.
+\item Lower bound: find common continuations that tell apart histories of the same length.
+\end{itemize}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+For arenas with $N \ge 8$ vertices, no memory is needed when $H \le 2k - 2$. Otherwise exact monitoring needs $\Theta\bigl(\min\{N\log k,\ \log\binom{N+S}{S}\}\bigr)$ bits; the cases $k = 2$, $H \in \{3, 4\}$ need exactly one bit.
+\end{progress}
+\begin{progress}
+Randomization with error below $1/2$ does not beat the dense $\Theta(N\log k)$ bound.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Memory needed}
+\includegraphics[width=\linewidth]{repetition-memory.pdf}
+\figcap{Figure 1.}{The curves show the order of the memory needed as the capacity $H$ grows, for $N = 8$ vertices and three thresholds $k$. None is needed up to $H = 2k - 2$ (dotted), and after that it takes $\min\{N\log k,\ \log\binom{N+S}{S}\}$ bits with $S = H - 2k + 2$. Constants are left out.}
+\mdgap
+\mdsec{Memory over capacity and threshold}
+\includegraphics[width=\linewidth]{repetition-map.pdf}
+\figcap{Figure 2.}{This map shows the same bound over capacity $H$ and threshold $k$, for $N = 8$. Below the line $H = 2k - 2$ no memory is needed, and the dashed rows are the three thresholds of Figure 1.}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{In Mantis}
+\mantis{repetition-deadlines.jpg}{617}{The least-fixed-point qualification is essential.}{%
+The record is a counterexample from the manuscript: with $H = 4$, starting from $(q, 1)$, no positional choice wins, but resetting once does.\alsoonrecord The classification in $N$, $H$ and $k$ replaced an earlier worst-case $\Theta(N\log k)$ memory theorem.}
+\begin{progress}
+For clock games with positive costs, all capacity profiles together have at most $N$ breakpoints and $N(N+1)/2$ constant runs, and the quadratic count is sharp.
+\end{progress}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item The memory bounds are proved for arenas with at least eight vertices. What happens on smaller ones?
+\item The history results reach infinite arenas with a well-founded potential for resets. Which other infinite arenas do they cover?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}
