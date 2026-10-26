@@ -6,7 +6,8 @@ cd "$(dirname "$0")"
 out=../public/media/posters
 mkdir -p build "$out"
 if [ "$#" -eq 0 ]; then
-  (cd figures && for f in sidon boundary cofactors repetition logsobolev permanents krvk certified ascent coresets gibbs calibration; do python3 "$f.py"; done)
+  (cd figures && for f in sidon boundary cofactors repetition logsobolev permanents krvk certified ascent coresets gibbs calibration \
+                           primeshell rigidity edgecorr survival lineage ns4a; do python3 "$f.py"; done)
   set -- $(ls *.tex | sed 's/\.tex$//')
 fi
 for name in "$@"; do

@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Pairs of eigenvalues at the edge of a spectrum}
+\postfield{Mathematics, random matrix theory}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+A complex-symmetric random matrix equals its own transpose but is not Hermitian, so its eigenvalues spread over
+the unit disk rather than sitting on a line. At the boundary the mean density falls to zero over the same distance as
+the spacing between eigenvalues, so a shortage of close pairs there could mean that eigenvalues repel each other, or
+only that the density is thinning. We ask how the correlation between a pair behaves across that boundary, how it
+joins the behaviour deep inside, and how it falls away outside the disk.
+
+\vspace{0.16in}
+The ensemble is the one that appears in models of open quantum systems, where the matrix is not Hermitian
+because the system loses energy to its surroundings. Pairs of eigenvalues are the first thing such a model is
+compared against, and the edge is where the comparison is hardest to make.
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item We integrate over the two-by-two block belonging to a chosen pair, which fixes how the pair is normalized.
+\item We average over the remaining eigenvalues with a Gaussian duality, with bounds that hold uniformly in the matrix size.
+\item Symmetry cuts the limiting integral from twenty real variables to eight, and we evaluate its inward and outward limits.
+\item We check the answers against exact identities, numerical quadrature and pair counts from simulated matrices.
+\item We keep every error term uniform in the matrix size, which is what makes the limit at the edge legitimate.
+\end{itemize}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The ensemble}
+\includegraphics[width=\linewidth]{edgecorr-spectrum.pdf}
+\figcap{Figure 1.}{The matrices themselves, drawn for this poster. The eigenvalues of one matrix of size 900 fill the unit disk, and their distances from the centre, pooled over 14 matrices of size 400, show how sharply they stop at its boundary.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+The pair intensity converges, uniformly on compact sets, to a continuous nonnegative limit, written as an
+absolutely convergent integral in eight real variables. As the two eigenvalues come together it behaves like
+$2L(\sigma)|d|^2\log(1/|d|)$.
+\end{progress}
+\begin{progress}
+Deep inside the disk the normalized correlation tends to the bulk expression for this symmetry class, uniformly
+on each annulus of separations.
+\end{progress}
+\begin{progress}
+Outside the disk, $\sigma g$ tends to a fixed profile of the separation, so the correlation decays like
+$1/\sigma$ rather than the $1/\sigma^2$ of the Ginibre ensemble.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{How pairs correlate}
+\includegraphics[width=\linewidth]{edgecorr-pairs.pdf}
+\figcap{Figure 2.}{A correlation of 1 would mean the two eigenvalues sit independently. Deep inside the disk our limit agrees with the known expression for this symmetry class, and the three circles mark the values we compute at the edge itself. Outside the disk the correlation falls like $1/\sigma$, where the Ginibre ensemble, which carries no symmetry constraint, falls like $1/\sigma^2$.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item We do not have the whole limiting point process at the edge, nor the nearest-neighbour law at a fixed positive gap.
+\item Both limits send the matrix size to infinity first. What happens when the size and the window move together?
+\item We establish no crossover away from the Gaussian case or under broken symmetry.
+\item Our simulations agree with the limit to within a few percent, and we have not fitted the finite-size corrections.
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

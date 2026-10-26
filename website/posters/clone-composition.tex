@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Predicting clone composition from relatives}
+\postfield{Biology, single-cell lineage tracing}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+Sequencing a cell destroys it, so nobody can measure the same cell twice. In a lineage-linked assay every cell
+carries an inherited barcode, so the descendants of one ancestor can be recognised as relatives afterwards. We ask when
+measuring some of a clone's cells helps predict the state of its other cells, and what a rule that fails is missing:
+fitting within the study, reuse of a rule from another study, or simply more cells captured.
+
+\vspace{0.16in}
+The practical question underneath is whether measuring a relative is worth what it costs. Every cell spent on
+a relative is a cell not spent elsewhere, so a rule has to beat the simplest alternative, which is to ignore
+the relative and predict the same number for every clone.
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item We score a fixed expression signature in four wells and move a two-bin predictor between the two control wells without retuning it.
+\item In two barcoding data sets, of 657 and 1,801 clones, we predict a clone's composition in one group from the other, comparing a rule fitted here, a rule frozen from the other study, and simply copying the relative's value.
+\item We cap the relatives measured per clone at 1, 3, 5, 10 or all of them, with exact formulas for the expected loss.
+\item We refit on 10 to 400 training clones and keep between 5\% and all of the existing annotation.
+\item We compare every rule against a constant fitted on the same clones, so a gain means the relative carried information the constant did not.
+\end{itemize}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The signature check}
+\includegraphics[width=\linewidth]{lineage-wells.pdf}
+\figcap{Figure 1.}{Where the project started. In four wells we asked how much more often a cell is in the state of interest when a relative is, against cells paired at random. All four gaps fall under the five-point gate we set before looking.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+With one relative measured per clone, a rule fitted within the study beats a constant by 11.9\% and 11.2\% in the
+two directions. Copying the relative's value across has a negative mean gain at every cap.
+\end{progress}
+\begin{progress}
+All 24 frozen configurations carried over from the other study lose to a constant fitted on the target, although
+each of them beats the constant from their own source.
+\end{progress}
+\begin{progress}
+Fitting the rule needs clones. With 10 training clones per fold the mean gain is negative, and it turns positive
+at about 19.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{What calibration buys}
+\includegraphics[width=\linewidth]{lineage-gain.pdf}
+\figcap{Figure 2.}{How much each rule beats predicting a constant, in squared error, as more relatives are measured per clone. A rule fitted within the study helps from one relative onward. Copying the relative's value never helps on average, and rules frozen from the other study span the shaded band.}
+\mdgap
+\mdsec{What would settle it}
+\begin{itemize}
+\item Independent cultures with functional labels, and capture recorded as the experiment runs, rather than a further search for a signature.
+\item Repeated measurements of the same state, with a model of capture, to fix the noise floor.
+\end{itemize}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item Because the original capture is unknown and the cultures are not independent, none of this supports a claim about population risk or about why a treatment works.
+\item We cannot say how much of the remaining error is biological rather than technical.
+\item Nothing here shows an assay on one cell, or where the sequencing effort is best spent.
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

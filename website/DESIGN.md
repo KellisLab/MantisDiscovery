@@ -153,6 +153,11 @@ premium look than the first version, so the system is set like a printed researc
   counts come from homotopy continuation (cached in `out/permanents-counts.npy`, `--recompute` to redo),
   KRvK is solved by retrograde analysis (`krvk.py`, checked against the known 16-move maximum), the
   coreset ridge path and the Gibbs toy assert what they show. Toy examples say so in their captions.
+- Every figure script asserts the numbers it draws, against the paper's reported values where there are any.
+  Two of those assertions caught real errors on 26 Oct: the NS4A charges only reproduce with Biopython's
+  residue-specific terminal pKa values, and the three-state capture bound is a sum of positive parts rather
+  than a maximum. Keep the assertions when editing a script; they are the only check that a figure still
+  says what the paper says.
 - `sh posters/build.sh` runs the figure scripts, builds every poster, and copies each PDF with a 1,152 px
   and a 576 px WebP preview into `public/media/posters/` for the site; `sh posters/build.sh <slug>` rebuilds
   one poster without the figures.
@@ -185,10 +190,17 @@ premium look than the first version, so the system is set like a printed researc
   gyrokinetic model) and one in machine learning (locality in elliptic solvers). The other Zenodo records
   stay off, so a reader meets a few results that hold up rather than a long list. Nothing links to a Zenodo
   search, which would show them all.
-- The other eleven projects appear as work in progress (owner, 25 Oct): one poster each in the Research
+- The lab's unfinished projects appear as work in progress (owner, 25 Oct): one poster each in the Research
   page's "Work in progress" section, linked from the home page. A poster gives the question, the approach,
-  results so far, figures, the project's space in Mantis and open questions. Posters never link to the
-  Zenodo records.
+  results so far, figures and open questions. Posters never link to the Zenodo records.
+- There are seventeen posters. The first eleven are the other Zenodo projects, and each has a panel showing
+  its space in Mantis, taken from the recordings. The six added on 26 Oct (dissociated irreducibles, integer
+  optima, edge pair correlations, survival state bounds, clone composition, NS4A candidates) come from papers
+  the owner supplied with no Mantis recording, so they carry no Mantis panel. They use the space for a second
+  figure and, on the biology ones, a "What would settle it" section taken from the paper's own next steps.
+  The NS4A poster states in its results and its open questions that nothing was tested in a laboratory.
+  The lineage-tracing manuscript calls itself a private draft; the owner, as its author, approved the poster
+  (26 Oct).
 - Figure captions say what the beat shows in one or two plain sentences, with the paper's numbers. A
   figure only claims what the paper or its records say; schematic parts are named as such in the code.
 - Team: Pranava Kumar is founder and lead; Shrikrishna Ramesh is director of biology and physics and Sushaan
