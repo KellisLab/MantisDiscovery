@@ -54,9 +54,10 @@ from the Actions tab.
 - `src/app/globals.css`, `src/styles/`: tokens and styles.
 - `src/fonts/`: MantisSans and MantisMono (the Mantis brand cuts of Inter and Space Mono), plus subsets of
   STIX Two and Inter cut by `node scripts/stix-subset.mjs`. Re-run it when the content gains new symbols.
-- `posters/`: the work-in-progress posters, one LuaLaTeX file per project with its figures in
-  `posters/figures/`. `sh posters/build.sh` builds them into `public/media/posters/` (PDF and previews). It
-  needs TeX Live with LuaLaTeX, Python 3 with matplotlib, numpy and scipy, poppler (`pdftoppm`) and `cwebp`.
+- `posters/`: the seventeen work-in-progress posters, one LuaLaTeX file per project with its figures in
+  `posters/figures/`. `sh posters/build.sh` builds them all into `public/media/posters/` (PDF and previews),
+  and `sh posters/build.sh <slug>` rebuilds one without regenerating the figures. It needs TeX Live with
+  LuaLaTeX, Python 3 with matplotlib, numpy and scipy, poppler (`pdftoppm`) and `cwebp`.
 - `public/`: the olympiad logos, the figure films, the walkthrough film, the Mantis demo recording and stills,
   the posters and the Open Graph image. The Mantis mark is in `src/brand/`, where the CSS bundle picks it up.
 

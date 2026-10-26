@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Ranking LIR-like candidates in a viral protein}
+\postfield{Biology, virology}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+Orthoflaviviruses, the genus that includes West Nile, Japanese encephalitis, Powassan, dengue and Zika, carry a
+small membrane protein called NS4A that helps build the membranes where the virus copies its genome. Human cells attach
+cargo to autophagy, the pathway that digests cell contents, through six ATG8 proteins, and partner proteins dock onto
+them with a short sequence whose core is an aromatic residue, two spacers and a bulky one. NS4A keeps appearing in
+autophagy biology, yet nobody has shown that it binds an ATG8 protein. We ask which sequences deserve to be tested
+first.
+
+\vspace{0.16in}
+A sequence earns the name only after two things are shown: that it binds one of these proteins directly, and
+that disrupting it changes what the virus does in a cell. Neither has been shown for NS4A, so the useful output
+is an ordering, with the reasons attached, for the experiments that would decide it.
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item We audited the literature and the sequence databases up to 22 October 2026, as a structured search rather than a registered review.
+\item We kept only cores lying in the first 45 residues, clear of an annotated membrane segment, facing the cytosol, and sitting in an acidic window.
+\item We added three measures for each window: its isoelectric point, its net charge at pH 7, and whether it matches the stricter motif that favours one ATG8 subfamily.
+\item We ran no experiments. We propose peptides against all six human ATG8 proteins as the first test.
+\item We sort the surviving windows into tiers, by how much evidence stands behind each and what a first experiment would learn from it.
+\end{itemize}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The four candidates}
+\includegraphics[width=\linewidth]{ns4a-windows.pdf}
+\figcap{Figure 1.}{The windows that survive the filter, with the net charge we recompute from each sequence. All four are acidic, which is what the filter asks for. Only one of the four cores, FIEV, matches the stricter motif, which makes it the natural candidate for a test against one ATG8 subfamily.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+No study shows that NS4A from any of these viruses binds a purified ATG8 protein, nor that such binding disappears
+when the core is disrupted. Everything below ranks candidates for experiments. It is not a finding of binding.
+\end{progress}
+\begin{progress}
+The WEAL window of West Nile and Kunjin virus ranks first as a candidate against the whole ATG8 family. It carries
+a legacy score of 18 and appears in several listed accessions.
+\end{progress}
+\begin{progress}
+The FIEV window of the Japanese encephalitis and Murray Valley encephalitis subset is the one exact match to the
+subfamily motif. The related FFEV and FLEV windows do not match, so they make a natural control panel.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The control panel}
+\includegraphics[width=\linewidth]{ns4a-panel.pdf}
+\figcap{Figure 2.}{The candidates beside the near relatives we name. All seven are LIR cores, and FIEV alone matches the stricter motif, so the others serve as controls in the same experiment.}
+\mdgap
+\mdsec{What would settle it}
+\begin{itemize}
+\item Peptides from each window against all six human ATG8 proteins, beside core mutants and scrambled controls.
+\item The same comparison with the N-terminal domain in a membrane, since a motif exposed in solution may be covered on one.
+\end{itemize}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item Nothing here was tested in a laboratory. Every result is computational or drawn from the literature.
+\item The charges describe isolated windows, so they say nothing about the membrane surface or the whole protein.
+\item A core facing the cytosol may still be unavailable, because this part of NS4A folds on lipids.
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Periods and rounding in integer optimization}
+\postfield{Mathematics, number theory and optimization}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+Minimize a homogeneous polynomial $f$ of degree $d \ge 2$ with rational coefficients over the nonnegative
+integer vectors $z$ with $Az = nb$, and call the minimum $m_f(n)$. If $v$ minimizes $f$ over the real relaxation, the
+real minimum at scale $n$ is exactly $n^d f(v)$. We ask when $m_f(n)$ eventually agrees with a polynomial in $n$ on
+each residue class, what the correction looks like when it does not, and how often rounding the real optimum to a
+nearby integer point is exact.
+
+\vspace{0.16in}
+The same question arises in experimental design, where a design has to be realised in whole observations and
+the natural candidate is the real optimum rounded off. Whether that rounding is right, and how the answer
+depends on the scale, is the practical form of the question.
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item We show that integer optima stay within bounded distance of $nv$ when $f$ grows quadratically away from $v$.
+\item We read the offsets as a point rotating on a torus, so the leading correction is a nearest-lattice function of that rotation.
+\item We use the Subspace Theorem to bound how often an algebraic rotation lands near a wall where the answer switches.
+\item We solve explicit families exactly, among them two-generator cubics through Pell equations.
+\item We extend the classification to minima that sit on a face, where the period comes from the lattice of that face.
+\item We verify the explicit families by exhaustive search at small scales before trusting the general argument.
+\end{itemize}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{Nine classes, nine lines}
+\includegraphics[width=\linewidth]{rigidity-classes.pdf}
+\figcap{Figure 1.}{What the classification says, in one case. Minimizing $x^3+y^3$ under $x+4y=n$ has a rational real optimum of period 9, and the minimum then sits exactly on a straight line in $n$ within each residue class.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+Suppose the feasible set is compact, $f$ has a unique minimizer $v$ with every coordinate positive, and the
+Hessian at $v$ is positive definite on the kernel of $A$. Then $m_f$ is eventually quasipolynomial exactly when $v$
+is rational, and its least period is the smallest $M$ with $Mv$ integral.
+\end{progress}
+\begin{progress}
+Under the same hypotheses the scaled corrections converge. The limit takes finitely many values when $v$ is
+rational and is a continuous law when $v$ is irrational.
+\end{progress}
+\begin{progress}
+Choosing by the original cost among the minimizers of the quadratic term is exact for all $n \le N$ with at
+most $O_\varepsilon(N^\varepsilon)$ exceptions, and at most $O(\log N)$ of them when the coordinates of $v$ generate
+a quadratic field.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{When rounding fails}
+\includegraphics[width=\linewidth]{rigidity-rounding.pdf}
+\figcap{Figure 2.}{Rounding the real optimum fails rarely, and the failures are exactly the terms of two recurrences. For $x^3+y^3$ under $2x+3y=n$ we found every failure up to $n = 20{,}000$ by exhaustive search. Each one costs exactly 1, and the count follows the predicted logarithmic rate.}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item We assume one real minimizer. What happens when the minimum is attained at several points?
+\item Curvature cannot be dropped. We give polynomials with a unique rational minimizer whose integer minima are not eventually quasipolynomial, and we have no classification there.
+\item The constants are ineffective, and we have no polynomial-time algorithm for the version on a face.
+\item We count the exceptions exactly only for two generators. What is the sharp count in higher dimensions?
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

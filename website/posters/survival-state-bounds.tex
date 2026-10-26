@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{mdposter}
+\posttitle{Cell-state bounds when treatment kills cells}
+\postfield{Biology, single-cell statistics}
+
+\begin{document}
+\begin{mdposter}
+
+\posterbox{name=c1, column=1, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{The question}
+When a treatment kills some cells, the survivors can show a different mix of states even if not one cell changed
+state, because the treatment removed some kinds more than others. Measurement adds a second distortion, since the
+chance that a surviving cell is captured and sequenced depends on its state. We ask for the smallest fraction of
+treated survivors whose state must really have changed, given both measured mixes, how many cells survived, and a cap
+on how much capture can vary between states.
+
+\vspace{0.16in}
+A bound of this kind says what the measurements force, whatever happened to the cells that are no longer there
+to be measured. It is therefore a floor and not an estimate: when it is positive, no account built on selective
+death and uneven capture alone can explain the data.
+\mdgap
+\mdsec{How we are approaching it}
+\begin{itemize}
+\item We write the quantity as a survival-weighted divergence and tie both arms to one capture pattern.
+\item We prove that a minimizer lies on a bounded number of edges of the capture box, which gives an exact solver in rational arithmetic.
+\item We bound the drift in capture between the two arms and work out the survival level at which selective death alone explains the data.
+\item We test the bound on 6,400 synthetic cases, 5,155 tracked rat cortical neurons and 213 held-out microbial mixtures.
+\item We carry the sampling and survival uncertainty through into a conservative version of the bound.
+\end{itemize}
+\end{mdcol}
+}
+
+\posterbox{name=c2, column=2, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{A worked case}
+\includegraphics[width=\linewidth]{survival-bound.pdf}
+\figcap{Figure 1.}{Two states, with the treated mix shifted toward the first. If both arms share one capture pattern, at least 17.31\% of treated survivors must have changed state, which we compute exactly as $9/52$. If each arm may be captured differently, the two distortions cancel and the bound is empty.}
+\mdgap
+\mdsec{What we have so far}
+\begin{progress}
+In the worked case the bound is exactly $9/52$ under a shared capture pattern and zero when the two arms may be
+captured independently. The two assumptions give entirely different conclusions.
+\end{progress}
+\begin{progress}
+With 5,000 cells per arm, every setting whose shift was concentrated in a few states gave a positive bound in all
+100 repetitions. Every setting with a shift spread across states gave nothing, despite true minima between 5.4\% and
+7.9\%.
+\end{progress}
+\begin{progress}
+All 36 neuronal bounds computed from endpoints alone were zero, even though the tracked neurons did change
+morphology. A zero bound is not evidence that nothing changed.
+\end{progress}
+\end{mdcol}
+}
+
+\posterbox{name=c3, column=3, between=top and bottom}{%
+\begin{mdcol}
+\mdsec{When the bound goes empty}
+\includegraphics[width=\linewidth]{survival-death.pdf}
+\figcap{Figure 2.}{The same case as the survival rate varies. The more cells the treatment killed, the more of the shift selective death accounts for, and below about 0.62 survivors per control cell the mixes prove nothing.}
+\mdgap
+\mdsec{What would settle it}
+\begin{itemize}
+\item A study that measures viable yields and supports its capture constraints from the biology, so the bound can be checked against a known answer.
+\item Repeated measurements of the same state, separating what the assay cannot see from what did not change.
+\end{itemize}
+\mdgap
+\mdsec{Open questions}
+\begin{itemize}
+\item The sharp bound when capture may differ between the arms is still open, and so is a confidence procedure for the point where it breaks down.
+\item The method covers cells that do not divide, with states in categories and a measured survival rate.
+\item Our simulations leave out biological replicates, the choice of labels, and estimated capture parameters.
+\end{itemize}
+\end{mdcol}
+}
+
+\end{mdposter}
+\end{document}

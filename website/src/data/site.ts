@@ -521,6 +521,12 @@ export const posters: Poster[] = [
   { slug: 'calibration-limits', title: 'What calibration tells mixed-precision quantization', field: 'Machine learning', area: 'Model compression' },
   { slug: 'certified-compression', title: 'Certified compression of endgame tables', field: 'Computer science', area: 'Games and verification' },
   { slug: 'repetition-deadlines', title: 'Repetition under a deadline', field: 'Computer science', area: 'Games and algorithms' },
+  { slug: 'dissociated-irreducibles', title: 'Dissociated sets of irreducible polynomials', field: 'Mathematics', area: 'Number theory' },
+  { slug: 'integer-optima-periods', title: 'Periods and rounding in integer optimization', field: 'Mathematics', area: 'Number theory and optimization' },
+  { slug: 'edge-pair-correlations', title: 'Pairs of eigenvalues at the edge of a spectrum', field: 'Mathematics', area: 'Random matrix theory' },
+  { slug: 'survival-state-bounds', title: 'Cell-state bounds when treatment kills cells', field: 'Biology', area: 'Single-cell statistics' },
+  { slug: 'clone-composition', title: 'Predicting clone composition from relatives', field: 'Biology', area: 'Single-cell lineage tracing' },
+  { slug: 'ns4a-candidates', title: 'Ranking LIR-like candidates in a viral protein', field: 'Biology', area: 'Virology' },
 ];
 /** A poster's PDF, and its preview at 1152 px wide ('lg') or 576 px ('sm'). */
 export const posterPdf = (p: Poster) => asset(`/media/posters/${p.slug}.pdf`);
