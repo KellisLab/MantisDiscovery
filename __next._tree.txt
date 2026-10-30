@@ -2,4 +2,4 @@
 :HL["/MantisDiscovery/_next/static/media/MantisSans.p.1ekrc-5el2gdb.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/MantisDiscovery/brand/csail.svg","image"]
 1:[["children",{"s":"__PAGE__","h":128}]]
-0:{"b":"cYLCwrB3fQ2810JnBTil5","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
+0:{"b":"PNeji67YY-SnVix91YIIa","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
