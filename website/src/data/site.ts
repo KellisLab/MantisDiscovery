@@ -282,7 +282,7 @@ export const team: { leads: Member[]; members: Member[] } = {
   leads: [
     { name: 'Pranava Kumar', role: 'Founder and lead' },
     { name: 'Sushaan Kandukoori', role: 'Director of mathematics and machine learning', bio: 'Builds the AI that helps run the lab’s research in mathematics and machine learning.' },
-    { name: 'Shrikrishna Ramesh', role: 'Director of biology and physics' },
+    { name: 'Shrikrishna Ramesh', role: 'Director of chemistry and biology' },
   ],
   members: [
     { name: 'Abhay Varun Chittim Madhusudan', bio: 'Quantum robotics research assistant at Portland State University, using quantum fuzzy logic for balance and decisions in legged robots. Also programs autonomous robots for FIRST Tech Challenge.' },
