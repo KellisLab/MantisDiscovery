@@ -203,8 +203,9 @@ premium look than the first version, so the system is set like a printed researc
   (26 Oct).
 - Figure captions say what the beat shows in one or two plain sentences, with the paper's numbers. A
   figure only claims what the paper or its records say; schematic parts are named as such in the code.
-- Team: Pranava Kumar is founder and lead; Shrikrishna Ramesh is director of biology and physics and Sushaan
-  Kandukoori director of mathematics and machine learning, titles shown under their names. Then the owner's
+- Team: Pranava Kumar is founder and lead, then Sushaan Kandukoori, director of mathematics and machine
+  learning, then Shrikrishna Ramesh, director of biology and physics (owner's order, 30 Oct), with titles shown
+  under their names. Then the owner's
   list plus everyone who answered the lab's sign-up form. Bios come only from each
   person's research answer, with no contact details.
 - Olympiad logos are the organizations' official files turned white (`public/brand/olympiads`).
