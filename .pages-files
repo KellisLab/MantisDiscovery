@@ -4,9 +4,6 @@ __next.__PAGE__.txt
 __next._full.txt
 __next._index.txt
 __next._tree.txt
-_next/static/cMI6F8k6sQTgu0KdYdPoJ/_buildManifest.js
-_next/static/cMI6F8k6sQTgu0KdYdPoJ/_clientMiddlewareManifest.js
-_next/static/cMI6F8k6sQTgu0KdYdPoJ/_ssgManifest.js
 _next/static/chunks/0cz1d0mv5g_q7.js
 _next/static/chunks/0hn4g2xt_fjli.js
 _next/static/chunks/0umf92h1sb77c.js
@@ -29,6 +26,9 @@ _next/static/media/inter_extra.26r9d1docncdd.woff2
 _next/static/media/mantis-mark.2cuktuyqbrqal.png
 _next/static/media/stix_two_text_400_italic-s.3l2y7yhdffpy0.woff2
 _next/static/media/stix_two_text_400_normal-s.2lrykeheda4f2.woff2
+_next/static/pcM9U1OwCUVF2t2bNPQwv/_buildManifest.js
+_next/static/pcM9U1OwCUVF2t2bNPQwv/_clientMiddlewareManifest.js
+_next/static/pcM9U1OwCUVF2t2bNPQwv/_ssgManifest.js
 _not-found/__next._full.txt
 _not-found/__next._index.txt
 _not-found/__next._not-found.__PAGE__.txt
