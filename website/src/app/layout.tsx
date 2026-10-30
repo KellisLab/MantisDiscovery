@@ -33,7 +33,7 @@ const jsonLd = {
   url: site.url,
   email: `mailto:${site.email}`,
   description: site.description,
-  knowsAbout: ['Mathematics', 'Machine learning', 'Physics', 'Biology', 'AI for science'],
+  knowsAbout: ['Mathematics', 'Machine learning', 'Physics', 'Chemistry', 'Biology', 'AI for science'],
   subjectOf: papers.map((p) => ({ '@type': 'ScholarlyArticle', name: p.title, url: `https://doi.org/${p.doi}` })),
 };
 

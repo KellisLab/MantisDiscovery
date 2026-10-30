@@ -181,10 +181,11 @@ premium look than the first version, so the system is set like a printed researc
   re-voicing the film.
 - The human role stays implicit: never "human-led", never "AI alone". The lab is not described as a student
   group (it includes PhD students). Say "Research" and "papers", not "preprints".
-- The hero is the lab's name and two plain sentences: "We work in mathematics, machine learning, physics
-  and biology. We do our research in Mantis, a knowledge platform built at MIT CSAIL." No slogan, and the
-  site never says the lab automates discovery. The Open Graph image (`public/og.png`) is a capture of the
-  hero, so re-shoot it when the hero changes.
+- The hero is the lab's name and two plain sentences: "We work in mathematics, machine learning, physics,
+  chemistry and biology. We do our research in Mantis, a knowledge platform built at MIT CSAIL." No
+  slogan, and the site never says the lab automates discovery. The Open Graph image (`public/og.png`) is a
+  capture of the hero, so re-shoot it when the hero changes. Chemistry joined the list on 29 Oct, when
+  Shrikrishna Ramesh became director of chemistry and biology.
 - No labels, captions or claim card on the hero torus.
 - Four papers, not fifteen: two in mathematics (opaque sets, clique minors), one in physics (the zonal
   gyrokinetic model) and one in machine learning (locality in elliptic solvers). The other Zenodo records
@@ -204,7 +205,7 @@ premium look than the first version, so the system is set like a printed researc
 - Figure captions say what the beat shows in one or two plain sentences, with the paper's numbers. A
   figure only claims what the paper or its records say; schematic parts are named as such in the code.
 - Team: Pranava Kumar is founder and lead, then Sushaan Kandukoori, director of mathematics and machine
-  learning, then Shrikrishna Ramesh, director of chemistry and biology (owner's order and title, 30 Oct), with titles shown
+  learning, then Shrikrishna Ramesh, director of chemistry and biology (owner's order and title, 29 Oct), with titles shown
   under their names. Then the owner's
   list plus everyone who answered the lab's sign-up form. Bios come only from each
   person's research answer, with no contact details.

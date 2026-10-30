@@ -79,7 +79,7 @@ export const site = {
   // GitHub Pages address, or a custom domain once one is set up.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kellislab.github.io/MantisDiscovery',
   description:
-    'Mantis Discovery is a research group at MIT CSAIL. We use AI and the Mantis platform to work on open problems in mathematics, machine learning, physics and biology.',
+    'Mantis Discovery is a research group at MIT CSAIL. We use AI and the Mantis platform to work on open problems in mathematics, machine learning, physics, chemistry and biology.',
   email: 'pranavak@mit.edu',
   license: 'CC BY 4.0',
 };
@@ -99,7 +99,7 @@ export const nav = [
 export const home = {
   eyebrow: 'Research initiative',
   title: 'Mantis Discovery',
-  lede: 'We work in mathematics, machine learning, physics and biology. We do our research in Mantis, a knowledge platform built at MIT CSAIL.',
+  lede: 'We work in mathematics, machine learning, physics, chemistry and biology. We do our research in Mantis, a knowledge platform built at MIT CSAIL.',
   actions: [
     { href: '/research/', label: 'Read the papers' },
     { href: '/method/', label: 'How we work' },
@@ -255,7 +255,7 @@ export const lab = {
   lede:
     'Mantis Discovery is a research group within Mantis, at MIT CSAIL. We use AI throughout our research and publish our results as papers on Zenodo.',
   researchers: '25+',
-  researchersText: 'Researchers in mathematics, machine learning, physics and biology work with us. They include PhD students and olympiad medalists.',
+  researchersText: 'Researchers in mathematics, machine learning, physics, chemistry and biology work with us. They include PhD students and olympiad medalists.',
   joinTitle: 'Joining the lab',
   joinText:
     'If you’re a student who wants to do serious research with AI, or a researcher who’d like to try this in your own field, write to us and tell us what you work on.',
