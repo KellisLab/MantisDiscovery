@@ -1,0 +1,7 @@
+:HL["/MantisDiscovery/_next/static/chunks/0vy9p85t3slo2.css","style"]
+:HL["/MantisDiscovery/_next/static/media/MantisSans.p.1ekrc-5el2gdb.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/MantisDiscovery/brand/csail.svg","image"]
+3:[["children",{"s":"__PAGE__","h":160}]]
+2:[["children",{"s":{"n":"slug","t":"d","k":"clique-minors-independence-two","s":[]},"h":65632,"c":"$Q3"}]]
+1:[["children",{"s":"research","h":131136,"c":"$Q2"}]]
+0:{"b":"2Oxb5NkLEIB53Gwg2M5z1","t":{"t":{"s":"","h":131088,"c":"$Q1"}}}

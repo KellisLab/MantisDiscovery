@@ -1,0 +1,61 @@
+WEBVTT
+
+1
+00:00:00.150 --> 00:00:04.122
+AI can now write proofs faster than mathematicians can read them.
+
+2
+00:00:04.172 --> 00:00:08.090
+Terence Tao notes that the false starts behind a proof help others understand it,
+
+3
+00:00:08.140 --> 00:00:11.311
+and that AI tools are opaque about their own process.
+
+4
+00:00:11.511 --> 00:00:16.675
+Mantis keeps the process. Every attempt, failure and fix is a record you can open.
+
+5
+00:00:16.795 --> 00:00:23.978
+This paper tackles Hadwiger's conjecture: a network that needs k colors should shrink to k points that all touch.
+
+6
+00:00:24.158 --> 00:00:27.005
+An earlier draft claimed the gap was at most eight.
+
+7
+00:00:27.075 --> 00:00:30.289
+An audit caught an inequality used backwards.
+
+8
+00:00:30.769 --> 00:00:34.811
+Rewrites cut the gap to two, and the dead end stays on the record.
+
+9
+00:00:35.011 --> 00:00:41.951
+The proof rests on a computer check: fifty-six groups of points, and all 1,540 pairs touch.
+
+10
+00:00:42.101 --> 00:00:44.867
+Swap two points, and the checker catches it.
+
+11
+00:00:45.667 --> 00:00:50.839
+Next, a century-old puzzle: the shortest fence that blocks every line through a square.
+
+12
+00:00:50.889 --> 00:00:58.031
+One tempting rule said deleting a point from a shortest network saves at least its distance to the rest. A triangle breaks it.
+
+13
+00:00:58.181 --> 00:01:04.517
+The paper proves two sharp bounds, backed by exact certificates. The square itself is still open.
+
+14
+00:01:04.717 --> 00:01:09.539
+Across fifteen papers, counterexamples, failed routes and fixes are kept and labeled.
+
+15
+00:01:09.939 --> 00:01:12.802
+Mantis. Keep the work behind the result.

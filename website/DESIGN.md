@@ -219,6 +219,9 @@ premium look than the first version, so the system is set like a printed researc
 
 ## Notes for maintainers
 
+- GitHub Pages is set to Deploy from a branch (`main`, `/`), so the publish workflow commits the built site to the
+  repository root with `.nojekyll` (see the README's Deploy section). Only a repository admin can switch it to
+  GitHub Actions; sushaan-k has write access.
 - The site is a static export (`output: 'export'`) that GitHub Pages serves from `/MantisDiscovery/`. Point
   at files in `public/` through `asset()` (`src/data/site.ts`) and at pages through `next/link`, which add
   that sub-path; engine code compares routes with `routePath()`. CSS that needs an image imports it from

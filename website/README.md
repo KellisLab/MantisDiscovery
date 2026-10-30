@@ -24,16 +24,22 @@ To look at the production build, serve `out/` with any static file server, for e
 
 ## Deploy
 
-GitHub Pages publishes the site from `.github/workflows/pages.yml` at the root of this repository. Every
-push to `main` that touches `website/` builds the static export and deploys it; it can also be run by hand
-from the Actions tab.
+GitHub Pages serves the site from the root of `main` (Settings → Pages: Deploy from a branch, `main`, `/`).
+That setting serves files as they are and cannot run the build, so `.github/workflows/pages.yml` builds the
+static export and commits it to the repository root. It runs on every push to `main` that touches `website/`,
+and it can also be run by hand from the Actions tab.
 
-- One-time setup, by a repository admin: Settings → Pages → Build and deployment → Source: **GitHub
-  Actions**.
-- The workflow passes the Pages address and its sub-path (`/MantisDiscovery`) to the build. Canonical URLs,
-  Open Graph, the sitemap and robots.txt read the address from `site.url` in `src/data/site.ts`.
-- For a custom domain, set it under Settings → Pages. The workflow picks up the new address and drops the
-  sub-path on its own.
+- The root also holds `.nojekyll`, which stops GitHub from running Jekyll (Jekyll would drop the `_next/`
+  folder), and `.pages-files`, the list of files the last publish wrote, so a page that is removed from the
+  site leaves the root too. The generated files at the root are rewritten on every publish, so don't edit
+  them by hand.
+- The workflow builds with the sub-path `/MantisDiscovery` and the address
+  `https://kellislab.github.io/MantisDiscovery`. Canonical URLs, Open Graph, the sitemap and robots.txt read
+  the address from `site.url` in `src/data/site.ts`.
+- For a custom domain, set it under Settings → Pages, and in the workflow set `PAGES_BASE_PATH` to an empty
+  string and `NEXT_PUBLIC_SITE_URL` to the domain.
+- If a repository admin switches Pages to **GitHub Actions**, the workflow can upload `website/out` as a
+  Pages artifact instead, and the generated files at the root can be deleted.
 - Any other static host works too: build with `npm run build` and publish `out/`.
 
 ## Where things live
