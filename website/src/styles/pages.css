@@ -319,8 +319,10 @@
 .team__label { grid-column: 1 / span 3; padding-top: 0.9rem; font-size: var(--t-s); font-weight: 450; color: var(--c-muted); }
 .team__names { grid-column: 4 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
 .team__names li { padding-block: 0.9rem; border-bottom: 1px solid var(--c-line); font-size: var(--t-m); }
-.team__names--leads { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.team__names--leads li { font-size: var(--t-l); font-weight: 500; letter-spacing: -0.02em; border-bottom: 0; }
+/* The lead's name is the largest, then the subject editors', then the researchers'. */
+.team__names--lead { grid-template-columns: minmax(0, 1fr); }
+.team__names--lead li { font-size: var(--t-xl); font-weight: 500; letter-spacing: -0.035em; line-height: 1.05; border-bottom: 0; }
+.team__names--editors li { font-size: var(--t-l); font-weight: 500; letter-spacing: -0.02em; border-bottom: 0; }
 /* A name with a bio carries a dotted rule; pointing at it or focusing it lifts the bio above the name. */
 .member { position: relative; }
 .member__name { font: inherit; letter-spacing: inherit; color: inherit; text-align: left; }
@@ -340,9 +342,7 @@
 }
 .member__name--bio:focus + .member__bio { opacity: 1; visibility: visible; translate: 0 0; transition-delay: 0s; }
 /* In a grid's last column a bio lines up with the name's right edge, so it never runs off the page. */
-@media (min-width: 961px) { .team__names--leads .member:nth-child(3n) .member__bio { left: auto; right: 0; } }
-@media (min-width: 601px) and (max-width: 960px) { .team__names--leads .member:nth-child(2n) .member__bio { left: auto; right: 0; } }
-@media (min-width: 601px) { .team__names:not(.team__names--leads) .member:nth-child(2n) .member__bio { left: auto; right: 0; } }
+@media (min-width: 601px) { .team__names .member:nth-child(2n) .member__bio { left: auto; right: 0; } }
 /* The name being read stays above its bio's shadow. */
 .member:hover .member__name--bio, .member__name--bio:focus { position: relative; z-index: 7; }
 .join { display: grid; gap: 1.5rem; padding-block: clamp(3.5rem, 2.5rem + 3vw, 5.5rem) clamp(5rem, 3rem + 7vw, 10rem); border-top: 1px solid var(--c-line); }
@@ -377,7 +377,6 @@
   .statement__copy, .statement__demo { grid-column: 1 / -1; }
   .team__label, .team__names { grid-column: 1 / -1; }
   .team__label { padding-top: 0; }
-  .team__names--leads { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .archive__head h2, .archive__lede { grid-column: 1 / -1; }
   .index { grid-template-columns: 1fr; }
   .index__stage, .index__body { grid-column: 1 / -1; }

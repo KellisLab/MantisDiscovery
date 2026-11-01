@@ -44,9 +44,15 @@ export default function Lab() {
       <section id="team" className="team wrap" aria-labelledby="team-title">
         <h2 id="team-title" className="h-xl" data-split="lines">Team</h2>
         <div className="team__group">
-          <h3 className="team__label">Leads</h3>
-          <ul className="team__names team__names--leads">
-            {team.leads.map((m) => <Member key={m.name} m={m} />)}
+          <h3 className="team__label">Lead</h3>
+          <ul className="team__names team__names--lead">
+            <Member m={team.lead} />
+          </ul>
+        </div>
+        <div className="team__group">
+          <h3 className="team__label">Subject editors</h3>
+          <ul className="team__names team__names--editors">
+            {team.editors.map((m) => <Member key={m.name} m={m} />)}
           </ul>
         </div>
         <div className="team__group">

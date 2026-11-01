@@ -273,15 +273,16 @@ export const olympiads = [
   { name: 'USACO', full: 'USA Computing Olympiad', logo: asset('/brand/olympiads/usaco.png'), alt: 'USA Computing Olympiad', w: 974, h: 120 },
 ];
 
-// The team, listed on the Lab page. Leads first; everyone else alphabetically by first name. Bios are
-// short paraphrases of what each person wrote about their own research on the lab's application form
-// (22 Oct); people without one have not sent theirs yet.
-/** `role` is a lead's title, shown under the name; `bio` opens on hover or focus. */
+// The team, listed on the Lab page. The lead first, then the subject editors, then everyone else
+// alphabetically by first name. The lead's bio is the owner's own (1 Nov); the researchers' bios are short
+// paraphrases of what each person wrote about their own research on the lab's application form (22 Oct),
+// and people without one have not sent theirs yet.
+/** `role` is a title, shown under the name; `bio` opens on hover or focus. */
 export type Member = { name: string; role?: string; bio?: string };
-export const team: { leads: Member[]; members: Member[] } = {
-  leads: [
-    { name: 'Pranava Kumar', role: 'Founder and lead' },
-    { name: 'Sushaan Kandukoori', role: 'Director of mathematics and machine learning', bio: 'Builds the AI that helps run the lab’s research in mathematics and machine learning.' },
+export const team: { lead: Member; editors: Member[]; members: Member[] } = {
+  lead: { name: 'Pranava Kumar', role: 'Founder and lead', bio: 'Organizes all of the lab’s meetings, supervises its research and edits its papers.' },
+  editors: [
+    { name: 'Sushaan Kandukoori', role: 'Director of mathematics and machine learning' },
     { name: 'Shrikrishna Ramesh', role: 'Director of chemistry and biology' },
   ],
   members: [

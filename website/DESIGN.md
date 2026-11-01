@@ -204,19 +204,19 @@ premium look than the first version, so the system is set like a printed researc
   (26 Oct).
 - Figure captions say what the beat shows in one or two plain sentences, with the paper's numbers. A
   figure only claims what the paper or its records say; schematic parts are named as such in the code.
-- Team: Pranava Kumar is founder and lead, then Sushaan Kandukoori, director of mathematics and machine
-  learning, then Shrikrishna Ramesh, director of chemistry and biology (owner's order and title, 29 Oct), with titles shown
-  under their names. Then the owner's
-  list plus everyone who answered the lab's sign-up form. Bios come only from each
-  person's research answer, with no contact details.
+- Team: under Lead, Pranava Kumar, founder and lead, with a bio on what the lead does (owner, 1 Nov). Under
+  Subject editors, Sushaan Kandukoori, director of mathematics and machine learning, then Shrikrishna Ramesh,
+  director of chemistry and biology, with no bios (owner's order and titles, 29 Oct and 1 Nov). Titles are
+  shown under the names, and the lead's name is set larger than the editors'. Then the owner's list plus
+  everyone who answered the lab's sign-up form. Researchers' bios come only from each person's research
+  answer, with no contact details.
 - Olympiad logos are the organizations' official files turned white (`public/brand/olympiads`).
 - The MIT CSAIL mark (`public/brand/csail.svg`, the official file from csail.mit.edu, its own colours) sits in the
   hero beside "Research initiative" and in the footer, linked to csail.mit.edu.
 
 ## Open items
 
-- Abhijay Gangarapu, Devom Brahmbhatt, Krish and Taksh Kothari have no bio yet, and two of the leads' bios are a
-  single line.
+- Abhijay Gangarapu, Devom Brahmbhatt, Krish and Taksh Kothari have no bio yet.
 - The footer's "part of Mantis" wording is still to confirm.
 
 ## Notes for maintainers
