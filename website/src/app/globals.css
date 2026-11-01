@@ -54,7 +54,7 @@
   --gutter: clamp(1rem, 0.65rem + 1.5vw, 2rem);
   --margin: clamp(1.25rem, 0.45rem + 3.6vw, 3.75rem);
   --cols: 12;
-  --radius: 0px;
+  --radius: 6px;                   /* buttons only; everything else stays square */
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);       /* expo.out: the ink strike */
   --ease-soft: cubic-bezier(0.2, 0.8, 0.2, 1);      /* the main site's emphasized ease */
@@ -85,9 +85,9 @@ body {
   min-height: 100dvh;
   font-family: var(--f-body);
   font-size: var(--t-body);
-  font-weight: 450;
+  font-weight: 400;
   line-height: 1.6;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   background: var(--c-bg);
   color: var(--c-fg);
   -webkit-font-smoothing: antialiased;
@@ -198,13 +198,17 @@ p, li, figcaption { text-wrap: pretty; }
 .draw:focus-visible::before, .draw:focus-visible::after, .draw[aria-current='page']::after, .draw[aria-current='page']::before { transform: scaleX(1); }
 @media (prefers-reduced-motion: reduce) { .draw::before, .draw::after { transition: none; } }
 
-/* Primary button: the main site's square filled button. On hover a pencil-blue flood sweeps in
+/* Primary button: a filled button with rounded corners. On hover a pencil-blue flood sweeps in
    from the left (the draft), and the arrow advances. */
 .btn {
-  position: relative; isolation: isolate; overflow: clip; display: inline-flex; align-items: center; justify-content: center; gap: 0.7em;
-  min-height: 2.75rem; padding: 0.6rem 1.5rem; background: var(--c-fg); color: var(--c-bg);
-  font-size: 1rem; font-weight: 450; line-height: 1.3; letter-spacing: 0.01em; white-space: nowrap;
+  position: relative; isolation: isolate; overflow: clip; display: inline-flex; align-items: center; justify-content: center; gap: 0.6em;
+  min-height: 2.75rem; padding: 0.6rem 1.15rem; background: var(--c-fg); color: var(--c-bg); border-radius: var(--radius);
+  font-size: 0.9375rem; font-weight: 500; line-height: 1.3; letter-spacing: 0; white-space: nowrap;
 }
+.btn:focus-visible { border-radius: var(--radius); }
+/* Quiet button: an outline that fills faintly on hover, for the header beside the hero's filled one. */
+.btn--ghost { background: transparent; color: var(--c-fg); box-shadow: inset 0 0 0 1px var(--c-line-strong); }
+.btn--ghost::before { background: var(--c-line); }
 .btn::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--c-draft); transform-origin: left; transform: scaleX(0); transition: transform 0.5s var(--ease-out); }
 .btn__arrow { display: inline-block; transition: translate 0.45s var(--ease-out); }
 @media (hover: hover) {
@@ -217,7 +221,7 @@ p, li, figcaption { text-wrap: pretty; }
 /* Secondary action: the main site's quiet text link with an arrow; the underline drafts then inks. */
 .go {
   position: relative; display: inline-flex; align-items: center; gap: 0.55em; min-height: 2.75rem;
-  font-size: 1rem; font-weight: 450; color: var(--c-muted); transition: color 0.3s;
+  font-size: 0.9375rem; font-weight: 400; color: var(--c-muted); transition: color 0.3s;
 }
 .go::before, .go::after { content: ''; position: absolute; left: 0; right: 1.6em; bottom: 0.55rem; height: 1px; transform-origin: left; transform: scaleX(0); }
 .go::before { background: repeating-linear-gradient(90deg, var(--c-draft) 0 3px, transparent 3px 6px); transition: transform 0.28s linear; }

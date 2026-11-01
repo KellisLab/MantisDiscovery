@@ -25,14 +25,15 @@
   display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 3rem;
   align-items: center; min-height: 100svh; padding-top: 6.5rem; padding-bottom: 3.5rem;
 }
-.hero__text { grid-column: 1 / span 6; display: grid; gap: 1.6rem; align-content: center; }
-.hero__title { max-width: 8.5em; }
+.hero__text { grid-column: 1 / span 6; display: grid; gap: 2rem; align-content: center; }
+/* The name on two lines, set tight; the second line stays in the muted voice. */
+.hero__title { font-size: clamp(3rem, 1rem + 6.6vw, 7.5rem); line-height: 0.96; letter-spacing: -0.06em; }
+.hero__title > span { display: block; }
+.hero__title-sub { color: var(--c-muted); }
 /* The headline is drafted in pencil and inked once the heat flow beside it has drawn itself. */
 .motion .hero__title { color: var(--c-draft-text); transition: color 0.9s var(--ease-out); }
 .motion .hero:has(.torus[data-inked]) .hero__title { color: var(--c-fg); }
-/* Balanced so a headline that wraps breaks into even lines, with no word left alone. */
-.hero__title { font-size: clamp(2.6rem, 1.1rem + 5vw, 5.5rem); max-width: 10em; text-wrap: balance; }
-.hero__lede { max-width: 31em; }
+.hero__lede { font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem); line-height: 1.6; max-width: 26em; }
 .hero__visual { grid-column: 7 / span 6; }
 
 /* The heat-flow torus */
@@ -71,7 +72,7 @@
 /* The hero's affiliation: the MIT CSAIL mark, a hairline, then the label. */
 .hero__aff { display: flex; align-items: center; gap: 0.9rem; }
 .hero__aff .csail-logo { height: 1.9rem; width: auto; }
-.hero__aff span { padding-left: 0.9rem; border-left: 1px solid var(--c-line-strong); }
+.hero__aff span { padding-left: 0.9rem; border-left: 1px solid var(--c-line-strong); color: var(--c-muted); }
 
 /* Our approach: one row per part of Mantis, its text beside a real still, the sides alternating. */
 .approach { padding-block: clamp(4rem, 3rem + 4vw, 8rem) clamp(2rem, 1.5rem + 2vw, 4rem); }

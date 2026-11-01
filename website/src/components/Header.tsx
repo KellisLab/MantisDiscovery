@@ -58,7 +58,7 @@ export function Header() {
         </nav>
         <div className="header__end">
           <a className="go" href={mantis.url} rel="noopener">Mantis <span className="go__arrow" aria-hidden="true">↗</span></a>
-          <a className="btn" href={`mailto:${site.email}`}>Write to us</a>
+          <a className="btn btn--ghost" href={`mailto:${site.email}`}>Write to us</a>
         </div>
         <button ref={btn} type="button" className="menu-btn" aria-expanded={open} aria-controls="menu" onClick={() => setOpenOn(open ? null : pathname)}>
           <span className="menu-btn__icon" aria-hidden="true" />

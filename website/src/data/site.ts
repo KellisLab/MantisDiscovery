@@ -98,7 +98,8 @@ export const nav = [
 
 export const home = {
   eyebrow: 'Research initiative',
-  title: 'Mantis Discovery',
+  /** The name on two lines; the hero sets the second in the muted voice. */
+  title: ['Mantis', 'Discovery'],
   lede: 'We work in mathematics, machine learning, physics, chemistry and biology. We do our research in Mantis, a knowledge platform built at MIT CSAIL.',
   actions: [
     { href: '/research/', label: 'Read the papers' },
