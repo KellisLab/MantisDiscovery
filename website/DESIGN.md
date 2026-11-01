@@ -34,13 +34,19 @@ minors amber `#FFB547` and coral `#FF8A5C`, gyrokinetics azure `#4F9DFF` and vio
 solvers rose `#FF6F91` and violet. The lead colour also tints the figure frame's corner ticks (`Plate.tsx`).
 Nothing else gets colour: no gradients, no glows, no decorative dots.
 
-**Type.** MantisSans for everything (display weight 500, tracking -0.045em), MantisMono for small labels and
-readings, STIX Two Text for the papers' own sentences and mathematics, and an Inter subset for the glyphs the
-brand cut lacks (Greek, arrows, math). The scale is `--t-mega` to `--t-xs` in `globals.css`; headings are
-64 px at 1440.
+**Type.** MantisSans for everything (display weight 500, tracking -0.045em; body weight 400 with no added
+tracking), MantisMono for small labels and readings, STIX Two Text for the papers' own sentences and
+mathematics, and an Inter subset for the glyphs the brand cut lacks (Greek, arrows, math). The scale is
+`--t-mega` to `--t-xs` in `globals.css`; headings are 64 px at 1440.
 
-**Grid.** 12 columns, `--gutter` 16 to 32 px, `--margin` 20 to 60 px, one column on phones. Radius 0
-everywhere. The only marks are squares: □ open, ■ shown.
+**Hero and header** (owner, 1 Nov, after mantis-discovery.vercel.app). The hero title is the name on two
+lines, "Mantis" in ink and "Discovery" muted, tracked to -0.06em, over a smaller muted lede. The header puts
+"Mantis | Discovery" on one line at the left and a small muted nav beside an outlined "Write to us" at the
+right; the current page's nav word is in ink.
+
+**Grid.** 12 columns, `--gutter` 16 to 32 px, `--margin` 20 to 60 px, one column on phones. Buttons have
+6 px corners (`--radius`, owner, 1 Nov); everything else stays square. The only marks are squares: □ open,
+■ shown.
 
 ## Motion
 

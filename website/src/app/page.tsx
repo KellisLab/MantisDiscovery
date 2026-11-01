@@ -18,7 +18,7 @@ export default function Home() {
             <img className="csail-logo" src={asset('/brand/csail.svg')} width={70} height={40} alt="MIT CSAIL" />
             <span>{home.eyebrow}</span>
           </p>
-          <h1 id="hero-title" className="display hero__title">{home.title}</h1>
+          <h1 id="hero-title" className="display hero__title"><span>{home.title[0]}</span> <span className="hero__title-sub">{home.title[1]}</span></h1>
           <p className="lede hero__lede" data-reveal="ink" data-intro data-delay="0.15">{home.lede}</p>
           <div className="actions" data-reveal="fade" data-intro data-delay="0.3">
             <Link className="btn" href={home.actions[0].href}>{home.actions[0].label} <span className="btn__arrow" aria-hidden="true">→</span></Link>
