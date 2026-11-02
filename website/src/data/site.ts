@@ -274,7 +274,7 @@ export const olympiads = [
   { name: 'USACO', full: 'USA Computing Olympiad', logo: asset('/brand/olympiads/usaco.png'), alt: 'USA Computing Olympiad', w: 974, h: 120 },
 ];
 
-// The team, listed on the Lab page. The lead first, then the subject editors, then everyone else
+// The team, listed on the Lab page. The lead first, then the subject directors, then everyone else
 // alphabetically by first name. The lead's bio is the owner's own (1 Nov); the researchers' bios are short
 // paraphrases of what each person wrote about their own research on the lab's application form (22 Oct),
 // and people without one have not sent theirs yet.

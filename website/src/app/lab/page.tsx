@@ -50,7 +50,7 @@ export default function Lab() {
           </ul>
         </div>
         <div className="team__group">
-          <h3 className="team__label">Subject editors</h3>
+          <h3 className="team__label">Subject directors</h3>
           <ul className="team__names team__names--editors">
             {team.editors.map((m) => <Member key={m.name} m={m} />)}
           </ul>
