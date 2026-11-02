@@ -4,9 +4,6 @@ __next.__PAGE__.txt
 __next._full.txt
 __next._index.txt
 __next._tree.txt
-_next/static/OJCYkAXlWP3qPYxiC7q_y/_buildManifest.js
-_next/static/OJCYkAXlWP3qPYxiC7q_y/_clientMiddlewareManifest.js
-_next/static/OJCYkAXlWP3qPYxiC7q_y/_ssgManifest.js
 _next/static/chunks/0_7u2_-5wybdl.js
 _next/static/chunks/0cz1d0mv5g_q7.js
 _next/static/chunks/0umf92h1sb77c.js
@@ -21,6 +18,9 @@ _next/static/chunks/2khxl0v1q4i6n.js
 _next/static/chunks/396yupvms0df3.js
 _next/static/chunks/3rb6h6kzazdbq.js
 _next/static/chunks/turbopack-02aj48sl3_jfp.js
+_next/static/dK3f1VEp3qbocc_b9PuUL/_buildManifest.js
+_next/static/dK3f1VEp3qbocc_b9PuUL/_clientMiddlewareManifest.js
+_next/static/dK3f1VEp3qbocc_b9PuUL/_ssgManifest.js
 _next/static/media/MantisMono-s.1og_vvsdf_csl.woff2
 _next/static/media/MantisSans.p.1ekrc-5el2gdb.woff2
 _next/static/media/apple-icon.304rcxj344186.png
